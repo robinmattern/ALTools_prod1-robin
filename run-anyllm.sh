@@ -19,6 +19,7 @@
 ##FD   set-anyllm.sh            |  28803| 12/05/24 09:50|   467| v1.05`41205.0950
 ##FD   set-anyllm.sh            |  29230| 12/24/24 11:00|   470| v1.05`41224.1100
 ##FD   set-anyllm.sh            |  29230| 12/25/24 16:40|   470| v1.05`41225.1640
+##FD   set-anyllm.sh            |  31618|  2/03/24 13:42|   490| v1.05`50203.1342
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -60,6 +61,7 @@
 #.(41115.02f 12/05/24 RAM  9:50p| Don't delete branch for update altools
 #.(41224.01  12/24/24 RAM 11:00a| Fix blank lines
 #.(41114.02c 12/24/24 RAM  4:40p| Fix setIPAddr for Unix
+#.(50203.01   2/03/25 RAM  1:42p| Improve check for valid Repos folder
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -83,8 +85,11 @@
   aVer="v0.05.41205.0950"  # run-anyllm.sh
   aVer="v0.05.41224.1100"  # run-anyllm.sh
   aVer="v0.05.41225.1640"  # run-anyllm.sh
+  aVer="v0.05.50203.1342"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
+
+     aRepo_Dir="AnyLLM"                                                                                     # .(50203.01.1)
 
 function help() {
      echo ""
@@ -139,35 +144,45 @@ function getBinVersion() {                                                      
 
  function getRepoDir() {
 #  aBranch="$( git branch | awk '/\*/ { print substr($0,2) }' )"
-#  echo "AnyLLM[ 90] "
    aRepos="$( echo "$(pwd)"       |  awk '{ match($0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )";
-   if [ -d "${aRepos}/Robin"      ]; then aRepos="${aRepos}/Robin"; fi                                          # .(41109.08b.1 RAM Check for Repos/Robin)
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[146]  aRepos:   '${aRepos}'";  fi
+
+   if [   -d "${aRepos}/Robin/${aRepo_Dir}" ]; then aRepos="${aRepos}/Robin"; fi                            # .(50203.01.2).(41109.08b.1 RAM Check for Repos/Robin)
+   if [   -d "${aRepos}/Test/${aRepo_Dir}"  ]; then aRepos="${aRepos}/Test";  fi                            # .(50203.01.3).(41109.08c.1 RAM Check for Repos/Test)
+
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[151]  aRepos:   '${aRepos}'";  fi
+   if [ ! -d "${aRepos}/${aRepo_Dir}"       ]; then                                                         # .(50203.01.4 RAM Check for valid Repos Dir Beg)
+      echo -e "\n * You do not have a ${aRepo_Dir} folder in your Repos folder??"
+      exit_wCR
+      fi                                                                                                    # .(50203.01.4 End)
 #  aRepo="$( git remote -v        |  awk '/push/         { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"  # .(41109.08.1)
    aRepo="$( git remote -v        |  awk '/origin.+push/ { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"  # .(41109.08.1 RAM Just for origin ??)
-#  echo "AnyLLM[ 94]  aRepo: ${aRepo}"
+
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[159]  aRepo:    '${aRepo}'";    fi
 #  aProjDir="${aRepoDir%%_*}"
 #  aProjDir="$( echo "$(pwd)"     | awk '{ sub( "'${aRepoDir}'", "" ); print }' )"
 #  aAWK='{ sub( "'${aRepos//\//\/}'/", "" ); sub( /[\/_].*/, "_"); print }';                echo "  aAWK:    '${aAWK}'"  # double up /s
    aAWK='{ sub( "'${aRepos}'/", "" );  sub( /_\/*.+/, "" ); sub( /\/.+/, "" ); print }';  # echo "  aAWK:    '${aAWK}'"  # .(41109.08.2 RAM awk: cmd. line:1: warning: escape sequence `\/' treated as plain `/')
 #  aAWK='{ sub( "'${aRepos}'/", "" );  sub( "_/*.+",  "" ); sub( "/.+",  "" ); print }';    echo "  aAWK:    '${aAWK}'"  ##.(41109.08.2
    aProject="$( echo "$(pwd)"     |  awk "${aAWK}" )" 2>/dev/null
-#  echo "AnyLLM[101]  aProject: ${aProject}"
 
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[167]  aProject:   '${aProject}'"; fi
    aStgDir="$(  echo "$(pwd)"     |  awk '{ sub( "'.+${aProject}'", "" ); print }' )"
 #  aStage="$(   echo "${aStgDir}" |  awk '{ sub( "^[_\/]+"        , "" ); print }' )"   ##.(41109.08.3 RAM awk: cmd. line:1: warning: escape sequence `\/' treated as plain `/')
    aStage="$(   echo "${aStgDir}" |  awk '{ sub( "^[_/]+"         , "" ); print }' )"   # .(41109.08.3)
-#  echo "AnyLLM[105]  aStage:    '${aStage}'"; # exit
+
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[172]  aStage:   '${aStage}'"; fi # exit
 
    aRepoDir="${aRepos}/${aProject}${aStgDir}"
    if [ "${aRepo}" == "" ]; then aRepo="${aProject}${aStgDir}"; fi
 
    if [ "${bDebug}" == "1" ]; then
    echo ""
-   echo "  aRepos:   '${aRepos}'"
-   echo "  aRepo:    '${aRepo}'"
-   echo "  aProject: '${aProject}'"
-   echo "  aStage:   '${aStage}'"
-   echo "  aRepoDir: '${aRepoDir}'"
+   echo " - AnyLLM[179]  aRepos:   '${aRepos}'"
+   echo " - AnyLLM[180]  aRepo:    '${aRepo}'"
+   echo " - AnyLLM[181]  aProject: '${aProject}'"
+   echo " - AnyLLM[182]  aStage:   '${aStage}'"
+   echo " - AnyLLM[183]  aRepoDir: '${aRepoDir}'"
    exit_wCR
    fi
    }
@@ -186,14 +201,14 @@ function get_subnet_ip() {
 
 function setIPAddr() {                                                                                                   # .(41114.02.1  RAM Write setIPAddr)
 #  if [ "${aOS}" == "windows" ]; then             aIP="$(   ipconfig | awk '/IPv4 / { a = substr( $0, 40 ) }; END {                      print a }' )"; fi
-#  if [ "${aOS}" == "darwin"  ]; then             aIP="$(   ifconfig | awk '/inet / { a = $2               }; END {                      print a }' )"; fi   
-#  if [ "${aOS}" == "linux"   ]; then             aIP="$(   ip a     | awk '/inet / { a = $2               }; END { sub( /\/.*/, "", a); print a }' )"; fi   
-                                                                                                                         
+#  if [ "${aOS}" == "darwin"  ]; then             aIP="$(   ifconfig | awk '/inet / { a = $2               }; END {                      print a }' )"; fi
+#  if [ "${aOS}" == "linux"   ]; then             aIP="$(   ip a     | awk '/inet / { a = $2               }; END { sub( /\/.*/, "", a); print a }' )"; fi
+
 #  if [ "${aOS}" != "windows" ]; then             mIPs=( $( ifconfig | awk '/inet / { print substr( $0,  7 ) }' ) )      ##.(41114.02.2  RAM For Mac).(41114.02b.2)
    if [ "${aOS}" == "darwin"  ]; then             mIPs=( $( ifconfig | awk '/inet / { print substr( $0,  7 ) }' ) ); fi  # .(41114.02c.1).(41114.02b.2 RAM For Mac)
    if [ "${aOS}" == "windows" ]; then mapfile  -t mIPs < <( ipconfig | awk '/IPv4 / { print substr( $0, 40 ) }'   ); fi  # .(41114.02c.3).(41114.02.3 RAM For Windows)
    if [ "${aOS}" == "linux"   ]; then mapfile  -t mIPs < <( ip a     | awk '/inet / { print substr( $0,  7 ) }'   ); fi  # .(41114.02c.4 RAM Only works in vatest versions of Ubuntu)).(41114.02b.4 RAM for Unix)
-#      else                                                                                                              ##.(41114.02b.3) 
+#      else                                                                                                              ##.(41114.02b.3)
 #        fi; fi                                                                                                          ##.(41114.02.5).(41114.02c.5)
 
          aIPAddr="$( get_subnet_ip "^192\.168\." || \
@@ -212,7 +227,7 @@ function setIPAddr() {                                                          
 
  function killPort() {
      if [ $# -eq 0 ] || [ "$1" == "all" ]; then
-         echo -e "\n  Usage: kill ports <port_number(s)>\n"
+         echo -e "\n   Usage: kill ports <port_number(s)>\n"
      else
          for nPort in "$@"; do
              jpt kill port "${nPort}"
@@ -221,9 +236,9 @@ function setIPAddr() {                                                          
 #        local port="$1"
 #        local pid=$(lsof -t -i:"$port")
 #        if [ -z "$pid" ]; then
-#            echo -e "\n* No process found running on port $port"
+#            echo -e "\n * No process found running on port $port"
 #        else
-#            echo -e "\n  Killing process $pid running on port $port"
+#            echo -e "\n   Killing process $pid running on port $port"
 #            kill "$pid"
 #        fi
      fi
@@ -234,8 +249,8 @@ function setIPAddr() {                                                          
      aPath="$( dirname $0)"; aScriptDir="${aPath##*/}";        # echo "  aScriptDir:  ${aScriptDir}"        # .(41111.06.1 RAM Enable anyllm to run from anythere beg)
      aCurrentDir="$( pwd )"; aCurrentDir="${aCurrentDir##*/}"; # echo "  aCurrentDir: ${aCurrentDir}"
      if [ "${aScriptDir}" != "${aCurrentDir}" ]; then
-#       echo -e "\n* You are not in a Git Repository"
-        echo -e "\n* You are not in the ${aScriptDir} folder, but that's ok."
+#       echo -e "\n * You are not in a Git Repository"
+        echo -e "\n * You are not in the ${aScriptDir} folder, but that's probably ok."
         cd "${aPath}";
 #       exit_wCR
         fi                                                                                                  # .(41111.06.1 End)
@@ -337,7 +352,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 #    cd "${aRepos}/AnyLLM_prod1-master"                                                 # .(41115.02d.51 RAM)
      aDir="AnyLLM"; if [ "${mARGs[2]}" != "" ];  then aDir="${mARGs[2]}"; fi            # .(41115.02f.1)
      if [ ! -d "${aRepos}/${aDir}" ]; then                                              # .(41115.02f.2)
-        echo -e "* Invalid Repository folder, ${aDir}."                                 # .(41115.02f.3)
+        echo -e " * Invalid Repository folder, ${aDir}."                                # .(41115.02f.3)
         exit_wCR                                                                        # .(41115.02f.4)
         fi                                                                              # .(41115.02f.5)
      cd "${aRepos}/${aDir}";  # echo "pwd: $( pwd )"; exit                              # .(41115.02f.6 RAM Gotta be in the repo folder).(41115.02d.52 RAM)
@@ -375,9 +390,9 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 #    aMsg="Invalid";       if [ "${mARGs[1]}" == "" ]; then aMsg="Please provide a"; fi ##.(41115.02c.22).(41115.02c.24)
 #    aBra=": ${mARGs[1]}"; if [ "${mARGs[1]}" == "" ]; then aBra=""; fi                 ##.(41115.02c.23).(41115.02c.24)
         if [ "${mARGs[1]}" == "" ]; then                                                # .(41115.02c.24 RAM Change for no branch Beg)
-           echo -e "\n* Please provide a branch name: master, altools or both"
+           echo -e "\n * Please provide a branch name: master, altools or both"
          else
-           echo -e "\n* Invalid branch name: ${mARGs[1]}. S.B master, altools or both"  # .(41115.02b.20)
+           echo -e "\n * Invalid branch name: ${mARGs[1]}. S.B master, altools or both" # .(41115.02b.20)
            fi                                                                           # .(41115.02c.24 End)
      fi                                                                                 # .(41115.02b.21)
      exit_wCR
@@ -429,7 +444,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
   if [ "${aArg3:0:1}" == "s" ] || [ "${aArg3:0:2}" == "-s" ]; then aApp="server";    fi
   if [ "${aArg3:0:1}" == "a" ] || [ "${aArg3:0:2}" == "-a" ]; then aApp="all";       fi # .(41030.02.1)
 
-  if [ "${aApp}" == "" ]; then echo -e "\n* Please provide an {App}: c, f or s"; exit_wCR; fi
+  if [ "${aApp}" == "" ]; then echo -e "\n * Please provide an {App}: c, f or s"; exit_wCR; fi
 
   if [ "${aApp}" == "all" ]; then                                                       # .(41030.02.2 RAM Move em to here)
      cd "${aRepoDir}/collector" && npm start &
@@ -450,7 +465,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 #    echo "  \$1: '$1', \$2: '$3', \$2: '$3', aArg2: '${aArg3}'"; # exit
 #    echo "  \${mARGs[0]}: '${mARGs[0]}', \${mARGs[1]}: '${mARGs[1]}', \${mARGs[2]}: '${mARGs[2]}', \${mARGs[3]}: '${mARGs[3]}', \${mARGs[4]}: '${mARGs[4]}'"; # exit
      nPort=${mARGs[1]}; if [ "${aArg2}" == "por" ]; then nPort=${mARGs[2]}; fi          # .(41201.02.2 RAM Was == "port")
-  if [ "${nPort}" == "" ]; then echo -e "\n* Please provide a port number"; exit_wCR; fi
+  if [ "${nPort}" == "" ]; then echo -e "\n * Please provide a port number"; exit_wCR; fi
 #    echo "  Args: '$@', aArg2: ${aArg2} nPort: ${nPort}"; exit
      killPort ${nPort}
      fi
@@ -467,7 +482,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      killPort 3001
      exit_wCR
      fi
-  if [ "${nPort}" == "" ]; then echo -e "\n* Please provide an {App}: c, f or s"; exit_wCR; fi
+  if [ "${nPort}" == "" ]; then echo -e "\n * Please provide an {App}: c, f or s"; exit_wCR; fi
      killPort ${nPort}
      fi # eoc stopApp
 # ---------------------------------------------------------------------------
