@@ -1,9 +1,13 @@
-
+v-env
 .env
+!.env.example
+
 node_modules
+__pycache__
+v-env
 .DS_Store
+aws_cf_deploy_anything_llm.json
 yarn.lock
 *.bak
 *_v[0-9]*
 *_t[0-9]*
-
