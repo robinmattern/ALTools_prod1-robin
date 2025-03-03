@@ -20,6 +20,7 @@
 ##FD   set-anyllm.sh            |  29230| 12/24/24 11:00|   470| v1.05`41224.1100
 ##FD   set-anyllm.sh            |  29230| 12/25/24 16:40|   470| v1.05`41225.1640
 ##FD   set-anyllm.sh            |  31618|  2/03/24 13:42|   490| v1.05`50203.1342
+##FD   set-anyllm.sh            |  31023|  2/25/25 20:45|   516| v1.05`50225.2045
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -62,6 +63,7 @@
 #.(41224.01  12/24/24 RAM 11:00a| Fix blank lines
 #.(41114.02c 12/24/24 RAM  4:40p| Fix setIPAddr for Unix
 #.(50203.01   2/03/25 RAM  1:42p| Improve check for valid Repos folder
+#.(50225.03   2/25/25 RAM  8:45p| Add run-app.sh
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -86,6 +88,7 @@
   aVer="v0.05.41224.1100"  # run-anyllm.sh
   aVer="v0.05.41225.1640"  # run-anyllm.sh
   aVer="v0.05.50203.1342"  # run-anyllm.sh
+  aVer="v0.05.50225.2045"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -98,6 +101,7 @@ function help() {
      echo "    Copy envs          Copy .env.example files to .env files"
      echo "    Start [{App}|all]  Start AnyLLM App: collector, frontend, server or all apps"
      echo "    Stop  [{App}|all]  Stop  AnyLLM App: collector, frontend, server or all apps"
+     echo "    PM2 {Cmd}          Run any PM2 command with AnyLLM.  See PM2 help"       # .(50225.05.1)
      echo "    Show ports         List Program, PID and Port"
      echo "    Kill port {Port}   Kill port number"
      echo "    Update [{Branch}]  Update branch: Master, JPTools, or both (default)"    # .(41203.03.1)
@@ -198,6 +202,7 @@ function get_subnet_ip() {
    done
    return 1
    }
+# ---------------------------------------------------------------------------
 
 function setIPAddr() {                                                                                                   # .(41114.02.1  RAM Write setIPAddr)
 #  if [ "${aOS}" == "windows" ]; then             aIP="$(   ipconfig | awk '/IPv4 / { a = substr( $0, 40 ) }; END {                      print a }' )"; fi
@@ -291,22 +296,31 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
           aArg1=$1; aArg2=$2; aArg3=$3; aCmd="help"
   if [ "${aArg1:0:5}" == "set" ]; then  aCmd="setup";   fi
-  if [ "${aArg1:0:3}" == "ver" ]; then  aCmd="version"; fi                               # .(411112.03.2)
-  if [ "${aArg1:0:3}" == "sou" ]; then  aCmd="source";  fi                               # .(411112.03.5)
+  if [ "${aArg1:0:3}" == "ver" ];                                then  aCmd="version"; fi                   # .(41112.03.2)
+  if [ "${aArg1:0:3}" == "sou" ];                                then  aCmd="source";  fi                   # .(41112.03.5)
 
   if [ "${aArg1:0:3}" == "cop" ] && [ "${aArg2:0:3}" == "env" ]; then aCmd="copyEnvs";  fi
 
-  if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:3}" == "app" ]; then aCmd="startApp";  fi
-  if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "c"   ]; then aCmd="startApp";  aArg3="c"; fi
-  if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "f"   ]; then aCmd="startApp";  aArg3="f"; fi
-  if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "s"   ]; then aCmd="startApp";  aArg3="s"; fi
-  if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "a"   ]; then aCmd="startApp";  aArg3="a"; fi
+# if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:3}" == "app" ]; then aCmd="startApp";  fi                  ##.(50225.05.2 Beg)
+# if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "c"   ]; then aCmd="startApp";  aArg3="c"; fi
+# if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "f"   ]; then aCmd="startApp";  aArg3="f"; fi
+# if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "s"   ]; then aCmd="startApp";  aArg3="s"; fi
+# if [ "${aArg1:0:3}" == "sta" ] && [ "${aArg2:0:1}" == "a"   ]; then aCmd="startApp";  aArg3="a"; fi
 
-  if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:3}" == "app" ]; then aCmd="stopApp";   fi
-  if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "c"   ]; then aCmd="stopApp";   aArg3="c"; fi
-  if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "f"   ]; then aCmd="stopApp";   aArg3="f"; fi
-  if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "s"   ]; then aCmd="stopApp";   aArg3="s"; fi
-  if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "a"   ]; then aCmd="stopApp";   aArg3="a"; fi
+# if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:3}" == "app" ]; then aCmd="stopApp";   fi
+# if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "c"   ]; then aCmd="stopApp";   aArg3="c"; fi
+# if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "f"   ]; then aCmd="stopApp";   aArg3="f"; fi
+# if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "s"   ]; then aCmd="stopApp";   aArg3="s"; fi
+# if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "a"   ]; then aCmd="stopApp";   aArg3="a"; fi       ##.(50225.05.2 End)
+
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == "hel" ]; then aCmd="pm2_help";  fi                  # .(50225.05.2 RAM Add pm2 commands Beg)
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == ""    ]; then aCmd="status";    fi
+  if [ "${aArg1:0:3}" == "sta" ];                                then aCmd="start";     fi
+  if [ "${aArg1:0:3}" == "res" ];                                then aCmd="restart";   fi
+  if [ "${aArg1:0:3}" == "sto" ];                                then aCmd="stop";      fi
+  if [ "${aArg1:0:3}" == "del" ];                                then aCmd="delete";    fi
+  if [ "${aArg1:0:3}" == "inf" ];                                then aCmd="info";      fi
+  if [ "${aArg1:0:3}" == "log" ];                                then aCmd="logs";      fi                  # .(50225.05.2 End)
 
   if [ "${aArg1:0:3}" == "kil" ];                                then aCmd="killPort";  fi
   if [ "${aArg1:0:3}" == "kil" ] && [ "${aArg2:0:3}" == "por" ]; then aCmd="killPort";  fi
@@ -435,6 +449,19 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      cp -p "${aRepoDir}/server/.env.development.example" "${aRepoDir}/server/.env.development"
      echo "  copied  ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      fi
+# ---------------------------------------------------------------------------
+
+# if [ "${aCmd}" == "pm2"      ]; then bash ${aRepoDir}/run-app.sh ${aArg1} ${aArg2} ${aArg3};  fi           # .(50225.05.3 Beg)
+  if [ "${aCmd}" == "pm2_help" ]; then bash ${aRepoDir}/run-app.sh help;                        fi
+  if [ "${aCmd}" == "status"   ]; then bash ${aRepoDir}/run-app.sh status   ${aArg2};           fi
+  if [ "${aCmd}" == "start"    ]; then bash ${aRepoDir}/run-app.sh start    ${aArg2};           fi
+  if [ "${aCmd}" == "restart"  ]; then bash ${aRepoDir}/run-app.sh restart  ${aArg2};           fi
+  if [ "${aCmd}" == "delete"   ]; then bash ${aRepoDir}/run-app.sh kill     ${aArg2};           fi
+  if [ "${aCmd}" == "stop"     ]; then bash ${aRepoDir}/run-app.sh stop     ${aArg2};           fi           # .(50225.05.3 End)
+  if [ "${aCmd}" == "info"     ]; then bash ${aRepoDir}/run-app.sh info     ${aArg2};           fi
+  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3};  fi
+# if [ "${aCmd}" == "logs"     ]; then echo          "./run-app.sh logs     ${aArg2} ${aArg3}"; fi
+
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "startApp" ]; then
