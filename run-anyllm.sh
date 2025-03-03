@@ -21,7 +21,7 @@
 ##FD   set-anyllm.sh            |  29230| 12/25/24 16:40|   470| v1.05`41225.1640
 ##FD   set-anyllm.sh            |  31618|  2/03/24 13:42|   490| v1.05`50203.1342
 ##FD   set-anyllm.sh            |  31023|  2/25/25 20:45|   516| v1.05`50225.2045
-##FD   set-anyllm.sh            |  34109|  3/02/25 21:15|   517| v1.05`50302.2115
+##FD   set-anyllm.sh            |  35086|  3/02/25 21:50|   534| v1.05`50302.2150
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -65,6 +65,7 @@
 #.(41114.02c 12/24/24 RAM  4:40p| Fix setIPAddr for Unix
 #.(50203.01   2/03/25 RAM  1:42p| Improve check for valid Repos folder
 #.(50225.03   2/25/25 RAM  8:45p| Add run-app.sh
+#.(50302.09   3/02/25 RAM  9:50p| Add reset command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -90,6 +91,7 @@
   aVer="v0.05.41225.1640"  # run-anyllm.sh
   aVer="v0.05.50203.1342"  # run-anyllm.sh
   aVer="v0.05.50225.2045"  # run-anyllm.sh
+  aVer="v0.05.50302.2150"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -106,6 +108,7 @@ function help() {
      echo "    Show ports         List Program, PID and Port"
      echo "    Kill port {Port}   Kill port number"
      echo "    Update [{Branch}]  Update branch: Master, JPTools, or both (default)"    # .(41203.03.1)
+     echo "    Reset              Reset AnyLLM command script"                          # .(50302.09.1)
      echo "    Version            Show Version and Location"                            # .(41112.03.1)
      echo "    Update             Update Anything-LLM and ALTools"                      # .(41115.02b.10)
 #    echo ""
@@ -150,14 +153,16 @@ function getBinVersion() {                                                      
  function getRepoDir() {
 #  aBranch="$( git branch | awk '/\*/ { print substr($0,2) }' )"
    aRepos="$( echo "$(pwd)"       |  awk '{ match($0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )";
-   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[146]  aRepos:   '${aRepos}'";  fi
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[156]  aRepos:    '${aRepos}'";  fi
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[157]  aRepo_Dir: '${aRepo_Dir}'";  fi
 
    if [   -d "${aRepos}/Robin/${aRepo_Dir}" ]; then aRepos="${aRepos}/Robin"; fi                            # .(50203.01.2).(41109.08b.1 RAM Check for Repos/Robin)
    if [   -d "${aRepos}/Test/${aRepo_Dir}"  ]; then aRepos="${aRepos}/Test";  fi                            # .(50203.01.3).(41109.08c.1 RAM Check for Repos/Test)
 
-#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[151]  aRepos:   '${aRepos}'";  fi
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[159]  aRepos:    '${aRepos}'";  fi
    if [ ! -d "${aRepos}/${aRepo_Dir}"       ]; then                                                         # .(50203.01.4 RAM Check for valid Repos Dir Beg)
-      echo -e "\n * You do not have a ${aRepo_Dir} folder in your Repos folder??"
+      echo -e "\n * You do not have a ${aRepo_Dir} folder in your Repos folder!"
+      echo      "   Is it installed as: '${aRepo_Dir}'?"
       exit_wCR
       fi                                                                                                    # .(50203.01.4 End)
 #  aRepo="$( git remote -v        |  awk '/push/         { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"  # .(41109.08.1)
@@ -183,11 +188,11 @@ function getBinVersion() {                                                      
 
    if [ "${bDebug}" == "1" ]; then
    echo ""
-   echo " - AnyLLM[179]  aRepos:   '${aRepos}'"
-   echo " - AnyLLM[180]  aRepo:    '${aRepo}'"
-   echo " - AnyLLM[181]  aProject: '${aProject}'"
-   echo " - AnyLLM[182]  aStage:   '${aStage}'"
-   echo " - AnyLLM[183]  aRepoDir: '${aRepoDir}'"
+   echo " - AnyLLM[190]  aRepos:   '${aRepos}'"
+   echo " - AnyLLM[191]  aRepo:    '${aRepo}'"
+   echo " - AnyLLM[192]  aProject: '${aProject}'"
+   echo " - AnyLLM[193]  aStage:   '${aStage}'"
+   echo " - AnyLLM[194]  aRepoDir: '${aRepoDir}'"
    exit_wCR
    fi
    }
@@ -314,10 +319,11 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "s"   ]; then aCmd="stopApp";   aArg3="s"; fi
 # if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "a"   ]; then aCmd="stopApp";   aArg3="a"; fi       ##.(50225.05.2 End)
 
+  if [ "${aArg1:0:5}" == "reset" ];                              then aCmd="reset";     fi                  # .(50302.09.2)
   if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == "hel" ]; then aCmd="pm2_help";  fi                  # .(50225.05.2 RAM Add pm2 commands Beg)
   if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == ""    ]; then aCmd="status";    fi
   if [ "${aArg1:0:3}" == "sta" ];                                then aCmd="start";     fi
-  if [ "${aArg1:0:3}" == "res" ];                                then aCmd="restart";   fi
+  if [ "${aArg1:0:3}" == "res" ] && [ "$aCmd" != "reset" ];      then aCmd="restart";   fi                  # .(50302.09.3)
   if [ "${aArg1:0:3}" == "sto" ];                                then aCmd="stop";      fi
   if [ "${aArg1:0:3}" == "del" ];                                then aCmd="delete";    fi
   if [ "${aArg1:0:3}" == "inf" ];                                then aCmd="info";      fi
@@ -327,7 +333,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
   if [ "${aArg1:0:3}" == "kil" ] && [ "${aArg2:0:3}" == "por" ]; then aCmd="killPort";  fi
   if [ "${aArg1:0:3}" == "sho" ] && [ "${aArg2:0:3}" == "por" ]; then aCmd="showPorts"; fi
 
-  if [ "${aArg1:0:3}" == "upd" ];                                then aCmd="update"; fi # .(41115.02.2)
+  if [ "${aArg1:0:3}" == "upd" ];                                then aCmd="update";    fi                  # .(41115.02.2)
 
 # echo "  aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; exit;
 
@@ -428,10 +434,20 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
      cd "${aRepoDir}"
 #    echo "  pwd: '${aRepoDir}'"
-#    echo -e "\nanyllm setup\n"                                                              ##.(41201.06.1 )
-     echo -e "\nyarn setup for AnythingLLM\n"                                                # .(41201.06.1 RAM Echo setup command)
+#    echo -e "\nanyllm setup\n"                                                         ##.(41201.06.1 )
+     echo -e "\nyarn setup for AnythingLLM\n"                                           # .(41201.06.1 RAM Echo setup command)
      yarn setup
      fi
+# ---------------------------------------------------------------------------
+
+  if [ "${aCmd}" == "reset" ]; then                                                     # .(50302.09.4 Beg)
+  if [ "${bDoit}" != "1" ]; then
+     echo -e "  To run the script, ./set-anyllm.sh, add -d for doit".
+     exit_wCR
+   else
+     ${aRepoDir}/set-anyllm.sh doit
+     fi
+     fi                                                                                 # .(50302.09.4 End)
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "copyEnvs" ]; then
@@ -458,9 +474,9 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
   if [ "${aCmd}" == "start"    ]; then bash ${aRepoDir}/run-app.sh start    ${aArg2};           fi
   if [ "${aCmd}" == "restart"  ]; then bash ${aRepoDir}/run-app.sh restart  ${aArg2};           fi
   if [ "${aCmd}" == "delete"   ]; then bash ${aRepoDir}/run-app.sh kill     ${aArg2};           fi
-  if [ "${aCmd}" == "stop"     ]; then bash ${aRepoDir}/run-app.sh stop     ${aArg2};           fi           # .(50225.05.3 End)
+  if [ "${aCmd}" == "stop"     ]; then bash ${aRepoDir}/run-app.sh stop     ${aArg2};           fi
   if [ "${aCmd}" == "info"     ]; then bash ${aRepoDir}/run-app.sh info     ${aArg2};           fi
-  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3};  fi
+  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3};  fi           # .(50225.05.3 End)
 # if [ "${aCmd}" == "logs"     ]; then echo          "./run-app.sh logs     ${aArg2} ${aArg3}"; fi
 
 # ---------------------------------------------------------------------------
