@@ -26,7 +26,7 @@
 #.(50303.02   3/03/25 RAM  4:00p| Add $aIt to help 
 #.(50303.02b  3/05/25 RAM  4:00p| Add another $aIt to help    
 #.(50304.06   3/04/25 RAM  9:45a| Display invalid command & other Opps
-#.(50304.05   3/04/25 RAM  5:45p| Improve logs commands
+#.(50304.05   3/04/25 RAM  5:45p| Improve logs commands  
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
