@@ -1,1 +1,10 @@
-{ "folders": [ { "path": "." } ] }
+{ "folders": [
+        {
+            "name": "._",
+            "path": "../._"
+        },
+        {
+            "name": "prod1-robin",
+            "path": "."
+        }
+    ] }
