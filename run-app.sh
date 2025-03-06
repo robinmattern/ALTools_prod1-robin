@@ -27,6 +27,7 @@
 #.(50303.02b  3/05/25 RAM  4:00p| Add another $aIt to help    
 #.(50304.06   3/04/25 RAM  9:45a| Display invalid command & other Opps
 #.(50304.05   3/04/25 RAM  5:45p| Improve logs commands    
+#.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -87,11 +88,11 @@ function setRepos() {
 function help() {
     a1="$1"; a2="$2"
     echo "p4 aCmd: '${aCmd}', aApp: '${aApp}', a1: '${a1}', a2: '${a2}'"
-    if [ "${a1}" == "3" ] && [ "${a2}" == ""     ]; then   a1=""; a2=""; fi                # .(50305.01.4)
-    if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=2; fi            # #(50305.01.4).(50306.01.2)
-#   if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=; fi             # .(50306.01.2 RAM Was: a1=2)
+    if [ "${a1}" == "3" ] && [ "${a2}" == ""     ]; then   a1=""; a2=""; fi             # .(50305.01.6)
+    if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=2; fi         # #(50305.01.7).(50306.01.2)
+#   if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=; fi          # .(50306.01.2 RAM Was: a1=2)
     echo "p5 aCmd: '${aCmd}', aApp: '${aApp}', aArg1: '${aArg1}', a1: '${a1}', a2: '${a2}'"
-    if [ "${a1}" != "2" ] && [ "${a1}" != "3"    ]; then                                # .(50305.01.5 RAM Add "$1" != 3)
+    if [ "${a1}" != "2" ] && [ "${a1}" != "3"    ]; then                                # .(50305.01.6 RAM Add "$1" != 3)
 
     echo ""
     echo "  Use any of the following apps in ${aRepo}:"
@@ -117,8 +118,8 @@ function help() {
 #   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.x RAM Add a1 != 3 ).(50306.01.x)
 #   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.x RAM Add a1 != 3 ).(50306.01.x)
     if [ "${a1}"  == ""   ];                         then exit_wCR; fi                  # .(50306.01.x RAM Now a1 == '' )
-#   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi # .(50305.01.4).(50306.01.x)
-#   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  # .(50305.01.4)
+#   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi ##.(50305.01.7).(50306.01.x)
+#   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  ##.(50305.01.8).(50306.01.x)
     }
 # -----------------------------------------------------
 
@@ -227,7 +228,7 @@ function  setDir() {
 
     fi
 #   echo ""
-    if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};          fi    # .(50305.01.1)
+    if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.1)
     if [ "${aArg2:0:4}"  == "save" ]; then bCmd="1";  doPM2 save;    fi
     if [ "${aArg2:0:4}"  == "stat" ]; then bCmd="1";  doPM2 status;  fi
 
