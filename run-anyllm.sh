@@ -64,8 +64,9 @@
 #.(41224.01  12/24/24 RAM 11:00a| Fix blank lines
 #.(41114.02c 12/24/24 RAM  4:40p| Fix setIPAddr for Unix
 #.(50203.01   2/03/25 RAM  1:42p| Improve check for valid Repos folder
-#.(50225.03   2/25/25 RAM  8:45p| Add run-app.sh
+#.(50225.05   2/25/25 RAM  8:45p| Add run-app.sh
 #.(50302.09   3/02/25 RAM  9:50p| Add reset command
+#.(50304.04   3/04/25 RAM  8:00a| Hardcode AnyLLM
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -95,7 +96,8 @@
 
   # ---------------------------------------------------------------------------
 
-     aRepo_Dir="AnyLLM"                                                                                     # .(50203.01.1)
+   aRepo_Dir="AnyLLM"                                                                                       # .(50304.04.1 RAM Hardcode AnyLLM).(50203.01.1)
+#  aRepo_Dir="AnyLLM_prod1-robin"                                                                           ##.(50304.04.1)
 
 function help() {
      echo ""
@@ -104,13 +106,15 @@ function help() {
      echo "    Copy envs          Copy .env.example files to .env files"
      echo "    Start [{App}|all]  Start AnyLLM App: collector, frontend, server or all apps"
      echo "    Stop  [{App}|all]  Stop  AnyLLM App: collector, frontend, server or all apps"
-     echo "    PM2 {Cmd}          Run any PM2 command with AnyLLM.  See PM2 help"       # .(50225.05.1)
+     echo "    PM2 {App} {Cmd}    Run any PM2 command with AnyLLM.  See PM2 help"       # .(50225.05.1)
      echo "    Show ports         List Program, PID and Port"
      echo "    Kill port {Port}   Kill port number"
      echo "    Update [{Branch}]  Update branch: Master, JPTools, or both (default)"    # .(41203.03.1)
      echo "    Reset              Reset AnyLLM command script"                          # .(50302.09.1)
      echo "    Version            Show Version and Location"                            # .(41112.03.1)
      echo "    Update             Update Anything-LLM and ALTools"                      # .(41115.02b.10)
+     echo ""
+     echo "    {App}              fro, ser, col -- for Frontend, Server, Collector"     # .(50305.01.1)          
 #    echo ""
      exit_wCR
      }
@@ -152,47 +156,61 @@ function getBinVersion() {                                                      
 
  function getRepoDir() {
 #  aBranch="$( git branch | awk '/\*/ { print substr($0,2) }' )"
-   aRepos="$( echo "$(pwd)"       |  awk '{ match($0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )";
-   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[156]  aRepos:    '${aRepos}'";  fi
-   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[157]  aRepo_Dir: '${aRepo_Dir}'";  fi
+
+   aRepos="$( echo "$(pwd)"       | awk '{ match($0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )";
+
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[159]  aRepos:    '${aRepos}'";  fi
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[160]  aRepo_Dir: '${aRepo_Dir}'";  fi
 
    if [   -d "${aRepos}/Robin/${aRepo_Dir}" ]; then aRepos="${aRepos}/Robin"; fi                            # .(50203.01.2).(41109.08b.1 RAM Check for Repos/Robin)
    if [   -d "${aRepos}/Test/${aRepo_Dir}"  ]; then aRepos="${aRepos}/Test";  fi                            # .(50203.01.3).(41109.08c.1 RAM Check for Repos/Test)
 
-   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[159]  aRepos:    '${aRepos}'";  fi
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[165]  aRepos:    '${aRepos}'";  fi; # exit
+
    if [ ! -d "${aRepos}/${aRepo_Dir}"       ]; then                                                         # .(50203.01.4 RAM Check for valid Repos Dir Beg)
       echo -e "\n * You do not have a ${aRepo_Dir} folder in your Repos folder!"
       echo      "   Is it installed as: '${aRepo_Dir}'?"
-      exit_wCR
+#     exit_wCR
       fi                                                                                                    # .(50203.01.4 End)
-#  aRepo="$( git remote -v        |  awk '/push/         { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"  # .(41109.08.1)
-   aRepo="$( git remote -v        |  awk '/origin.+push/ { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"  # .(41109.08.1 RAM Just for origin ??)
+#  aRepo="$( git remote -v        | awk '/push/         { sub(/.+\//, ""); sub(/\.git.+/, ""); print }' )"  # .(41109.08.1)
+   aRepo="$( git remote -v        | awk '/origin.+push/ { sub(/.+\//, ""); sub(/\.git.+/, ""); print }' )"  # .(41109.08.1 RAM Just for origin ??)
+   aRepo="${aRepo_Dir}"                                                                                     # .(50304.04.2 RAM Hardcode AnyLLM)
 
-#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[159]  aRepo:    '${aRepo}'";    fi
-#  aProjDir="${aRepoDir%%_*}"
-#  aProjDir="$( echo "$(pwd)"     | awk '{ sub( "'${aRepoDir}'", "" ); print }' )"
+#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[176]  aRepo:     '${aRepo}'";   fi
+
+#  aProjDir="${aRepos}/${aRepo_Dir%%_*}"
+   aProjDir="$( echo "$(pwd)"     | awk '{ sub( "'${aRepoDir}'", "" ); print }' )"
 #  aAWK='{ sub( "'${aRepos//\//\/}'/", "" ); sub( /[\/_].*/, "_"); print }';                echo "  aAWK:    '${aAWK}'"  # double up /s
    aAWK='{ sub( "'${aRepos}'/", "" );  sub( /_\/*.+/, "" ); sub( /\/.+/, "" ); print }';  # echo "  aAWK:    '${aAWK}'"  # .(41109.08.2 RAM awk: cmd. line:1: warning: escape sequence `\/' treated as plain `/')
 #  aAWK='{ sub( "'${aRepos}'/", "" );  sub( "_/*.+",  "" ); sub( "/.+",  "" ); print }';    echo "  aAWK:    '${aAWK}'"  ##.(41109.08.2
-   aProject="$( echo "$(pwd)"     |  awk "${aAWK}" )" 2>/dev/null
+   aProject="$( echo "$(pwd)"     | awk "${aAWK}" )" 2>/dev/null
 
-#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[167]  aProject:   '${aProject}'"; fi
-   aStgDir="$(  echo "$(pwd)"     |  awk '{ sub( "'.+${aProject}'", "" ); print }' )"
-#  aStage="$(   echo "${aStgDir}" |  awk '{ sub( "^[_\/]+"        , "" ); print }' )"   ##.(41109.08.3 RAM awk: cmd. line:1: warning: escape sequence `\/' treated as plain `/')
-   aStage="$(   echo "${aStgDir}" |  awk '{ sub( "^[_/]+"         , "" ); print }' )"   # .(41109.08.3)
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[185]  aProject:  '${aProject}'"; fi
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[186]  aProjDir:  '${aProjDir}'"; fi
 
-#  if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[172]  aStage:   '${aStage}'"; fi # exit
+#  aStgDir="$(  echo "$( pwd )"   | awk '{ sub( "'.+${aProject}'", "" ); print }' )"                        ##.(50304.04.3)
+   aStgDir="$(  echo "$( pwd )"   | awk '{ sub( ".+'${aProject}'", "" ); print }' )"                        # .(50304.04.3 RAM mode the ')
+#  aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_\/]+"        , "" ); print }' )"                        ##.(41109.08.3 RAM awk: cmd. line:1: warning: escape sequence `\/' treated as plain `/')
+   aStage="$(   echo "${aStgDir}" | awk '{ sub( "^[_/]+"         , "" ); print "/" $0 }' )"                 # .(50304.04.4 RAM Added /).(41109.08.3)
+
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[193]  aStgDir:   '${aStgDir}'"; fi; # exit
+   if [ "${bDebug}" == "1" ]; then echo " - AnyLLM[194]  aStage:    '${aStage}'";  fi; # exit
+
+   aProject="AnyLLM"                                                                                        # .(50304.04.5 RAM Hardcode AnyLLM)
+   aStgDir="_${aRepo_Dir#*_}"; if [ "${aStgDir:1}" == "${aProject}" ]; then aStgDir=""; fi                  # .(50304.04.6 RAM use ${aRepo_Dir)
+   aStage="/${aStgDir/_/}"                                                                                  # .(50304.04.7)
 
    aRepoDir="${aRepos}/${aProject}${aStgDir}"
    if [ "${aRepo}" == "" ]; then aRepo="${aProject}${aStgDir}"; fi
 
    if [ "${bDebug}" == "1" ]; then
    echo ""
-   echo " - AnyLLM[190]  aRepos:   '${aRepos}'"
-   echo " - AnyLLM[191]  aRepo:    '${aRepo}'"
-   echo " - AnyLLM[192]  aProject: '${aProject}'"
-   echo " - AnyLLM[193]  aStage:   '${aStage}'"
-   echo " - AnyLLM[194]  aRepoDir: '${aRepoDir}'"
+   echo " - AnyLLM[205]  aRepos:    '${aRepos}'"
+   echo " - AnyLLM[206]  aRepo:     '${aRepo}'"
+   echo " - AnyLLM[207]  aProject:  '${aProject}'"
+   echo " - AnyLLM[208]  aStgDir:   '${aStgDir}'"
+   echo " - AnyLLM[209]  aStage:    '${aStage}'"
+   echo " - AnyLLM[210]  aRepoDir:  '${aRepoDir}'"
    exit_wCR
    fi
    }
@@ -221,7 +239,6 @@ function setIPAddr() {                                                          
    if [ "${aOS}" == "linux"   ]; then mapfile  -t mIPs < <( ip a     | awk '/inet / { print substr( $0,  7 ) }'   ); fi  # .(41114.02c.4 RAM Only works in vatest versions of Ubuntu)).(41114.02b.4 RAM for Unix)
 #      else                                                                                                              ##.(41114.02b.3)
 #        fi; fi                                                                                                          ##.(41114.02.5).(41114.02c.5)
-
          aIPAddr="$( get_subnet_ip "^192\.168\." || \
                      get_subnet_ip "^10\.0\.0\." || \
                      get_subnet_ip "^172\."      || \
@@ -274,7 +291,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
         -debug|--debug)  bDebug=1 ;;
         -[bdf]*)          [[ "$1" =~ "b" ]] && bDebug=1; [[ "$1" =~ "d" ]] && bDoit=1; [[ "$1" =~ "f" ]] && bForce=1 ;;
         *)
-         mArgs+=("$( echo "${1:0:3}" | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/')"); # mARGs+=("$1")
+         mArgs+=("$( echo "${1:0:4}" | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/')"); # mARGs+=("$1")
 #        echo -e "\n    Debug: Adding '$1' to mARGs"
          mARGs+=("$1")
 #        echo "    Debug: mARGs now contains: ${mARGs[@]}"
@@ -298,9 +315,13 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
     setOSvars
     getRepoDir
 
+    cd "${aRepoDir}"                                                                                        # .(50304.04.10)
+
 # ---------------------------------------------------------------------------
 
-          aArg1=$1; aArg2=$2; aArg3=$3; aCmd="help"
+          aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; aArg5=$5; aCmd="help"                                     # .(50306.03.x RAM Add aArg4 and aArg5)
+  echo "a1 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+
   if [ "${aArg1:0:5}" == "set" ]; then  aCmd="setup";   fi
   if [ "${aArg1:0:3}" == "ver" ];                                then  aCmd="version"; fi                   # .(41112.03.2)
   if [ "${aArg1:0:3}" == "sou" ];                                then  aCmd="source";  fi                   # .(41112.03.5)
@@ -320,9 +341,17 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # if [ "${aArg1:0:3}" == "sto" ] && [ "${aArg2:0:1}" == "a"   ]; then aCmd="stopApp";   aArg3="a"; fi       ##.(50225.05.2 End)
 
   if [ "${aArg1:0:5}" == "reset" ];                              then aCmd="reset";     fi                  # .(50302.09.2)
+
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2}"     == ""    ]; then aCmd="status";    fi
   if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == "hel" ]; then aCmd="pm2_help";  fi                  # .(50225.05.2 RAM Add pm2 commands Beg)
-  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == ""    ]; then aCmd="status";    fi
-  if [ "${aArg1:0:3}" == "sta" ];                                then aCmd="start";     fi
+
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == "ser" ]; then aCmd="pm2";       fi                  # .(50305.01.2 RAM Add pm2 app commands)
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == "col" ]; then aCmd="pm2";       fi                  # .(50305.01.3)
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2:0:3}" == "fro" ]; then aCmd="pm2";       fi                  # .(50305.01.4)
+  if [ "${aArg1:0:3}" == "pm2" ] && [ "${aArg2}"     != ""    ]; then aCmd="pm2";       fi                  # .(50305.01.5)
+
+  if [ "${aArg1:0:4}" == "stat" ];                               then aCmd="status";    fi
+  if [ "${aArg1:0:4}" == "star" ];                               then aCmd="start";     fi
   if [ "${aArg1:0:3}" == "res" ] && [ "$aCmd" != "reset" ];      then aCmd="restart";   fi                  # .(50302.09.3)
   if [ "${aArg1:0:3}" == "sto" ];                                then aCmd="stop";      fi
   if [ "${aArg1:0:3}" == "del" ];                                then aCmd="delete";    fi
@@ -335,7 +364,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
   if [ "${aArg1:0:3}" == "upd" ];                                then aCmd="update";    fi                  # .(41115.02.2)
 
-# echo "  aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; exit;
+  echo "a2 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
 
 # ---------------------------------------------------------------------------
 
@@ -454,22 +483,35 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 #    echo "  aRepoDir:  '${aRepoDir}'"; echo "  cp -p \"${aRepoDir}/collector/.env.example\""; # exit
      echo ""
      echo "  copying ./collector/.env.example to ./collector/.env ($(  ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
-     cp -p "${aRepoDir}/collector/.env.example"          "${aRepoDir}/collector/.env"
+    cp -p "${aRepoDir}/collector/.env.example"          "${aRepoDir}/collector/.env"
      echo "  copied  ./collector/.env.example to ./collector/.env ($(  ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      echo ""
      echo "  copying ./frontend/.env.example  to ./frontend/.env  ($(  ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
-     cp -p "${aRepoDir}/frontend/.env.example"           "${aRepoDir}/frontend/.env"
+    cp -p "${aRepoDir}/frontend/.env.example"           "${aRepoDir}/frontend/.env"
      echo "  copied  ./frontend/.env.example  to ./frontend/.env  ($(  ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
              setIPAddr                                                                  # .(41114.02.2)
      echo ""
      echo "  copying ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
-     cp -p "${aRepoDir}/server/.env.development.example" "${aRepoDir}/server/.env.development"
+    cp -p "${aRepoDir}/server/.env.development.example" "${aRepoDir}/server/.env.development"
      echo "  copied  ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      fi
 # ---------------------------------------------------------------------------
 
+  if [ "${aCmd}" == "pm2" ]; then
+# echo "a3 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+          aCmd=""
+# if [ "${aArg2:0:3}" == "ser" ]; then aCmd="${aArg3}"; fi 
+# if [ "${aArg2:0:3}" == "col" ]; then aCmd="${aArg3}"; fi 
+# if [ "${aArg2:0:3}" == "fro" ]; then aCmd="${aArg3}"; fi 
+# if [ "${aCmd}"      ==   ""  ] && [ "${aArg3}" == "" ]; then bash ${aRepoDir}/run-app.sh "${aArg2}"; exit_wCR; fi 
+# if [ "${aCmd}"      ==   ""  ]; then bash ${aRepoDir}/run-app.sh help 3 ${aArg3}; exit_wCR; fi 
+# if [ "${aCmd}"      ==   ""  ]; then ; fi 
+#    echo ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5};
+     bash ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5}; exit;  
+     fi 
+
 # if [ "${aCmd}" == "pm2"      ]; then bash ${aRepoDir}/run-app.sh ${aArg1} ${aArg2} ${aArg3};  fi           # .(50225.05.3 Beg)
-  if [ "${aCmd}" == "pm2_help" ]; then bash ${aRepoDir}/run-app.sh help;                        fi
+  if [ "${aCmd}" == "pm2_help" ]; then bash ${aRepoDir}/run-app.sh help;     exit;              fi
   if [ "${aCmd}" == "status"   ]; then bash ${aRepoDir}/run-app.sh status   ${aArg2};           fi
   if [ "${aCmd}" == "start"    ]; then bash ${aRepoDir}/run-app.sh start    ${aArg2};           fi
   if [ "${aCmd}" == "restart"  ]; then bash ${aRepoDir}/run-app.sh restart  ${aArg2};           fi
@@ -482,7 +524,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "startApp" ]; then
-     aApp="";
+          aApp="";
   if [ "${aArg3:0:1}" == "c" ] || [ "${aArg3:0:2}" == "-c" ]; then aApp="collector"; fi
   if [ "${aArg3:0:1}" == "f" ] || [ "${aArg3:0:2}" == "-f" ]; then aApp="frontend";  fi
   if [ "${aArg3:0:1}" == "s" ] || [ "${aArg3:0:2}" == "-s" ]; then aApp="server";    fi
