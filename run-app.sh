@@ -29,6 +29,7 @@
 #.(50304.05   3/04/25 RAM  5:45p| Improve logs commands    
 #.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
 #.(50306.01   3/06/25 RAM  6:00a| Test pm2 all commands
+#.(50306.02   3/06/25 RAM  6:30a| Add pm2 arg to be called from anyllm 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
