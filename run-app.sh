@@ -28,6 +28,7 @@
 #.(50304.06   3/04/25 RAM  9:45a| Display invalid command & other Opps
 #.(50304.05   3/04/25 RAM  5:45p| Improve logs commands    
 #.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
+#.(50306.01   3/06/25 RAM  6:00a| Test pm2 all commands
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -67,7 +68,7 @@ function setRepos() {
         echo "p0 aArg1: '$1', aArg2: '$2', aArg3: '$3', aArg4: '$4'"
 
                                        aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; b2=0;    # .(50304.05.1 RAM Add aArg4 for log -f)
- if [ "${aArg1}"     == "pm2"  ]; then aArg1=$2; aArg2=$3; aArg3=$4; aArg4=$5; b2=1; fi # .(50306.02.x RAM Only want to be called from anyllm)    
+ if [ "${aArg1}"     == "pm2"  ]; then aArg1=$2; aArg2=$3; aArg3=$4; aArg4=$5; b2=1; fi # .(50306.02.1 RAM Only want to be called from anyllm)    
  if [ "${aArg1:0:3}" == "col"  ]; then aArg1="col"; fi 
  if [ "${aArg1:0:3}" == "fro"  ]; then aArg1="fro"; fi 
  if [ "${aArg1:0:3}" == "ser"  ]; then aArg1="ser"; fi 
@@ -89,10 +90,10 @@ function help() {
     a1="$1"; a2="$2"
     echo "p4 aCmd: '${aCmd}', aApp: '${aApp}', a1: '${a1}', a2: '${a2}'"
     if [ "${a1}" == "3" ] && [ "${a2}" == ""     ]; then   a1=""; a2=""; fi             # .(50305.01.6)
-    if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=2; fi         # #(50305.01.7).(50306.01.2)
-#   if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=; fi          # .(50306.01.2 RAM Was: a1=2)
+    if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=2; fi         ##.(50305.01.7).(50306.01.1)
+#   if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=; fi          ##.(50306.01.1 RAM Was: a1=2)
     echo "p5 aCmd: '${aCmd}', aApp: '${aApp}', aArg1: '${aArg1}', a1: '${a1}', a2: '${a2}'"
-    if [ "${a1}" != "2" ] && [ "${a1}" != "3"    ]; then                                # .(50305.01.6 RAM Add "$1" != 3)
+    if [ "${a1}" != "2" ] && [ "${a1}" != "3"    ]; then                                # .(50305.01.7 RAM Add "$1" != 3)
 
     echo ""
     echo "  Use any of the following apps in ${aRepo}:"
@@ -114,12 +115,12 @@ function help() {
     echo "    logs    ${aIt} {Cnt} Display last {Cnt} log lines, or stream them with -f" # .(50304.05.8)
     echo "    save                Save PM2 configuration for startup"
 
-#   if [ "${a1}"  != "2"  ];                         then exit_wCR; fi                  ##.(50306.01.x)
-#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.x RAM Add a1 != 3 ).(50306.01.x)
-#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.x RAM Add a1 != 3 ).(50306.01.x)
-    if [ "${a1}"  == ""   ];                         then exit_wCR; fi                  # .(50306.01.x RAM Now a1 == '' )
-#   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi ##.(50305.01.7).(50306.01.x)
-#   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  ##.(50305.01.8).(50306.01.x)
+#   if [ "${a1}"  != "2"  ];                         then exit_wCR; fi                  ##.(50306.01.1).(50306.01.2)
+#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.1 RAM Add a1 != 3 ).(50306.01.2)
+#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.1 RAM Add a1 != 3 ).(50306.01.2)
+    if [ "${a1}"  == ""   ];                         then exit_wCR; fi                  # .(50306.01.2 RAM Now a1 == '' )
+#   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi ##.(50305.01.8).(50306.01.2)
+#   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  ##.(50305.01.9).(50306.01.2)
     }
 # -----------------------------------------------------
 
@@ -127,8 +128,8 @@ function doAll() {
     local aApps=$1                              # Comma-separated list of apps (e.g., "app1,app2,app3")
     local aCmd=$2                               # Command to execute (e.g., "run")
     local script_path="$(realpath "$0")"
-#   if [ "${aCmd}" == "" ]; then echo ""; help 2; exit; fi                                ##.(50306.01.1) 
-    if [ "${aCmd}" == "" ]; then echo ""; help;   exit; fi                                # .(50306.01.1 RAM Was help 2) 
+#   if [ "${aCmd}" == "" ]; then echo ""; help 2; exit; fi                              ##.(50306.01.3) 
+    if [ "${aCmd}" == "" ]; then echo ""; help;   exit; fi                              # .(50306.01.3 RAM Was help 2) 
 
     IFS=',' read -r -a apps_array <<< "$aApps"  # Split the comma-separated list into an array
 
@@ -146,7 +147,7 @@ function doPM2() {
 #   aPython="$( which python3 )"
 #   aCmd="${2/python3/${aPython}}"
 #   echo "  aCmd: $1, aApp: '$2', nLines: '$4', bFollow: '${bFollow}'"
- if [ "$2" == '' ]; then return; fi                                                     # .(50305.02.x)
+ if [ "$2" == '' ]; then return; fi                                                     # .(50305.01.10)
 
  if [ "$1" == "logs"  ] && [ "${bFollow}" != "1" ]; then                                # .(50304.05.9 RAM Cmd: logs without -follow Beg)
             aLogFile1="$( pm2 show "$2" | grep 'out log'   | awk '{ print $6 }' )"
@@ -228,7 +229,7 @@ function  setDir() {
 
     fi
 #   echo ""
-    if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.1)
+    if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.11)
     if [ "${aArg2:0:4}"  == "save" ]; then bCmd="1";  doPM2 save;    fi
     if [ "${aArg2:0:4}"  == "stat" ]; then bCmd="1";  doPM2 status;  fi
 
@@ -241,23 +242,23 @@ function  setDir() {
 
       echo  "p3 bCmd: '${bCmd}', aName: '${aName}', aCmd: '${aArg2}', aApp: '${aArg1}', bCmd: '${bCmd}'"
 
-    if [ "${aArg2}" == "help" ]; then exit_wCR; fi                                      # .(50306.01.x RAM Not here) 
+    if [ "${aArg2}" == "help" ]; then exit_wCR; fi                                      # .(50306.01.4 RAM Not here) 
 
     if [ "${bCmd}" == "1" ] && [ "${aName}"  == "" ]; then a="*"
-       if [ "${aArg1}" != "" ]; then echo -e "\n* You entered an invalid App: ${aArg1}."; a=" "; fi
-                                     echo -e "${a} Please use one of the folling Apps: server, collector, frontend."; 
-                                     exit_wCR; 
+       if [ "${aArg1}" != ""  ]; then echo -e "\n* You entered an invalid App: ${aArg1}."; a=" "; fi
+                                      echo -e "${a} Please use one of the folling Apps: server, collector, frontend."; 
+                                      exit_wCR; 
        fi 
     if [ "${bCmd}" != "1" ]; then
-       if [ "${aName}" == "" ]; then help 4; else help 2; exit_wCR; fi                  # .(50306.01.x RAM Was Help 2)
-       if [ "${aArg1}" != "" ]; then echo -e "\n* You entered an invalid App: ${aArg1}."; 
-                                     echo -e "  Please use one of the folling Apps: server, collector, frontend."; 
+       if [ "${aName}" == ""  ]; then help 4; else help 2; exit_wCR; fi                 # .(50306.01.4 RAM Was Help 2)
+       if [ "${aArg1}" != ""  ]; then echo -e "\n* You entered an invalid App: ${aArg1}."; 
+                                      echo -e "  Please use one of the folling Apps: server, collector, frontend."; 
        else  
-                                     echo -e "\n* You entered an invalid command: $1."  # .(50304.06.5 RAM Display invalid command)
+                                      echo -e "\n* You entered an invalid command: $1."  # .(50304.06.5 RAM Display invalid command)
        fi; 
        exit_wCR                                                                         
        fi                                                                               # .(50304.06.6)
-#      if [ "${b2}" == "0" ]; then exit_wCR; fi                                         # .(50306.02.x) 
-       exit_wCR;                                                                        # .(50306.02.x) 
+#      if [ "${b2}" == "0" ]; then exit_wCR; fi                                         ##.(50306.02.2) 
+       exit_wCR;                                                                        # .(50306.02.2) 
 
 # ------------------------------------------------------------------------------
