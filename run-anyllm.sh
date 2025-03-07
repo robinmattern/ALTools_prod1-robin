@@ -74,7 +74,7 @@
 #.(50307.02   3/07/25 RAM  8:30a| Add set ip command
 #.(50307.03   3/07/25 RAM  9:50a| Fix for multiple ports
 #.(50307.05   3/07/25 RAM  1:00p| Fix set command determination
-#.(50307.06   3/07/25 RAM  4:30p| Deal with AnyLLM's fucking getRepoDir
+#.(50307.06   3/07/25 RAM  4:30p| Deal with AnyLLM's fucking getRepoDir  
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
