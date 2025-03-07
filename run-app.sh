@@ -183,10 +183,6 @@ function  setDir() {
     if [ "${1:0:3}"      == "col"  ]; then aApp="col"; aName="AnyLLM_Collector-8888"; aPort="8888"; aAppDir="collector"; fi
     if [ "${1:0:3}"      == "fro"  ]; then aApp="fro"; aName="AnyLLM_Frontend-3000";  aPort="3001"; aAppDir="frontend";  fi
 
-
-
-
-
 #   echo "p2 aApp:  '${aApp}', aName: '${aName}', aAppDir='${aAppDir}', aArg2: '${aArg2}'" ; # exit
 #   echo "  aDir: '${__basedir}/${aAppDir}'" ; # exit
 
@@ -202,13 +198,6 @@ function  setDir() {
 #   echo "  The current App  folder is: ./${aAppDir}"
     }
 # -----------------------------------------------------
-
-
-
-
-
-
-
 
     if [ "${aArg2:0:4}"  == "save" ]; then echo ""; pm2 save;   exit_wCR; fi
     if [ "${aArg2:0:4}"  == "stat" ]; then          pm2 status; exit_wCR; fi
@@ -226,9 +215,6 @@ function  setDir() {
          if [ "${aApp}"  == "ser"  ]; then setDir ser; doPM2 start "${aName}"; fi
          if [ "${aApp}"  == "col"  ]; then setDir col; doPM2 start "${aName}"; fi
          if [ "${aApp}"  == "fro"  ]; then setDir fro; doPM2 start "${aName}"; fi
-
-
-
     fi
 #   echo ""
     if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.11)
@@ -242,7 +228,7 @@ function  setDir() {
     if [ "${aArg2:0:4}"  == "dele" ]; then bCmd="1";  doPM2 delete  "${aName}"; fi
     if [ "${aArg2:0:4}"  == "logs" ]; then bCmd="1";  doPM2 logs    "${aName}" --lines ${aArg3}; fi         # .(50304.05.2 RAM Was: $$)
 
-      echo  "p3 bCmd: '${bCmd}', aName: '${aName}', aCmd: '${aArg2}', aApp: '${aArg1}', bCmd: '${bCmd}'"
+#     echo "p3 bCmd: '${bCmd}', aName: '${aName}', aCmd: '${aArg2}', aApp: '${aArg1}', bCmd: '${bCmd}'"
 
     if [ "${aArg2}" == "help" ]; then exit_wCR; fi                                      # .(50306.01.4 RAM Not here)
 

@@ -23,7 +23,7 @@
 ##FD   set-anyllm.sh            |  31023|  2/25/25 20:45|   516| v1.05`50225.2045
 ##FD   set-anyllm.sh            |  35086|  3/02/25 21:50|   534| v1.05`50302.2150
 ##FD   set-anyllm.sh            |  40045|  3/07/25  9:50|   596| v1.05`50307.0950
-##FD   set-anyllm.sh            |  43618|  3/07/25 16:30|   627| v1.05`50307.1630
+##FD   set-anyllm.sh            |  43951|  3/07/25 17:15|   629| v1.05`50307.1715
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -74,7 +74,8 @@
 #.(50307.02   3/07/25 RAM  8:30a| Add set ip command
 #.(50307.03   3/07/25 RAM  9:50a| Fix for multiple ports
 #.(50307.05   3/07/25 RAM  1:00p| Fix set command determination
-#.(50307.06   3/07/25 RAM  4:30p| Deal with AnyLLM's fucking getRepoDir  
+#.(50307.06   3/07/25 RAM  4:30p| Deal with AnyLLM's fucking getRepoDir
+#.(50306.03   3/07/25 RAM  5:15p| Fix aFollow, aka bForce
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -102,7 +103,7 @@
   aVer="v0.05.50225.2045"  # run-anyllm.sh
   aVer="v0.05.50302.2150"  # run-anyllm.sh
   aVer="v0.05.50305.0700"  # run-anyllm.sh
-  aVer="v0.05.50307.1630"  # run-anyllm.sh
+  aVer="v0.05.50307.1715"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -354,7 +355,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
 # ---------------------------------------------------------------------------
 
-          aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; aArg5=$5; aCmd=""                                         # .(50307.05.3 RAM Was Help).(50306.03.x RAM Add aArg4 and aArg5)
+          aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; aArg5=$5; aCmd=""                                         # .(50307.05.3 RAM Was Help).(50306.04.1 RAM Add aArg4 and aArg5)
 # echo "a1 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
 
   if [ "${aArg1}"     == ""    ];                                then  aCmd="help";    fi                   # .(50307.05.4)
@@ -547,8 +548,9 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      fi
 # ---------------------------------------------------------------------------
 
+# echo "a3 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', aArg4: '${aArg4}', aArg5: '${aArg5}', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+  if [ "${bForce}" == 1 ]; then aFollow="-f"; fi                                                            # .(50306.04.2 RAM aFolloe when bForce)
   if [ "${aCmd}" == "pm2" ]; then
-# echo "a3 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
           aCmd=""
 # if [ "${aArg2:0:3}" == "ser" ]; then aCmd="${aArg3}"; fi
 # if [ "${aArg2:0:3}" == "col" ]; then aCmd="${aArg3}"; fi
@@ -556,11 +558,11 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # if [ "${aCmd}"      ==   ""  ] && [ "${aArg3}" == "" ]; then bash ${aRepoDir}/run-app.sh "${aArg2}"; exit_wCR; fi
 # if [ "${aCmd}"      ==   ""  ]; then bash ${aRepoDir}/run-app.sh help 3 ${aArg3}; exit_wCR; fi
 # if [ "${aCmd}"      ==   ""  ]; then ; fi
-#    echo ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5};
-     bash ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5}; exit;
+     echo ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aFollow};
+     bash ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aFollow}; exit;                           # .(50306.04.3)
      fi
 
-# if [ "${aCmd}" == "pm2"      ]; then bash ${aRepoDir}/run-app.sh ${aArg1} ${aArg2} ${aArg3};  fi           # .(50225.05.3 Beg)
+# if [ "${aCmd}" == "pm2"      ]; then bash ${aRepoDir}/run-app.sh ${aArg1} ${aArg2} ${aArg3};  fi          # .(50225.05.3 Beg)
   if [ "${aCmd}" == "pm2_help" ]; then bash ${aRepoDir}/run-app.sh help;     exit;              fi
   if [ "${aCmd}" == "status"   ]; then bash ${aRepoDir}/run-app.sh status   ${aArg2};           fi
   if [ "${aCmd}" == "start"    ]; then bash ${aRepoDir}/run-app.sh start    ${aArg2};           fi
@@ -568,8 +570,8 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
   if [ "${aCmd}" == "delete"   ]; then bash ${aRepoDir}/run-app.sh kill     ${aArg2};           fi
   if [ "${aCmd}" == "stop"     ]; then bash ${aRepoDir}/run-app.sh stop     ${aArg2};           fi
   if [ "${aCmd}" == "info"     ]; then bash ${aRepoDir}/run-app.sh info     ${aArg2};           fi
-  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3};  fi           # .(50225.05.3 End)
-# if [ "${aCmd}" == "logs"     ]; then echo          "./run-app.sh logs     ${aArg2} ${aArg3}"; fi
+  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3} ${aArg4} ${aFollow};  fi  # .(50306.04.4).(50225.05.3 End)
+# if [ "${aCmd}" == "logs"     ]; then echo          "./run-app.sh logs     ${aArg2} ${aArg3} ${aArg4} ${aFollow}"; fi
 
 # ---------------------------------------------------------------------------
 
