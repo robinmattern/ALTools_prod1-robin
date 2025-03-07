@@ -22,6 +22,7 @@
 ##FD   set-anyllm.sh            |  31618|  2/03/24 13:42|   490| v1.05`50203.1342
 ##FD   set-anyllm.sh            |  31023|  2/25/25 20:45|   516| v1.05`50225.2045
 ##FD   set-anyllm.sh            |  35086|  3/02/25 21:50|   534| v1.05`50302.2150
+##FD   set-anyllm.sh            |  39285|  3/07/25  8:15|   584| v1.05`50307.0815
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -68,6 +69,7 @@
 #.(50302.09   3/02/25 RAM  9:50p| Add reset command
 #.(50304.04   3/04/25 RAM  8:00a| Hardcode AnyLLM
 #.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
+#.(50307.01   3/07/25 RAM  8:15a| Prevent copy .env file not found
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -94,6 +96,8 @@
   aVer="v0.05.50203.1342"  # run-anyllm.sh
   aVer="v0.05.50225.2045"  # run-anyllm.sh
   aVer="v0.05.50302.2150"  # run-anyllm.sh
+  aVer="v0.05.50305.0700"  # run-anyllm.sh
+  aVer="v0.05.50307.0815"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -115,7 +119,7 @@ function help() {
      echo "    Version            Show Version and Location"                            # .(41112.03.1)
      echo "    Update             Update Anything-LLM and ALTools"                      # .(41115.02b.10)
      echo ""
-     echo "    {App}              fro, ser, col -- for Frontend, Server, Collector"     # .(50305.01.1)          
+     echo "    {App}              fro, ser, col -- for Frontend, Server, Collector"     # .(50305.01.1)
 #    echo ""
      exit_wCR
      }
@@ -304,7 +308,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
     shift
   done
     set -- "${mArgs[@]}"  # Restore the command arguments, lower case, three letters                        # .(41116.03.1 End)
-#   echo ""                                                                             ##.(41224.01.7 RAM Remove echo "")
+#   echo ""                                                                                                 ##.(41224.01.7 RAM Remove echo "")
                                                     aArgFlags="-"                                           # .(41116.03.2 RAM Add aArgFlags Beg)
     if [ "${bDoit}"     == "1" ]; then aArgFlags="${aArgFlags}d"; fi
     if [ "${bDebug}"    == "1" ]; then aArgFlags="${aArgFlags}b"; fi
@@ -321,7 +325,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # ---------------------------------------------------------------------------
 
           aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; aArg5=$5; aCmd="help"                                     # .(50306.03.x RAM Add aArg4 and aArg5)
-  echo "a1 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+# echo "a1 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
 
   if [ "${aArg1:0:5}" == "set" ]; then  aCmd="setup";   fi
   if [ "${aArg1:0:3}" == "ver" ];                                then  aCmd="version"; fi                   # .(41112.03.2)
@@ -365,7 +369,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
   if [ "${aArg1:0:3}" == "upd" ];                                then aCmd="update";    fi                  # .(41115.02.2)
 
-  echo "a2 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+# echo "a2 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
 
 # ---------------------------------------------------------------------------
 
@@ -483,33 +487,36 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
   if [ "${aCmd}" == "copyEnvs" ]; then
 #    echo "  aRepoDir:  '${aRepoDir}'"; echo "  cp -p \"${aRepoDir}/collector/.env.example\""; # exit
      echo ""
-     echo "  copying ./collector/.env.example to ./collector/.env ($(  ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     aDt="N/A"; if [ ! -f "${aRepoDir}/collector/.env" ];then aDt="$( ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' )"; fi  # .(50507.01.1)
+#    echo "  copying ./collector/.env.example to ./collector/.env ($( ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"     ##.(50507.01.2)
+     echo "  copying ./collector/.env.example to ./collector/.env (${aDate})"                                                                     # .(50507.01.2)
     cp -p "${aRepoDir}/collector/.env.example"          "${aRepoDir}/collector/.env"
-     echo "  copied  ./collector/.env.example to ./collector/.env ($(  ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     echo "  copying ./collector/.env.example to ./collector/.env ($( ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      echo ""
-     echo "  copying ./frontend/.env.example  to ./frontend/.env  ($(  ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     aDt="N/A"; if [ ! -f "${aRepoDir}/frontend/.env"  ];then aDt="$( ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' )"; fi  # .(50507.01.3)
+     echo "  copied  ./frontend/.env.example  to ./frontend/.env  (${aDate})"                                                                     # .(50507.01.4)
     cp -p "${aRepoDir}/frontend/.env.example"           "${aRepoDir}/frontend/.env"
-     echo "  copied  ./frontend/.env.example  to ./frontend/.env  ($(  ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
-             setIPAddr                                                                  # .(41114.02.2)
+     echo "  copying ./frontend/.env.example  to ./frontend/.env  ($( ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      echo ""
-     echo "  copying ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     aDt="N/A"; if [ ! -f "${aRepoDir}/server/.env.development.example" ]; then aDt="$( ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' )"; fi  # .(50507.01.5)
+     echo "  copying ./server/.env.development.example to ./server/.env.development (${aDate})"                                                                              # .(50507.01.6)
     cp -p "${aRepoDir}/server/.env.development.example" "${aRepoDir}/server/.env.development"
-     echo "  copied  ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     echo "  copied  ./server/.env.development.example to ./server/.env.development ($( ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      fi
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "pm2" ]; then
 # echo "a3 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
           aCmd=""
-# if [ "${aArg2:0:3}" == "ser" ]; then aCmd="${aArg3}"; fi 
-# if [ "${aArg2:0:3}" == "col" ]; then aCmd="${aArg3}"; fi 
-# if [ "${aArg2:0:3}" == "fro" ]; then aCmd="${aArg3}"; fi 
-# if [ "${aCmd}"      ==   ""  ] && [ "${aArg3}" == "" ]; then bash ${aRepoDir}/run-app.sh "${aArg2}"; exit_wCR; fi 
-# if [ "${aCmd}"      ==   ""  ]; then bash ${aRepoDir}/run-app.sh help 3 ${aArg3}; exit_wCR; fi 
-# if [ "${aCmd}"      ==   ""  ]; then ; fi 
+# if [ "${aArg2:0:3}" == "ser" ]; then aCmd="${aArg3}"; fi
+# if [ "${aArg2:0:3}" == "col" ]; then aCmd="${aArg3}"; fi
+# if [ "${aArg2:0:3}" == "fro" ]; then aCmd="${aArg3}"; fi
+# if [ "${aCmd}"      ==   ""  ] && [ "${aArg3}" == "" ]; then bash ${aRepoDir}/run-app.sh "${aArg2}"; exit_wCR; fi
+# if [ "${aCmd}"      ==   ""  ]; then bash ${aRepoDir}/run-app.sh help 3 ${aArg3}; exit_wCR; fi
+# if [ "${aCmd}"      ==   ""  ]; then ; fi
 #    echo ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5};
-     bash ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5}; exit;  
-     fi 
+     bash ${aRepoDir}/run-app.sh pm2 ${aArg2} ${aArg3} ${aArg4} ${aArg5}; exit;
+     fi
 
 # if [ "${aCmd}" == "pm2"      ]; then bash ${aRepoDir}/run-app.sh ${aArg1} ${aArg2} ${aArg3};  fi           # .(50225.05.3 Beg)
   if [ "${aCmd}" == "pm2_help" ]; then bash ${aRepoDir}/run-app.sh help;     exit;              fi
