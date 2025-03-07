@@ -22,7 +22,7 @@
 ##FD   set-anyllm.sh            |  31618|  2/03/24 13:42|   490| v1.05`50203.1342
 ##FD   set-anyllm.sh            |  31023|  2/25/25 20:45|   516| v1.05`50225.2045
 ##FD   set-anyllm.sh            |  35086|  3/02/25 21:50|   534| v1.05`50302.2150
-##FD   set-anyllm.sh            |  39285|  3/07/25  8:15|   584| v1.05`50307.0815
+##FD   set-anyllm.sh            |  40045|  3/07/25  9:50|   596| v1.05`50307.0950
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -69,7 +69,8 @@
 #.(50302.09   3/02/25 RAM  9:50p| Add reset command
 #.(50304.04   3/04/25 RAM  8:00a| Hardcode AnyLLM
 #.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
-#.(50307.01   3/07/25 RAM  8:15a| Prevent copy .env file not found
+#.(50307.02   3/07/25 RAM  8:00a| Add set ip command
+#.(50307.03   3/07/25 RAM  9:50a| Fix for multiple ports
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -96,8 +97,7 @@
   aVer="v0.05.50203.1342"  # run-anyllm.sh
   aVer="v0.05.50225.2045"  # run-anyllm.sh
   aVer="v0.05.50302.2150"  # run-anyllm.sh
-  aVer="v0.05.50305.0700"  # run-anyllm.sh
-  aVer="v0.05.50307.0815"  # run-anyllm.sh
+  aVer="v0.05.50307.0950"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -108,13 +108,14 @@ function help() {
      echo ""
      echo "  Run AnyLLM Commands (${aVer}  OS: ${aOS})"
      echo "    Setup              Run yarn setup for AnythingLLM"
-     echo "    Copy envs          Copy .env.example files to .env files"
      echo "    Start [{App}|all]  Start AnyLLM App: collector, frontend, server or all apps"
      echo "    Stop  [{App}|all]  Stop  AnyLLM App: collector, frontend, server or all apps"
      echo "    PM2 {App} {Cmd}    Run any PM2 command with AnyLLM.  See PM2 help"       # .(50225.05.1)
      echo "    Show ports         List Program, PID and Port"
-     echo "    Kill port {Port}   Kill port number"
+     echo "    Kill port {Ports}   Kill port number(s)"
      echo "    Update [{Branch}]  Update branch: Master, JPTools, or both (default)"    # .(41203.03.1)
+     echo "    Copy envs          Copy .env.example files to .env files"
+     echo "    Set IP {IPAddr}    Set IP Address in frontend/.env"                      # .(50307.02.1)
      echo "    Reset              Reset AnyLLM command script"                          # .(50302.09.1)
      echo "    Version            Show Version and Location"                            # .(41112.03.1)
      echo "    Update             Update Anything-LLM and ALTools"                      # .(41115.02b.10)
@@ -249,6 +250,7 @@ function setIPAddr() {                                                          
                      get_subnet_ip "^172\."      || \
                               echo  "127.0.0.1" )"
 
+   if [ "$1" != "" ]; then aIPAddr="$1"; fi                                             # .(50307.02.2)
        echo "  Setting ./frontend/.env IP Address to ${aIPAddr}"
    if [ "${aOS}" == "darwin" ]; then                                                    # .(41114.02.6)
        sed -i '' "s/^[[:space:]]*SERVER_IP=.*/  SERVER_IP=${aIPAddr}/" ./frontend/.env  # .(41114.02.7)
@@ -262,9 +264,9 @@ function setIPAddr() {                                                          
      if [ $# -eq 0 ] || [ "$1" == "all" ]; then
          echo -e "\n   Usage: kill ports <port_number(s)>\n"
      else
-         for nPort in "$@"; do
-             jpt kill port "${nPort}"
-         done
+#        for nPort in "$@"; do                                                          # .(50307.02.3)
+             jpt kill port "$@"                                                         # .(50307.02.4)
+#        done                                                                           # .(50307.02.5)
 
 #        local port="$1"
 #        local pid=$(lsof -t -i:"$port")
@@ -308,7 +310,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
     shift
   done
     set -- "${mArgs[@]}"  # Restore the command arguments, lower case, three letters                        # .(41116.03.1 End)
-#   echo ""                                                                                                 ##.(41224.01.7 RAM Remove echo "")
+#   echo ""                                                                             ##.(41224.01.7 RAM Remove echo "")
                                                     aArgFlags="-"                                           # .(41116.03.2 RAM Add aArgFlags Beg)
     if [ "${bDoit}"     == "1" ]; then aArgFlags="${aArgFlags}d"; fi
     if [ "${bDebug}"    == "1" ]; then aArgFlags="${aArgFlags}b"; fi
@@ -325,9 +327,12 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # ---------------------------------------------------------------------------
 
           aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; aArg5=$5; aCmd="help"                                     # .(50306.03.x RAM Add aArg4 and aArg5)
-# echo "a1 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+  echo "a1 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
 
-  if [ "${aArg1:0:5}" == "set" ]; then  aCmd="setup";   fi
+# if [ "${aArg1:0:5}" == "set" ];                                then  aCmd="setup";   fi                   ##.(50307.02.6)
+  if [ "${aArg1:0:5}" == "set" ] && [ "${aArg2}"     == ""    ]; then  aCmd="setup";   fi                   # .(50307.02.6)
+  if [ "${aArg1:0:5}" == "set" ] && [ "${aArg2:0:2}" == "ip"  ]; then  aCmd="setIP";   fi                   # .(50307.02.7)
+
   if [ "${aArg1:0:3}" == "ver" ];                                then  aCmd="version"; fi                   # .(41112.03.2)
   if [ "${aArg1:0:3}" == "sou" ];                                then  aCmd="source";  fi                   # .(41112.03.5)
 
@@ -369,7 +374,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
   if [ "${aArg1:0:3}" == "upd" ];                                then aCmd="update";    fi                  # .(41115.02.2)
 
-# echo "a2 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
+  echo "a2 aCmd: '${aCmd}', aArg1: '${aArg1}', aArg2: '${aArg2}', \$3: '$3', mARGs[2]: '${mARGs[2]}', bDoit: '${bDoit}', bDebug: '${bDebug}', bForce: '${bForce}', aArgFlags: '${aArgFlags}'"; # exit;
 
 # ---------------------------------------------------------------------------
 
@@ -465,13 +470,22 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "setup" ]; then
-
      cd "${aRepoDir}"
 #    echo "  pwd: '${aRepoDir}'"
 #    echo -e "\nanyllm setup\n"                                                         ##.(41201.06.1 )
      echo -e "\nyarn setup for AnythingLLM\n"                                           # .(41201.06.1 RAM Echo setup command)
      yarn setup
      fi
+# ---------------------------------------------------------------------------
+
+  if [ "${aCmd}" == "setIP" ]; then                                                     # .(50307.02.8 Beg)
+  if [ "${mARGs[2]}" == "" ]; then
+     echo -e "\n* Please provide an IP Address."
+     exit_wCR
+   else
+     setIPAddr "${mARGs[2]}"
+     fi
+     fi                                                                                 # .(50307.02.8 End)
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "reset" ]; then                                                     # .(50302.09.4 Beg)
@@ -487,21 +501,18 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
   if [ "${aCmd}" == "copyEnvs" ]; then
 #    echo "  aRepoDir:  '${aRepoDir}'"; echo "  cp -p \"${aRepoDir}/collector/.env.example\""; # exit
      echo ""
-     aDt="N/A"; if [ ! -f "${aRepoDir}/collector/.env" ];then aDt="$( ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' )"; fi  # .(50507.01.1)
-#    echo "  copying ./collector/.env.example to ./collector/.env ($( ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"     ##.(50507.01.2)
-     echo "  copying ./collector/.env.example to ./collector/.env (${aDate})"                                                                     # .(50507.01.2)
+     echo "  copying ./collector/.env.example to ./collector/.env ($(  ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
     cp -p "${aRepoDir}/collector/.env.example"          "${aRepoDir}/collector/.env"
-     echo "  copying ./collector/.env.example to ./collector/.env ($( ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     echo "  copied  ./collector/.env.example to ./collector/.env ($(  ls -l ./collector/.env | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      echo ""
-     aDt="N/A"; if [ ! -f "${aRepoDir}/frontend/.env"  ];then aDt="$( ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' )"; fi  # .(50507.01.3)
-     echo "  copied  ./frontend/.env.example  to ./frontend/.env  (${aDate})"                                                                     # .(50507.01.4)
+     echo "  copying ./frontend/.env.example  to ./frontend/.env  ($(  ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
     cp -p "${aRepoDir}/frontend/.env.example"           "${aRepoDir}/frontend/.env"
-     echo "  copying ./frontend/.env.example  to ./frontend/.env  ($( ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     echo "  copied  ./frontend/.env.example  to ./frontend/.env  ($(  ls -l ./frontend/.env  | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+             setIPAddr                                                                  # .(41114.02.2)
      echo ""
-     aDt="N/A"; if [ ! -f "${aRepoDir}/server/.env.development.example" ]; then aDt="$( ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' )"; fi  # .(50507.01.5)
-     echo "  copying ./server/.env.development.example to ./server/.env.development (${aDate})"                                                                              # .(50507.01.6)
+     echo "  copying ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
     cp -p "${aRepoDir}/server/.env.development.example" "${aRepoDir}/server/.env.development"
-     echo "  copied  ./server/.env.development.example to ./server/.env.development ($( ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
+     echo "  copied  ./server/.env.development.example to ./server/.env.development ($(  ls -l ./server/.env.development | awk '{ print $6" "$7" "$8"  "$5" bytes" }' ))"
      fi
 # ---------------------------------------------------------------------------
 
@@ -560,8 +571,9 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 #    echo "  \${mARGs[0]}: '${mARGs[0]}', \${mARGs[1]}: '${mARGs[1]}', \${mARGs[2]}: '${mARGs[2]}', \${mARGs[3]}: '${mARGs[3]}', \${mARGs[4]}: '${mARGs[4]}'"; # exit
      nPort=${mARGs[1]}; if [ "${aArg2}" == "por" ]; then nPort=${mARGs[2]}; fi          # .(41201.02.2 RAM Was == "port")
   if [ "${nPort}" == "" ]; then echo -e "\n * Please provide a port number"; exit_wCR; fi
-#    echo "  Args: '$@', aArg2: ${aArg2} nPort: ${nPort}"; exit
-     killPort ${nPort}
+#    echo "  Args: '$@', aArg2: ${aArg2}, nPort: ${nPort}"; exit
+     nPorts="${@/kill/}"; nPorts="${nPorts/port/}"; nPorts="${nPorts/ /}"               # .(50307.03.1 RAM Fix for multiple ports)
+     killPort "${nPorts}"                                                               # .(50307.03.2)
      fi
 # ---------------------------------------------------------------------------
 
