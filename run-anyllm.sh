@@ -23,7 +23,7 @@
 ##FD   set-anyllm.sh            |  31023|  2/25/25 20:45|   516| v1.05`50225.2045
 ##FD   set-anyllm.sh            |  35086|  3/02/25 21:50|   534| v1.05`50302.2150
 ##FD   set-anyllm.sh            |  40045|  3/07/25  9:50|   596| v1.05`50307.0950
-##FD   set-anyllm.sh            |  43951|  3/07/25 17:15|   629| v1.05`50307.1715
+##FD   set-anyllm.sh            |  44599|  3/07/25 17:45|   634| v1.05`50307.1745
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM Apps
@@ -76,6 +76,7 @@
 #.(50307.05   3/07/25 RAM  1:00p| Fix set command determination
 #.(50307.06   3/07/25 RAM  4:30p| Deal with AnyLLM's fucking getRepoDir
 #.(50306.03   3/07/25 RAM  5:15p| Fix aFollow, aka bForce
+#.(41115.02g  3/07/25 RAM  5:45p| Revise update altools command
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -103,7 +104,7 @@
   aVer="v0.05.50225.2045"  # run-anyllm.sh
   aVer="v0.05.50302.2150"  # run-anyllm.sh
   aVer="v0.05.50305.0700"  # run-anyllm.sh
-  aVer="v0.05.50307.1715"  # run-anyllm.sh
+  aVer="v0.05.50307.1745"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -119,12 +120,12 @@ function help() {
      echo "    PM2 {App} {Cmd}    Run any PM2 command with AnyLLM.  See PM2 help"       # .(50225.05.1)
      echo "    Show ports         List Program, PID and Port"
      echo "    Kill port {Ports}   Kill port number(s)"
-     echo "    Update [{Branch}]  Update branch: Master, JPTools, or both (default)"    # .(41203.03.1)
+#    echo "    Update [{Branch}]  Update branch: Master, ALTools, or both (default)"    # .(41203.03.1)
      echo "    Copy envs          Copy .env.example files to .env files"
      echo "    Set IP {IPAddr}    Set IP Address in frontend/.env"                      # .(50307.02.1)
      echo "    Reset              Reset AnyLLM command script"                          # .(50302.09.1)
      echo "    Version            Show Version and Location"                            # .(41112.03.1)
-     echo "    Update             Update Anything-LLM and ALTools"                      # .(41115.02b.10)
+     echo "    Update             Update Anything-LLM and/or ALTools"                   # .(41115.02b.10)
      echo ""
      echo "    {App}              fro, ser, col -- for Frontend, Server, Collector"     # .(50305.01.1)
 #    echo ""
@@ -429,7 +430,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      aBranch="${mARGs[1]}"; if [ "${aBranch}" == "" ]; then aBranch="both"; fi          # .(41115.02b.11)
      aBranch="$( echo "${aBranch}" | awk '{ print tolower($0) }' )"                     # .(41115.02b.12)
 
-   if [ "${aBranch}" == "frtools" ] || [ "{aBranch}" == "both" ]; then                  # .(41115.02b.13)
+   if [ "${aBranch}" == "frtools" ] || [ "${aBranch}" == "both" ]; then                 # .(41115.02b.13)
      if [ -d "${aRepos}/FRTools"               ]; then cd "${aRepos}/FRTools"; fi       # .(41115.02e.xx Beg)
      if [ -d "${aRepos}/FRTools_/prod2-master" ]; then cd "${aRepos}/FRTools_/prod2-master"; fi
      if [ -d "${aRepos}/FRTools_prod2-master"  ]; then cd "${aRepos}/FRTools_prod2-master";  fi
@@ -440,7 +441,7 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      echo -e "  --------------------------------------------------------------------------------------------------"
      bOK=1; fi                                                                          # .(41115.02b.14)
 
-   if [ "${aBranch}" == "altools" ] || [ "{aBranch}" == "both" ]; then                  # .(41115.02b.15)
+   if [ "${aBranch}" == "altools" ] || [ "${aBranch}" == "both" ]; then                 # .(41115.02b.15)
 #    cd "${aRepos}/AnyLLM_prod1-master"                                                 # .(41115.02d.51 RAM)
      aDir="AnyLLM"; if [ "${mARGs[2]}" != "" ];  then aDir="${mARGs[2]}"; fi            # .(41115.02f.1)
      if [ ! -d "${aRepos}/${aDir}" ]; then                                              # .(41115.02f.2)
@@ -454,19 +455,23 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 #    git checkout master; if [ $? -ne 0 ]; then echo "checkout failed"; exit 1; fi      ##.(41115.02f.7).(41115.02d.27).(41204.05.1)
 #    git branch -D altools                                                              ##.(41115.02f.8).(41115.02d.28 RAM Delete ALTools branch).(41204.05.1)
 #    gitr delete branch altools                                                         ##.(41204.05.1).(41115.02d.28 RAM Delete ALTools branch)
-     echo "  FRT install ALTools ${mARGs[2]} -u"
-     frt install ALTools "${mARGs[2]}" -u                                               # .(41115.02d.54).(41115.02d.26 RAM Reinstall it)
+#    echo "  FRT install ALTools  ${mARGs[2]}  -u"                                      ##.(41115.02g.1)
+#            frt install ALTools "${mARGs[2]}" -u                                       ##.(41115.02d.54).(41115.02d.26 RAM Reinstall it).(41115.02g.2)
+     echo "  gitr update altools ALTools_prod1 -d"                                      # .(41115.02g.2 Use this update command)
    else                                                                                 # .(41115.02d.55)
-     git checkout master; if [ $? -ne 0 ]; then echo "checkout failed"; exit 1; fi      # .(41115.02d.27).(41204.05.1)
-     git branch -D altools                                                              # .(41115.02d.28 RAM Delete ALTools branch).(41204.05.1)
-#    gitr delete branch altools                                                         ##.(41204.05.1).(41115.02d.28 RAM Delete ALTools branch)
-     frt install ALTools "${mARGs[2]}" -du                                              # .(41115.02d.26 RAM Reinstall it)
+#    git checkout master; if [ $? -ne 0 ]; then echo "checkout failed"; exit 1; fi      # .(41115.02d.27).(41204.05.1).(41115.02g.3)
+#    git branch -D altools                                                              # .(41115.02d.28 RAM Delete ALTools branch).(41204.05.1).(41115.02g.4)
+#    gitr delete branch altools                                                         ##.(41204.05.1).(41115.02d.28 RAM Delete ALTools branch).(41115.02g.5)
+#    frt install ALTools "${mARGs[2]}" -du                                              # .(41115.02d.26 RAM Reinstall it).(41115.02g.6)
+     echo "  gitr update altools ALTools_prod1 -d"                                      # .(41115.02g.7)
+             gitr update altools ALTools_prod1 -d                                       # .(41115.02g.8)
      fi                                                                                 # .(41115.02d.56)
      end_wCR                                                                            # .(41204.03..4)
      echo -e "  --------------------------------------------------------------------------------------------------"
      bOK=1; fi                                                                          # .(41115.02b.16)
 
-   if [ "${aBranch}" == "master"  ] || [ "{aBranch}" == "both" ]; then                  # .(41115.02b.17)
+#  if [ "${aBranch}" == "master"  ] || [ "{aBranch}" == "both" ]; then                  ##.(41115.02b.17).(41115.02g.9)
+   if [ "${aBranch}" == "master"  ];             then                                   # .(41115.02g.9)
 #    cd "${aRepos}"                                                                     ##.(41115.02e.x RAM)
      if [ -d "${aRepos}/AnyLLM"               ]; then cd "${aRepos}/AnyLLM"; fi         # .(41115.02e.xx Beg)
      if [ -d "${aRepos}/AnyLLM_prod1-master"  ]; then cd "${aRepos}/AnyLLM_prod1-master";  fi
