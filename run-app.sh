@@ -6,6 +6,7 @@
 ##FD   run-app.sh               |   8331|  3/03/25 10:15|   178| v1.05`50303.1015
 ##FD   run-app.sh               |  10455|  3/04/25 17:45|   225| v1.05`50304.1745
 ##FD   run-app.sh               |  14190|  3/04/25  6:30|   266| v1.05`50306.0630
+##FD   run-app.sh               |  14190|  3/08/25 19:45|   266| v1.05`50308.1945
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM PM2 Commands
@@ -31,6 +32,7 @@
 #.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
 #.(50306.01   3/06/25 RAM  6:00a| Test pm2 all commands
 #.(50306.02   3/06/25 RAM  6:30a| Add pm2 arg to be called from anyllm
+#.(50308.02   3/08/25 RAM  7:45p| Fix path the ecosystem.config.cjs file
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -41,6 +43,7 @@
   aVer="v0.01.50304.1015"  # run-app.sh
   aVer="v0.01.50304.1745"  # run-app.sh
   aVer="v0.01.50306.0630"  # run-app.sh
+  aVer="v0.01.50308.1945"  # run-app.sh
 
 function exit_wCR() {
       if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi
@@ -66,7 +69,7 @@ function setRepos() {
    		 aOwnr="AnyLLM"
          setRepos
 
-#        echo -e "\n  The current Repo folder is: ${__basedir}"; # exit
+#       echo -e "\n  The current Repo folder is: ${__basedir}";  exit
 #       echo "p0 aArg1: '$1', aArg2: '$2', aArg3: '$3', aArg4: '$4'"
 
                                        aArg1=$1; aArg2=$2; aArg3=$3; aArg4=$4; b2=0;    # .(50304.05.1 RAM Add aArg4 for log -f)
@@ -167,8 +170,8 @@ function doPM2() {
     fi # eif logs without -f                                                            # .(50304.05.9 End)
 
  if [ "$1" == "start" ]; then
-    echo "  pm2 start ecosystem.config.cjs --only \"${aName}\""; echo ""
-            pm2 start    ../ecosystem.config.cjs --only "${aName}"
+    echo "  pm2 start "./ecosystem.config.cjs" --only \"${aName}\""; echo ""
+            pm2 start "${__basedir}/ecosystem.config.cjs" --only  "${aName}"            # .(50308.03.1 RAM Was ../ecosystem.config.cjs) 
  else
     if [ "${aName}" == "" ]; then return; fi                                            # .(50304.06.2)
     echo "  pm2 $1 \"${aName}\" $3 $4"; echo ""
@@ -182,6 +185,8 @@ function  setDir() {
     if [ "${1:0:3}"      == "ser"  ]; then aApp="ser"; aName="AnyLLM_Server-3001";    aPort="3000"; aAppDir="server";    fi
     if [ "${1:0:3}"      == "col"  ]; then aApp="col"; aName="AnyLLM_Collector-8888"; aPort="8888"; aAppDir="collector"; fi
     if [ "${1:0:3}"      == "fro"  ]; then aApp="fro"; aName="AnyLLM_Frontend-3000";  aPort="3001"; aAppDir="frontend";  fi
+    if [ "${1:0:3}"      == "c13"  ]; then aApp="c13"; aName="AnyLLM_c13-8013";       aPort="8013"; aAppDir="server1/s13_aidocs-anyllm-api";  fi  # .(50308.04.1 RAM Add new apps)
+    if [ "${1:0:3}"      == "s13"  ]; then aApp="s13"; aName="AnyLLM_s13-8113";       aPort="8113"; aAppDir="server1/s13_aidocs-anyllm-api";  fi  # .(50308.04.2)
 
 #   echo "p2 aApp:  '${aApp}', aName: '${aName}', aAppDir='${aAppDir}', aArg2: '${aArg2}'" ; # exit
 #   echo "  aDir: '${__basedir}/${aAppDir}'" ; # exit
@@ -215,6 +220,8 @@ function  setDir() {
          if [ "${aApp}"  == "ser"  ]; then setDir ser; doPM2 start "${aName}"; fi
          if [ "${aApp}"  == "col"  ]; then setDir col; doPM2 start "${aName}"; fi
          if [ "${aApp}"  == "fro"  ]; then setDir fro; doPM2 start "${aName}"; fi
+         if [ "${aApp}"  == "c13"  ]; then setDir c13; doPM2 start "${aName}"; fi       # .(50308.04.3) 
+         if [ "${aApp}"  == "s13"  ]; then setDir s13; doPM2 start "${aName}"; fi       # .(50308.04.4) 
     fi
 #   echo ""
     if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.11)
