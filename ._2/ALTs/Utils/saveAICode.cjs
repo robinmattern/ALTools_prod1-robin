@@ -16,15 +16,15 @@
 ##FNCS     .--------------------+----------------------------------------------+
 
 ##CHGS     .--------------------+----------------------------------------------+
-# .(41012.02 10/12/24 RAM  8:55a| Writee parseFncLn()
-# .(41109.14 11/14/24 RAM  8:32p| Move ._2/JPTs to ._2/ALTs
-# .(41119.05 11/19/24 RAM 12:15p| Fix new aPrompt var, say APIkey, mSources lengths
-# .(41005.02 11/19/24 RAM  2:05p| Move setting aRootDir
-# .(41119.07 11/19/24 RAM  4:00p| Add Time to JPTS.say log
-# .(41119.08 11/19/24 RAM  8:48p| Add aFnc and nLine to parseFncLn()
-# .(41119.10 11/20/24 RAM 10:12a| Fix log messages when saving files
-# .(41127.01 11/27/24 RAM 11:18a| Catch undefined on Ollama aAPI.key
-
+#.(41012.02  10/12/24 RAM  8:55a| Writee parseFncLn()
+#.(41109.14  11/14/24 RAM  8:32p| Move ._2/JPTs to ._2/ALTs
+#.(41119.05  11/19/24 RAM 12:15p| Fix new aPrompt var, say APIkey, mSources lengths
+#.(41005.02  11/19/24 RAM  2:05p| Move setting aRootDir
+#.(41119.07  11/19/24 RAM  4:00p| Add Time to JPTS.say log
+#.(41119.08  11/19/24 RAM  8:48p| Add aFnc and nLine to parseFncLn()
+#.(41119.10  11/20/24 RAM 10:12a| Fix log messages when saving files
+#.(41127.01  11/27/24 RAM 11:18a| Catch undefined on Ollama aAPI.key
+#.(41119.07b  3/08/25 RAM  7:27p| Remove date from say log since PM2 does it
                                 |
 ##SRCE     +====================+===============================================+
 \*/
@@ -588,8 +588,8 @@ return  aNodeReq
 //           var mMatch =  aCallerLine.match(            /at\s+(?:((?:\w+\.)*\w+)\s+\()?(?:(.+):(\d+):(\d+))\)?/);
         var aFnc   =  parseFncLn( aCallerLine, nLine, aFnc ) }                          // .(41119.08.4 RAM Add aFnc).(41012.02.3)
             aMsg   = `\x1b[${ aMsg.match( /^\*/ ) ? 31 : 0 }m ${aMsg}`                  // .(41008.06.1 RAM Error color is 37:white or 31:red)
-            aDte   = '\x1b[36m[' + `${new Date}`.slice( 16, 24 ) + ']'                  // .(41119.07.1).(41012.02.11 RAM Add Time)
-            console.log( `${aDte} \x1b[${nColor}m ${ aFnc.padEnd( 45 ) }${aMsg}` )      // .(41012.02.4 RAM Color was: 30).(40926.01.5 RAM)
+//          aDte   = '\x1b[36m[' + `${new Date}`.slice( 16, 24 ) + '] '                 //#.(41119.07b.1).(41119.07.1).(41012.02.11 RAM Add Time)
+            console.log( `${aDte}\x1b[${nColor}m ${ aFnc.padEnd( 45 ) }${aMsg}` )       // .(41119.07b.2).(41012.02.4 RAM Color was: 30).(40926.01.5 RAM)
             }                                                                           // .(40926.01.4 End)
 // ------   --------- =  ------------------------------------------------------
 
