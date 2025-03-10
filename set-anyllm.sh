@@ -16,6 +16,7 @@
 ##FD   set-anyllm.sh            |   9429| 11/25/24  9:00|   190| v1.05`41125.0900
 ##FD   set-anyllm.sh            |  10420| 12/24/24 11:00|   202| v1.05`41224.1100
 ##FD   set-anyllm.sh            |  10845|  3/07/25 10:05|   207| v1.05`50307.1005
+##FD   set-anyllm.sh            |  11574|  3/10/25  7:45|   215| v1.05`50310.0745
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script saves anyllm command to ._0/bin.
@@ -48,6 +49,7 @@
 # .(41224.01 12/24/24 RAM 11:00a| Add -doit and -d
 # .(41224.02 12/24/24 RAM 11:30a| Check for Node and Yarn
 # .(50307.04  3/07/25 RAM 10:05a| Set permission for run-app.sh too
+# .(50310.01  3/10/25 RAM  7:45a| Copy ALT and ALTools scripts
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -63,6 +65,7 @@
   aVer="v0.05.41114.1030"  # set-anyllm.sh
   aVer="v0.05.41224.1300"  # set-anyllm.sh
   aVer="v0.05.50307.1005"  # set-anyllm.sh
+  aVer="v0.05.50310.0745"  # set-anyllm.sh
 
   echo ""
 
@@ -165,6 +168,7 @@ function cpyToBin() {
 # aJPTs_GitR="${aRepo_Dir}/._2/JPTs/gitr.sh"                                            # .(41109.13.1 RAM Not needed )
   aAnyLLMscr="${aRepo_Dir}/run-anyllm.sh"
   aAnyAppScr="${aRepo_Dir}/run-app.sh"                                                  # .(50307.04.1)
+  aALToolscr="${aRepo_Dir}/._2/ALTs/ALT00_Main1.sh"                                     # .(50310.01.1 RAM  Path to ALT Main Script)
 
 # echo ""
 # echo " aJPTs_JDir: ${aJPTs_JDir}";
@@ -175,15 +179,19 @@ function cpyToBin() {
   if [ ! -d  "${aJPTs_JDir}" ]; then sudo mkdir -p  "${aJPTs_JDir}";                    echo "  Created: ${aJPTs_JDir}";
                                      Sudo chmod 755 "${aJPTs_JDir}"; fi                 # .(41111.03.5 RAM was sudo)
 
-  if [   -f  "${aAnyLLMscr}" ]; then mkScript "${aAnyLLMscr}" "${aJPTs_JDir}" "anyllm"; echo "  Copied:  ${aJPTs_JDir}/anyllm";
+  if [   -f  "${aAnyLLMscr}" ]; then mkScript "${aAnyLLMscr}" "${aJPTs_JDir}" "anyllm";  echo "  Copied:  ${aJPTs_JDir}/anyllm";
+                                     mkScript "${aALToolscr}" "${aJPTs_JDir}" "altools"; echo "  Copied:  ${aJPTs_JDir}/altools";  #  .(50310.01.2)
+                                     mkScript "${aALToolscr}" "${aJPTs_JDir}" "alt"     # .(50310.01.3 RAM Copy altools and alt)
                                      Sudo chmod 755 "${aAnyAppScr}";                    # .(50307.04.2 RAM Set run-app.sh too)
                                      Sudo chmod 755 "${aAnyLLMscr}"; fi
                                      getBinVersion "anyllm"                             # .(41112.02.1)
 
+   cd "${aRepo_Dir}/._2";            npm install                                        # .(50310.01.4 RAM Install dotev. in ._2)
    cd "${aRepo_Dir}"                                                                    # .(41120.02.3 RAM Need to be in FRTools repo)
+
    git config core.fileMode false                                                       # .(41120.02.2 RAM Ignore file permissions in this repo)
 
-  echo "  Version: ${aBinVer//\"}"                                                      # .(41112.02.2 RAM Show version being installed)
+   echo "  Version: ${aBinVer//\"}"                                                     # .(41112.02.2 RAM Show version being installed)
   }
 # ---------------------------------------------------------------------------
 

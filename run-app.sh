@@ -7,6 +7,7 @@
 ##FD   run-app.sh               |  10455|  3/04/25 17:45|   225| v1.05`50304.1745
 ##FD   run-app.sh               |  14190|  3/04/25  6:30|   266| v1.05`50306.0630
 ##FD   run-app.sh               |  14190|  3/08/25 19:45|   266| v1.05`50308.1945
+##FD   run-app.sh               |  14190|  3/09/25 12:45|   266| v1.05`50309.1245
 #
 #DESC     .---------------------+-------+---------------+------+-----------------+
 #            This script runs AnyLLM PM2 Commands
@@ -33,6 +34,7 @@
 #.(50306.01   3/06/25 RAM  6:00a| Test pm2 all commands
 #.(50306.02   3/06/25 RAM  6:30a| Add pm2 arg to be called from anyllm
 #.(50308.02   3/08/25 RAM  7:45p| Fix path the ecosystem.config.cjs file
+#.(50309.01   3/09/25 RAM 12:45p| Add chkPM2 and install PM2
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -44,6 +46,7 @@
   aVer="v0.01.50304.1745"  # run-app.sh
   aVer="v0.01.50306.0630"  # run-app.sh
   aVer="v0.01.50308.1945"  # run-app.sh
+  aVer="v0.01.50309.1245"  # run-app.sh
 
 function exit_wCR() {
       if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi
@@ -100,7 +103,7 @@ function help() {
 #   echo "p5 aCmd: '${aCmd}', aApp: '${aApp}', aArg1: '${aArg1}', a1: '${a1}', a2: '${a2}'"
     if [ "${a1}" != "2" ] && [ "${a1}" != "3"    ]; then                                # .(50305.01.7 RAM Add "$1" != 3)
 
-    echo ""
+#   echo ""                                                                             # .(50309.01.1 RAM ??)
     echo "  Use any of the following apps in ${aRepo}:"
     echo "    server"
     echo "    collector"
@@ -118,6 +121,7 @@ function help() {
     echo "    kill    ${aIt}       Delete {App} from PM2's memory"
     echo "    info    ${aIt}       Display {App} properties"
     echo "    logs    ${aIt} {Cnt} Display last {Cnt} log lines, or stream them with -f" # .(50304.05.8)
+    echo "    install             Install PM2"                                          # .(50309.01.2)
     echo "    save                Save PM2 configuration for startup"
 
 #   if [ "${a1}"  != "2"  ];                         then exit_wCR; fi                  ##.(50306.01.1).(50306.01.2)
@@ -127,6 +131,29 @@ function help() {
 #   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi ##.(50305.01.8).(50306.01.2)
 #   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  ##.(50305.01.9).(50306.01.2)
     }
+# -----------------------------------------------------
+
+function chkPM2( ) {                                                                    # .(50309.01.3 RAM Write chkPM2 Beg)
+#   if ! command -v pm2 >/dev/null 2>&1; then
+    if [ -z "$(command -v pm2)" ]; then
+       echo -e "\n* You don't have PM2 installed.  Run: anyllm pm2 install -d"
+       exit_wCR; fi 
+       }                                                                                # .(50309.01.3 End)
+# -----------------------------------------------------
+
+function installPM2( ) {                                                                # .(50309.01.4 RAM Write installPM2 Beg)
+    if [ -z "$(command -v pm2)" ]; then 
+    if [ "${bDoit}" == "1" ]; then 
+       echo -e "\n  npm install pm2 -g"
+                    npm install pm2 -g
+       else 
+       echo -e "\n  anyllm pm2 install  # Add -d to doit"
+       fi 
+     else 
+       echo -e "\n* PM2 is already installed."
+       fi   
+       exit_wCR             
+       }                                                                                # .(50309.01.4 End)
 # -----------------------------------------------------
 
 function doAll() {
@@ -204,8 +231,9 @@ function  setDir() {
     }
 # -----------------------------------------------------
 
-    if [ "${aArg2:0:4}"  == "save" ]; then echo ""; pm2 save;   exit_wCR; fi
-    if [ "${aArg2:0:4}"  == "stat" ]; then          pm2 status; exit_wCR; fi
+    if [ "${aArg2:0:4}"  == "save" ]; then echo "";   pm2 save;   exit_wCR; fi
+    if [ "${aArg2:0:4}"  == "stat" ]; then            pm2 status; exit_wCR; fi
+    if [ "${aArg2:0:4}"  == "inst" ]; then            installPM2; fi                    # .(50309.01.5)
 
 #   if [ "${aArg2:0:4}"  == "star" ]; then aApp="all"; fi
 
@@ -227,6 +255,7 @@ function  setDir() {
     if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.11)
     if [ "${aArg2:0:4}"  == "save" ]; then bCmd="1";  doPM2 save;    fi
     if [ "${aArg2:0:4}"  == "stat" ]; then bCmd="1";  doPM2 status;  fi
+#   if [ "${aArg2:0:4}"  == "inst" ]; then            installPM2; fi                    ##.(50309.01.5)
 
     if [ "${aArg2:0:4}"  == "stop" ]; then bCmd="1";  doPM2 stop    "${aName}"; fi
     if [ "${aArg2:0:4}"  == "rest" ]; then bCmd="1";  doPM2 restart "${aName}"; fi
@@ -239,7 +268,9 @@ function  setDir() {
 
     if [ "${aArg2}" == "help" ]; then exit_wCR; fi                                      # .(50306.01.4 RAM Not here)
 
-    if [ "${bCmd}" == "1" ] && [ "${aName}"  == "" ]; then a="*"
+       chkPM2                                                                           # .(50309.01.6 RAM Use it) 
+
+   if [ "${bCmd}" == "1" ] && [ "${aName}"  == "" ]; then a="*"
        if [ "${aArg1}" != ""  ]; then echo -e "\n* You entered an invalid App: ${aArg1}."; a=" "; fi
                                       echo -e "${a} Please use one of the folling Apps: server, collector, frontend.";
                                       exit_wCR;
