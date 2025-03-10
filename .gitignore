@@ -8,7 +8,11 @@ v-env
 .DS_Store
 aws_cf_deploy_anything_llm.json
 yarn.lock
+package-lock.json
 *.bak
 
 *_v[0-9]*
 *_t[0-9]*
+
+*.pem
+anythingllm.db
