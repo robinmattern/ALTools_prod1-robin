@@ -78,7 +78,7 @@
 #.(50306.03   3/07/25 RAM  5:15p| Fix aFollow, aka bForce
 #.(41115.02g  3/07/25 RAM  5:45p| Revise update altools command
 #.(50309.01   3/09/25 RAM 12:45p| Add install PM2
-#.(50309.02   3/09/25 RAM  1:10p| Update update command 
+#.(50309.02   3/09/25 RAM  1:10p| Update update command   
 #.(50309.03   3/09/25 RAM  1:20p| Fix update command spacing 
 #.(50309.05   3/09/25 RAM  2:45p| Add ALT commands  
 
