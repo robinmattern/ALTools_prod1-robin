@@ -80,7 +80,7 @@
 #.(50309.01   3/09/25 RAM 12:45p| Add install PM2
 #.(50309.02   3/09/25 RAM  1:10p| Update update command 
 #.(50309.03   3/09/25 RAM  1:20p| Fix update command spacing 
-#.(50309.05   3/09/25 RAM  2:45p| Add ALT commands 
+#.(50309.05   3/09/25 RAM  2:45p| Add ALT commands  
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
