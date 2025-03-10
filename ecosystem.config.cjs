@@ -49,7 +49,7 @@ module.exports = {
       log_date_format: aLogFmt,        
       autorestart: true,
       watch: true
-      }
+      }  
     ]
 };
 

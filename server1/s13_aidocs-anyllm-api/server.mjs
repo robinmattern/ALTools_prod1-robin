@@ -30,7 +30,8 @@
 // -------  -----------  =  -------------------------------------------------------------  -------------------------
 
        var  pServerAPI   =  express();                        // API endpoint for Dynamic routes
-            pServerAPI.get('/api/getKeys', sendKeys ) 
+            pServerAPI.get('/getKeys',     sendKeys_asHTML ) 
+            pServerAPI.get('/api/getKeys', sendKeys_asJSON ) 
 
 // -------------------------------------------------------------------------------------
                              
@@ -53,14 +54,21 @@
             } // eof sendFile
 // -------  -----------  =  -------------------------------------------------------------
  
-     async  function  sendKeys( req, res) {
+     async  function  sendKeys_asJSON( req, res) {
        try {
        var  mKeys        =  await getKeys();                       // Call the imported function: getKeys
- //                         res.json( pKeys );
- //                         res.send( JSON.stringify( pKeys, '', 2 ) )
+                            res.json( pKeys );
+        } catch (error) {   res.status(500).json({ error: 'Failed to fetch keys' }); }
+            } // eof sendKeys 
+// -------  -----------  =  -------------------------------------------------------------  -------------------------
+
+     async  function  sendKeys_asHTML( req, res) {
+       try {
+       var  mKeys        =  await getKeys();                       // Call the imported function: getKeys
        var  aHTML        =  fmtKeys( mKeys.keys )
                             res.send( aHTML )
-        } catch (error) {   res.status(500).json({ error: 'Failed to fetch docs' }); }
+ //                         res.send( JSON.stringify( pKeys, '', 2 ) )
+        } catch (error) {   res.status(500).json({ error: 'Failed to fetch keys' }); }
             } // eof sendKeys 
 // -------  -----------  =  -------------------------------------------------------------  -------------------------
 
