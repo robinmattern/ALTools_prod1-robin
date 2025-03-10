@@ -17,6 +17,8 @@
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50309.04   3/09/25 RAM  7:00p| Create ALT02_Main1_Program.mjs
+#.(50309.07   3/09/25 RAM 10:00p| Add get and key to list of cmds and objs
+
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -138,7 +140,7 @@
         if (aCmd.match( /new|add|lis|run|get|set|sav|sho|vue/ ) == null) {                                  // .(50309.07.x RAM Add get)
             usrMsg( "\n* Please enter one of these commands: new, add, list, run, get, set, save, show or view.", bTest ? 1 : 2 );              // .(50202.01.2)
             }
-        if (aObj.match( /key|app|mod|sys|pro|ses|scr|var/     ) == null) {                                  // .(50309.07.x RAM Add alm)
+        if (aObj.match( /key|app|mod|sys|pro|ses|scr|var/     ) == null) {                                  // .(50309.07.x RAM Add key)
             usrMsg( "\n* Please enter one of these objects: app, model, prompt, session, script or vars.",        bTest ? 1 : 2 );              // .(50202.01.4)
             }
 //      ---------------------------------------------------------------
