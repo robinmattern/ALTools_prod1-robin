@@ -17,7 +17,7 @@
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50313.01   3/13/25 RAM  8:00a| Create ALT13_Workspaces_Component.mjs     
-#.(50313.02   3/13/25 RAM  8:00a| Add get, put and key to list of cmds and obj    
+#.(50313.02   3/13/25 RAM  8:00a| Add get, put and key to list of cmds and obj     
 #.(50313.03   3/13/25 RAM  9:00a| Create getWorkspaces method in Workspaces component 
 #.(50313.04   3/13/25 RAM  9:00a| Create savWorkspace_inENV method in Workspaces component
 #
