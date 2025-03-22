@@ -12,13 +12,13 @@
 #            MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+----------------------------------------------+
 #                               |
-# async func getWorkspaces       | ALT13  get Workspaces App {Item3}                                        // .(50313.03.9) 
+# async func getWorkspaces       | ALT13  get Workspaces App {Item3}                                        // .(50313.03.9)  
 # async func putWorkspace_inENV  | ALT13  put Workspace_inEnv {Item4}                                       // .(50313.04.9)
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50313.01   3/13/25 RAM  8:00a| Create ALT13_Workspaces_Component.mjs     
 #.(50313.02   3/13/25 RAM  8:00a| Add get, put and key to list of cmds and obj     
-#.(50313.03   3/13/25 RAM  9:00a| Create getWorkspaces method in Workspaces component 
+#.(50313.03   3/13/25 RAM  9:00a| Create getWorkspaces method in Workspaces component  
 #.(50313.04   3/13/25 RAM  9:00a| Create savWorkspace_inENV method in Workspaces component
 #
 ##PRGM     +====================+===============================================+
@@ -63,7 +63,7 @@
             } 
 //--------  ---------------  =  ------------------------------------------------------  #
   
-     async  function  getWorkspaces( aApps ) {                                                              // .(50313.03.10) write getWorkspaces Beg) 
+     async  function  getWorkspaces( aApps ) {                                                              // .(50313.03.10) write getWorkspaces Beg)  
        try {
        var  pResponse        =  await fetch('http://localhost:8113/api/getWorkspaces');
        if (!pResponse.ok) {
@@ -95,7 +95,7 @@
         if (aApp.match( /^.+/)       ) { return '{Item2' }
             }           
 // -------- ---------------  =  ----------------------------------  #
-         }; // eof getWorkspaces                                                                            // .(50313.03.10 End)    
+         }; // eof getWorkspaces                                                                            // .(50313.03.10 End)     
 //--------  ---------------  =  ------------------------------------------------------  #
   
      async  function  putWorkspace_inENV( aApp, aWorkspace ) {                                              // .(50313.04.10 write putWorkspace_inENV Beg)                                                           
@@ -122,7 +122,7 @@
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
   
   var  cWorkspaces = { 
-            getWorkspaces: getWorkspaces                                                                    // .(50313.03.11) 
+            getWorkspaces: getWorkspaces                                                                    // .(50313.03.11)  
           , putWorkspace_inENV: putWorkspace_inENV                                                          // .(50313.04.11)
             }
 //   module.exports = { cWorkspaces: cWorkspaces  } 

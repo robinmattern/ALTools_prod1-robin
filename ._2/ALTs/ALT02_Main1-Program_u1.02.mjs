@@ -16,9 +16,9 @@
 # async func main               | ( aArg1, aArg2, aArg3, mArgs ) {
 # async fync listKeys           | ALT02  list keys {Platforms} [{Models}] [{Project}]                       // .(50310.02a.6)  
 # async func saveKeys_inENV     | ALT02  save key  {Platform} [{Models}] [{Project}]                        // .(50310.03a.6) 
-# async fync listWorkspaces     | ALT02  list workspaces {Workspaces} [{Project}]                           // .(50313.03.6)
+# async fync listWorkspaces     | ALT02  list workspaces {Workspaces} [{Project}]                           // .(50313.03.6) 
 # async func saveWorkspaces_inENV|ALT02  save workspace {App} {Workspace} [{Project}]                       // .(50313.04.6)
-# async fync listModels         | ALT02  list Models {Models} [{Project}]                                   // .(50313.03.6)
+# async fync listModels         | ALT02  list Models {Models} [{Project}]                                   // .(50313.03.6) 
                                 |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50309.04   3/09/25 RAM  7:00p| Create ALT02_Main1_Program.mjs
@@ -27,7 +27,7 @@
 #.(50310.03   3/10/25 RAM  6:30p| Create Put Key command in .mjs program   
 #.(50310.02a  3/10/25 RAM  6:15p| Rename List Keys command in .mjs program   
 #.(50310.03a  3/10/25 RAM  6:30p| Create Save Key command in .mjs program   
-#.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program 
+#.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program  
 #.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program 
 #.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program 
 #.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder        
@@ -61,20 +61,20 @@
        var  aTS              =  FRT._TS  // fmtTS()
 //      --- ---------------  =  ------------------------------------------------------  #  
 
-       var       bIsInVSCode =  FRT.isNotCalled( import.meta.url )                      // .(50313.03.x RAM Is this good in all cases).(50201.04.2 RAM if this really in VSCode ??)
-            global.bInVSCode =  process._debugProcess ? 1 : 0                           // .(50313.03.x RAM Used in ALT).(50208.08.2 RAM Thanks Grok)
-            global.bIsCalled = !bIsInVSCode || process.argv.length > 2                  // .(50313.03.x RAM Use bInVSCode instead? It's running in VSCode debugger)
-            global.nTest4    =  1                                                       // .(50313.03.x RAM Display ALT03[138]).(50127.02.1)
-            global.nTest3    =  3                                                       // .(50313.03.x RAM Display arg names, and quit if 2 
-//          global.nTest4    =  2                                                       // .(50313.03.x RAM Exit after main()).(50301.01.5).(50213.01.1 RAM sayMsg('ALT02[ 174]', nTest4): 1, -1 or 2)
+       var       bIsInVSCode =  FRT.isNotCalled( import.meta.url )                      // .(50313.03.x RAM Is this good in all cases).(50201.04.2 RAM if this really in VSCode ??) 
+            global.bInVSCode =  process._debugProcess ? 1 : 0                           // .(50313.03.x RAM Used in ALT).(50208.08.2 RAM Thanks Grok) 
+            global.bIsCalled = !bIsInVSCode || process.argv.length > 2                  // .(50313.03.x RAM Use bInVSCode instead? It's running in VSCode debugger) 
+            global.nTest4    =  1                                                       // .(50313.03.x RAM Display ALT03[138]).(50127.02.1) 
+            global.nTest3    =  3                                                       // .(50313.03.x RAM Display arg names, and quit if 2  
+//          global.nTest4    =  2                                                       // .(50313.03.x RAM Exit after main()).(50301.01.5).(50213.01.1 RAM sayMsg('ALT02[ 174]', nTest4): 1, -1 or 2) 
 
 //          ---------------  =  ------------------------------------------------------  #  
         if (bIsCalled == false) {                                                       // It's running in VSCode debugger
 
             global.bDebug    =  0
-            global.bInVSCode =  process._debugProcess ? 1 : 0                           // .(50313.03.x RAM Used in ALT).(50208.08.2 RAM Thanks Grok)
-            global.nTest3    =  global.nTest3 ? global.nTest3 : 1                       // .(50313.03.x RAM Display or exit after main( cmd, args set ))  
-            FRT.bDoit  =  1;    global.bTest = 0                                        // .(50313.03.x RAM Don't exit from main() and JPT12_Main2Fns holdovers) 
+            global.bInVSCode =  process._debugProcess ? 1 : 0                           // .(50313.03.x RAM Used in ALT).(50208.08.2 RAM Thanks Grok) 
+            global.nTest3    =  global.nTest3 ? global.nTest3 : 1                       // .(50313.03.x RAM Display or exit after main( cmd, args set ))   
+            FRT.bDoit  =  1;    global.bTest = 0                                        // .(50313.03.x RAM Don't exit from main() and JPT12_Main2Fns holdovers)  
 
        var  aTests     = '1s'
 //                              await main( 'list', 'models', 'gp4oopm' )
@@ -224,7 +224,7 @@ async  function  tesn( nTest, aCmd ) {
        var  mArgs  =  mArgs_.map( aArg => QQ( aArg )); // fixArgs( mArgs )                                  // .(50313.05.1)..(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs )
 //     var  mArgs  =  mArgs_;                          // fixArgs( mArgs )                                  // .(50313.05.1)..(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs )
 
-//     sayMsg( '', global.nTest4 )                                                                          // .(50313.03.x RAM )
+//     sayMsg( '', global.nTest4 )                                                                          // .(50313.03.x RAM ) 
        sayMsg( `ALT02[ 227]  await main( ...args: '${ mArgs.join( "', '" ) }' )`, -1 )
 //     sayMsg( `ALT02[ 126]  await main( ...args:  ${ mArgs.join(  " , " ) } )`, -1 )
        
@@ -237,17 +237,17 @@ async  function  tesn( nTest, aCmd ) {
 //     var  aOths  = `[ ${  mArgs.join( ", " ) } ]`
        var  aAllArgs = `'${aObj}', '${aItm}'${ mArgs.length ? `, ${aOths}` : '' }`
 
-//     sayMsg( '', global.nTest4 == 3 ? 1 : global.nTest4 )                                                               // .(50313.03.x RAM )
+//     sayMsg( '', global.nTest4 == 3 ? 1 : global.nTest4 )                                                               // .(50313.03.x RAM ) 
        sayMsg( `ALT02[ 240]  aCmd: '${aCmd}', aObj: '${aObj}', aItm: '${aItm}', aOth: ${aOths}`, -1 ) 
-//     sayMsg( `ALT02[ 138]  await main( '${aCmd}', ${aAllArgs} )`, global.nTest4 );  if (global.nTest4 == 2 ) { return } // .(50313.03.x RAM if global.nTest4 == 2, it will exit if bTest != 1) // exit_wCR()
-       sayMsg( `ALT02[ 242]  await main( '${aCmd}', ${aAllArgs} )`, global.nTest4 )                                       // .(50313.03.x RAM if global.nTest4 == 2, it will exit if bTest != 1) // exit_wCR()
-//     sayMsg( '', global.nTest4 == 3 ? 1 : global.nTest4 )                                                               // .(50313.03.x RAM )
-       sayMsg( '', global.nTest4 )                                                                          // .(50313.03.x RAM )
+//     sayMsg( `ALT02[ 138]  await main( '${aCmd}', ${aAllArgs} )`, global.nTest4 );  if (global.nTest4 == 2 ) { return } // .(50313.03.x RAM if global.nTest4 == 2, it will exit if bTest != 1) // exit_wCR() 
+       sayMsg( `ALT02[ 242]  await main( '${aCmd}', ${aAllArgs} )`, global.nTest4 )                                       // .(50313.03.x RAM if global.nTest4 == 2, it will exit if bTest != 1) // exit_wCR() 
+//     sayMsg( '', global.nTest4 == 3 ? 1 : global.nTest4 )                                                               // .(50313.03.x RAM ) 
+       sayMsg( '', global.nTest4 )                                                                          // .(50313.03.x RAM ) 
 
        if ( mArgs_[1] == '') {                                                                              // .(50302.04.2 RAM S.B. aObj Beg)
        var  aMsg   = /(['"])([^'"]*(?:(?!\1)['"][^'"]*)*)?$/.test( mArgs_[0] ) ? "Name has unmatched quotes" : ''   
             usrMsg( `\n* ${ aMsg  ? aMsg : `Invalid Arguments: '${ mArgs_[0] }'` }. Please re-enter command.`, 2 )
-        if (global.bTest) { return } else { FRT.exit_wCR() }                                                // .(50313.03.1 RAM if global.bTest, then FRT.exit_wCR doesn't exit) 
+        if (global.bTest) { return } else { FRT.exit_wCR() }                                                // .(50313.03.1 RAM if global.bTest, then FRT.exit_wCR doesn't exit)  
             } 
                                                                                                           
         if (aCmd.match( /new|add|lis|run|get|set|put|sav|sho|vue/ ) == null) {                              // .(50309.07.1 RAM Add get and put cmd)
@@ -258,7 +258,7 @@ async  function  tesn( nTest, aCmd ) {
             }
 //      ---------------------------------------------------------------
 
-        if (global.nTest4 == 3) { return }                                                                  // .(50313.03.x RAM Exit after main arg checks) 
+        if (global.nTest4 == 3) { return }                                                                  // .(50313.03.x RAM Exit after main arg checks)  
 
         if (aObj == 'key') {                                                                                // .(50309.07.3 RAM Add key commands Beg)
     switch (aCmd) {
@@ -272,7 +272,7 @@ async  function  tesn( nTest, aCmd ) {
 
         if (aObj == 'wor') {                                                                                // .(50313.02.1 RAM Add workspace commands Beg)
     switch (aCmd) {
-      case 'lis': await listWorkspaces(       [ aItm, ...mArgs ] ); break;                                  // .(50313.03.7 RAM Write getWorkspaces)
+      case 'lis': await listWorkspaces(       [ aItm, ...mArgs ] ); break;                                  // .(50313.03.7 RAM Write getWorkspaces) 
       case 'sav': await saveWorkspace_inENV(  [ aItm, ...mArgs ] ); break;                                  // .(50313.04.7 RAM Write savWorkspace_inENV)  
 //    case 'set': await setObj(  [ aItm, ...mArgs ] ); break;  
 //    case 'lis': await listObjs(  aItm             ); break;
@@ -342,8 +342,8 @@ async  function  tesn( nTest, aCmd ) {
 //     if ( ! aApp    ) {     [ aPlatform, aModel, aApp ] = [ aPlatform, '', aModel    ] }
 //     if ( ! aModel  ) {     [ aPlatform, aModel, aApp ] = [ '',        '', aPlatform ] }           
 
-          sayMsg( `ALT02[ 248]  await Keys.saveKey_inENV( aPlatform: '${aPlatform}', aModel: '${aModel}', aApp: '${aApp}' )`, global.nTest3 );  // .(50313.03.x)
-        if (global.nTest3 == 3) { return }                                                                 // .(50313.03.x RAM Return after cmd vars)
+          sayMsg( `ALT02[ 248]  await Keys.saveKey_inENV( aPlatform: '${aPlatform}', aModel: '${aModel}', aApp: '${aApp}' )`, global.nTest3 );  // .(50313.03.x) 
+        if (global.nTest3 == 3) { return }                                                                 // .(50313.03.x RAM Return after cmd vars) 
 
       var [ mKeys, aPlatform ] =  await Keys.getKeys( aPlatform, aModel )
       var   aKey             =  mKeys[0]
@@ -362,13 +362,13 @@ async  function  tesn( nTest, aCmd ) {
 #>      ALT02 getWorkspaces
 \*===== =================================================================================================== */
 
-     async  function  listWorkspaces(  mArgs ) {                                                            // .(50313.03.7 Write getKeys in .sh Beg)
+     async  function  listWorkspaces(  mArgs ) {                                                            // .(50313.03.7 Write getKeys in .sh Beg) 
       var [ aApps ] =  mArgs ? [ ...mArgs,'','','' ] : [ '','','','' ]   
                                 sayMsg( `ALT02[ 367]  await Workspaces.getWorkspaces('${aApps}')`, -1 );             
       var [ mWorkspaces ]    =  await Workspaces.getWorkspaces(   aApps  )  
                                 sayMsg( `ALT02[ 369]  Received aWorkspaces: [ '${ mWorkspaces.join("', '") }' ]`, -1 );             
                                 usrMsg(            `  Received Workspaces: ${ mWorkspaces.join("', '") }` );             
-            };  // eof getWorkspaces                                                                        // .(50313.03.8 End)
+            };  // eof getWorkspaces                                                                        // .(50313.03.8 End) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 /*========================================================================================================= #  ===============================  *\
