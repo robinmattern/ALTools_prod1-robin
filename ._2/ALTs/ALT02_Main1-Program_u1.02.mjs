@@ -30,7 +30,7 @@
 #.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program  
 #.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program  
 #.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program  
-#.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder        
+#.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder         
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -44,8 +44,8 @@
 // import { promisify }         from 'util';
 
     import   FRT                 from '../AICs/AIC90_FileFns_u1.03.mjs';
-//  import   Keys                from '../ALTs/ALT11_Keys-Component_u1.01.cjs';                             //#.(50316.01.1)   
-    import   Keys                from '../ALTs/Components/ALT11_Keys_u1.01.mjs';                            // .(50316.01.1 RAM Moved into Components)        
+//  import   Keys                from '../ALTs/ALT11_Keys-Component_u1.01.cjs';                             //#.(50316.01.1)    
+    import   Keys                from '../ALTs/Components/ALT11_Keys_u1.01.mjs';                            // .(50316.01.1 RAM Moved into Components)         
     import { appendFileSync }   from 'fs';
 
       var { sayMsg, usrMsg, bDebug, bQuiet, bDoit } = FRT.setVars()                                         // .(50125.01.15 RAM Vars are local to this scripts)
