@@ -17,7 +17,7 @@
 # async fync listKeys           | ALT02  list keys {Platforms} [{Models}] [{Project}]                       // .(50310.02a.6)  
 # async func saveKeys_inENV     | ALT02  save key  {Platform} [{Models}] [{Project}]                        // .(50310.03a.6) 
 # async fync listWorkspaces     | ALT02  list workspaces {Workspaces} [{Project}]                           // .(50313.03.6) 
-# async func saveWorkspaces_inENV|ALT02  save workspace {App} {Workspace} [{Project}]                       // .(50313.04.6)
+# async func saveWorkspaces_inENV|ALT02  save workspace {App} {Workspace} [{Project}]                       // .(50313.04.6) 
 # async fync listModels         | ALT02  list Models {Models} [{Project}]                                   // .(50313.03.6) 
                                 |
 ##CHGS     .--------------------+----------------------------------------------+
@@ -28,7 +28,7 @@
 #.(50310.02a  3/10/25 RAM  6:15p| Rename List Keys command in .mjs program   
 #.(50310.03a  3/10/25 RAM  6:30p| Create Save Key command in .mjs program   
 #.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program  
-#.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program 
+#.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program  
 #.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program 
 #.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder        
 
@@ -273,7 +273,7 @@ async  function  tesn( nTest, aCmd ) {
         if (aObj == 'wor') {                                                                                // .(50313.02.1 RAM Add workspace commands Beg)
     switch (aCmd) {
       case 'lis': await listWorkspaces(       [ aItm, ...mArgs ] ); break;                                  // .(50313.03.7 RAM Write getWorkspaces) 
-      case 'sav': await saveWorkspace_inENV(  [ aItm, ...mArgs ] ); break;                                  // .(50313.04.7 RAM Write savWorkspace_inENV)  
+      case 'sav': await saveWorkspace_inENV(  [ aItm, ...mArgs ] ); break;                                  // .(50313.04.7 RAM Write savWorkspace_inENV)   
 //    case 'set': await setObj(  [ aItm, ...mArgs ] ); break;  
 //    case 'lis': await listObjs(  aItm             ); break;
             };  } // process.exit() }                                                                       // .(50313.02.1 End)
@@ -375,7 +375,7 @@ async  function  tesn( nTest, aCmd ) {
 #>      ALT02 putWorkspace_inENV
 \*===== =================================================================================================== */
 
-     async  function  saveWorkspace_inENV( mArgs ) {                                                        // .(50313.04.8 Write putKey in .sh Beg)
+     async  function  saveWorkspace_inENV( mArgs ) {                                                        // .(50313.04.8 Write putKey in .sh Beg) 
       var [ aApp ] =  mArgs ? [ ...mArgs,'','','' ] : [ '','','','' ]    
       var [ mWorkspaces ]    =  await Workspaces.getWorkspaces(  aApp ), aWorkspace = mWorkspaces[0]
                                 sayMsg( `ALT02[ 381]  await Workspaces.savWorkspace_inKey(  '${aWorkspace}', '${aWorkspace}', bDoit: ${FRT.bDoit})`, -1 );             
@@ -387,7 +387,7 @@ async  function  tesn( nTest, aCmd ) {
                                 sayMsg( `ALT02[ 388]  Error: Saving aWorkspace, '${aWorkspace}', for aApp, '${aApp}', in ENV file failed.`, -1 );             
                                 usrMsg(            `  Error: Saving Workspace, ${aWorkspace}, for App, ${aApp}, in ENV file failed.` );             
             }
-            }  // eof putWorkspace_inENV                                                                    // .(50313.04.8 End)
+            }  // eof putWorkspace_inENV                                                                    // .(50313.04.8 End) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 /*========================================================================================================= #  ===============================  *\

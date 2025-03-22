@@ -13,13 +13,13 @@
 ##FNCS     .--------------------+----------------------------------------------+
 #                               |
 # async func getWorkspaces       | ALT13  get Workspaces App {Item3}                                        // .(50313.03.9)  
-# async func putWorkspace_inENV  | ALT13  put Workspace_inEnv {Item4}                                       // .(50313.04.9)
+# async func putWorkspace_inENV  | ALT13  put Workspace_inEnv {Item4}                                       // .(50313.04.9) 
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50313.01   3/13/25 RAM  8:00a| Create ALT13_Workspaces_Component.mjs     
 #.(50313.02   3/13/25 RAM  8:00a| Add get, put and key to list of cmds and obj     
 #.(50313.03   3/13/25 RAM  9:00a| Create getWorkspaces method in Workspaces component  
-#.(50313.04   3/13/25 RAM  9:00a| Create savWorkspace_inENV method in Workspaces component
+#.(50313.04   3/13/25 RAM  9:00a| Create savWorkspace_inENV method in Workspaces component 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -98,7 +98,7 @@
          }; // eof getWorkspaces                                                                            // .(50313.03.10 End)     
 //--------  ---------------  =  ------------------------------------------------------  #
   
-     async  function  putWorkspace_inENV( aApp, aWorkspace ) {                                              // .(50313.04.10 write putWorkspace_inENV Beg)                                                           
+     async  function  putWorkspace_inENV( aApp, aWorkspace ) {                                              // .(50313.04.10 write putWorkspace_inENV Beg)                                                            
        var  aENV_NAME        = 'ANYLLM_WORKSP'   
             aWorkspace       =  aWorkspace ? aWorkspace : getWorkspaces( aApp )
        try {
@@ -118,12 +118,12 @@
     return  ''
             }
 //  ------  ---------------  =  ----------------------------------  #
-         }; // eof putWorkspace                                                                             // .(50313.04.10 End)   
+         }; // eof putWorkspace                                                                             // .(50313.04.10 End)    
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
   
   var  cWorkspaces = { 
             getWorkspaces: getWorkspaces                                                                    // .(50313.03.11)  
-          , putWorkspace_inENV: putWorkspace_inENV                                                          // .(50313.04.11)
+          , putWorkspace_inENV: putWorkspace_inENV                                                          // .(50313.04.11) 
             }
 //   module.exports = { cWorkspaces: cWorkspaces  } 
     export  default  cWorkspaces 

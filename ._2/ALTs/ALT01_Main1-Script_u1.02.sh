@@ -31,7 +31,7 @@
 #       func listKeys           | ALT01  list keys {Platforms} [{Models}] [{Project}]                       # .(50310.02.1) 
 #       func saveKeys_inENV     | ALT01  save key  {App}                                                    # .(50310.03.1) 
 #       func listWorkspaces     | ALT01  list workspaces [{aApps}]                                          # .(50313.03.1) 
-#       func saveWorkspaces_inENV|ALT01  save workspace {App} {Workspace} [{Project}]                       # .(50313.04.1)
+#       func saveWorkspaces_inENV|ALT01  save workspace {App} {Workspace} [{Project}]                       # .(50313.04.1) 
 #       func listModels         | ALT01  list models  {Models} [{Project}]                                  # .(50313.05.1)
 #            Next Command       |
 #                               |
@@ -41,7 +41,7 @@
 #.(50310.02   3/10/25 RAM  6:15p| Create List Keys command in .sh script 
 #.(50310.03   3/10/25 RAM  6:30p| Create Save Key command in .sh script 
 #.(50313.03   3/13/25 RAM  9:15a| Create List Workspaces command in .sh script 
-#.(50313.04   3/13/25 RAM  9:30a| Create Save Workspace command in .sh script
+#.(50313.04   3/13/25 RAM  9:30a| Create Save Workspace command in .sh script 
 #.(50313.05   3/13/25 RAM  9:30a| Create List Models command in .sh script
 
 ##PRGM     +====================+===============================================+
@@ -72,7 +72,7 @@
      echo "    List Keys {Platforms} [{Models}]               List Keys for AI {Platforms}/[{Models}] Scripts (2)(3)"              # .(50310.02.2) 
      echo "    Save Key  {Platform} [{Model}] [{Project}]     Save Key for {Platform}/[{Model}] into {Project} ENV file (1)"      # .(50310.03.2) 
      echo "    List Workspaces {Apps}                         List Workspaces for Apps {Apps}"                                    # .(50313.03.2) 
-     echo "    Save Workspace  {App} {Workspace} [{Project}]  Save Workspace {Workspace} for {App} into {Project} ENV file (1)"   # .(50313.04.2)
+     echo "    Save Workspace  {App} {Workspace} [{Project}]  Save Workspace {Workspace} for {App} into {Project} ENV file (1)"   # .(50313.04.2) 
      echo "    List Models [{Models}] [{Project}]             List Models {Models} for [{Project}] (1)(3)"                        # .(50313.05.2)
 
      echo ""
@@ -175,8 +175,8 @@
 
     if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listWorkspace";       fi              # .(50313.03.3) 
     if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "wor" ]; then aCmd="listWorkspace";       fi              # .(50313.03.3) 
-    if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.04.4)
-    if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "wor" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.04.4)
+    if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.04.4) 
+    if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "wor" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.04.4) 
 
        sayMsg  "" -1
        sayMsg  "ALT01[ 158]  aCmd: '${aCmd}', aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce', bQuiet: '$bQuiet'" -1 # .(50309.04.5 )
@@ -347,25 +347,25 @@
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 LIST WORKSPACES                                                                               # .(50313.04.5)
+#>      ALT01 LIST WORKSPACES                                                                               # .(50313.04.5) 
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "ListWorkspaces" ]; then                                                                # .(50313.04.5 RAM Add Get Keys Command Beg)
+  if [ "${aCmd}" == "ListWorkspaces" ]; then                                                                # .(50313.04.5 RAM Add Get Keys Command Beg) 
         sayMsg  "ALT01[ 354]  listWorkspaces( aObj: \"${aObj}\" )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "list" "workspaces" "${aObj}"                   #   List Workspaces {Apps} 
         exit_wCR 0
-        fi # eoc listWorkspaces                                                                             # .(50313.04.5 End)
+        fi # eoc listWorkspaces                                                                             # .(50313.04.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 SAVE WORKSPACE IN ENV                                                                         # .(50313.04.5)
+#>      ALT01 SAVE WORKSPACE IN ENV                                                                         # .(50313.04.5) 
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "saveWorkspace_inENV" ]; then                                                           # .(50313.04.5 RAM Add Save Workspace Command Beg)
+  if [ "${aCmd}" == "saveWorkspace_inENV" ]; then                                                           # .(50313.04.5 RAM Add Save Workspace Command Beg) 
         sayMsg  "ALT01[ 365]  saveWorkspace_inENV( aObj: \"${aObj}\", aItm: \"${aItm}\", aOth: ${aOth} )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "save" "worksp" "${aObj}" "${aItm}" "${aOth}"   #   Save Workspace  {App} {Workspace} [{Project}] 
         exit_wCR 0
-        fi # eoc saveWorkspace_inENV                                                                        # .(50313.04.5 End)
+        fi # eoc saveWorkspace_inENV                                                                        # .(50313.04.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
