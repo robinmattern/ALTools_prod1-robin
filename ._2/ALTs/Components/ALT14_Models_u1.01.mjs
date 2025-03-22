@@ -25,13 +25,13 @@
 ##FNCS     .--------------------+----------------------------------------------+
 #                               |
 # async func getModels          | ALT14  get Models Platform Model                                          // .(50316.03.9) 
-# async func putModel_inENV     | ALT14  put Model_inEnv ProjectApp                                         // .(50316.04.9)
+# async func putModel_inENV     | ALT14  put Model_inEnv ProjectApp                                         // .(50316.04.9) 
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50316.01   3/16/25 RAM  9:45a| Create ALT14_Models_Component.mjs     
 #.(50316.02   3/16/25 RAM  9:45a| Add get, put and key to list of cmds and obj 
 #.(50316.03   3/16/25 RAM  9:45a| Create getModels method in Models component 
-#.(50316.04   3/16/25 RAM  9:45a| Create savModel_inENV method in Models component
+#.(50316.04   3/16/25 RAM  9:45a| Create savModel_inENV method in Models component 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -125,7 +125,7 @@
          }; // eof getModels                                                                                // .(50316.03.10 End)    
 //--------  ---------------  =  ------------------------------------------------------  #
 
-     async  function  savModel_inENV( aProjectApp, aModel ) {                                               // .(50316.04.10 write putModel_inENV Beg)                                                           
+     async  function  savModel_inENV( aProjectApp, aModel ) {                                               // .(50316.04.10 write putModel_inENV Beg)                                                            
        var  aENV_NAME        = 'ANYLLM_API_KEY'   
             aModel           =  aModel ? aModel : getModels( aProjectApp )
        try {
@@ -146,12 +146,12 @@
     return  ''
             }
 //  ------  ---------------  =  ----------------------------------  #
-         }; // eof putModel                                                                                 // .(50316.04.10 End)   
+         }; // eof putModel                                                                                 // .(50316.04.10 End)    
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
   var  cModels = { 
             getModels: getModels                                                                            // .(50316.03.11) 
-          , putModel:  putModel                                                                             // .(50316.04.11)
+          , putModel:  putModel                                                                             // .(50316.04.11) 
             }
 //   module.exports = { cModels: cModels  } 
     export  default  cModels 
