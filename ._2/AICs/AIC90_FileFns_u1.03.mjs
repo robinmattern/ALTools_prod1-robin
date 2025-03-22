@@ -50,6 +50,7 @@
 #.(50122.06   1/22/25 RAM 10:23a| Write getFileDate
 #.(50210.02   2/10/25 RAM 10:23a| Write copyFile functions
 #.(50210.02b  3/02/25 RAM 11:45a| Write appendFile functions
+#.(50209.01c  3/22/25 RAM  6:36p| Format code
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -114,7 +115,7 @@
         if (aMsg == "" || aMsg.slice(0,1) == "\n" ){ say( aMsg ); return }              // .(50218.02.5 RAM Just say it) 
             nSay    =  nSay > 0 ? nSay : -[0,3,2,1,4][-nSay]                                                // .(50209.01c.1 RAM -e,-c,-b,-g)
        var  nDebug_ = ((typeof(global.bDebug) != 'undefined') ? global.bDebug : bDebug ) * 1                // .(50209.01.6 RAM Add * 1 here).(50125.01.7 RAM bDebug is local to this script)
-            nDebug_ =  [0,3,2,1,4][nDebug_]                                                                 // .(50209.01c.2)
+            nDebug_ =  [ 0, 3, 2, 1, 4 ][ nDebug_ ]                                                         // .(50209.01c.2)
        //      if (nSay   == "-1" && bDebug == "1") { if (bCR) { console.log("") }; console.log( `  - ${aMsg}` ) }                    //#.(50125.01.8).(50121.03b.5))
 //      if (nSay   == "-1" && (nDebug_ == 1     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  - ${aMsg}` )}       // .(50209.01.7 RAM Was: * 1).(50125.01.8).(50121.03b.5))
 //      if (nSay   == "-2" && (nDebug_ == 2     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  ' ${aMsg}` )}       // .(50209.01.8 RAM Add Comment)
@@ -126,7 +127,8 @@
         if (nSay   == "-4" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "+", aMsg )} //                           .(50209.01b.4).(50209.01.10 RAM Add Debugger Msg)
         if (nSay   ==  "1" ) {                                      if (bCR) { say("") }; say( "-", aMsg )} //                           .(50209.01b.5)
         if (nSay   ==  "2" ) {                                      if (bCR) { say("") }; say( "-", aMsg ); exit_wCR()} // p.exit() } // .(50209.01b.6).(50201.09.11 RAM Use exit_wCR)
-            }; // eof sayMsg                                                            // .(50107.02.3 End)
+        if (nSay   ==  "3" ) {                                      if (bCR) { say("") }; say( "-", aMsg ); }                         // .(50313.03.x Same as 1 for return vs exit)
+    }; // eof sayMsg                                                            // .(50107.02.3 End)
 //     ---  --------  =  --  =  ------------------------------------------------------  #  
 
   function  say( aChr, aMsg, nLog2 ) {                                                  // .(50209.01b.7)
@@ -166,7 +168,7 @@
         if (os.platform().slice(0,3) != 'win') { console.log( "" ) }                    // .(50201.09.1 RAM Don't use usrMsg.  Log separately)
         if (global.bInVSCode == 1) { console.log( "") }                                 // .(50208.08.3)
 //      if (bDebug) { console.log("") }                                                 // .(50201.09.2 RAM Maybe in debugger.  )
-        if (global.bTest == 1) { return nErr } else { process.exit( nErr ) }            // .(50208.03.6 RAM does global.bTest exist)
+        if (global.bTest) { return nErr } else { process.exit( nErr ) }                 // .(50208.03.6 RAM does global.bTest exist)
             }                                                                           // .(50129.02.1 End)
 // --  ---  --------  =  --  =  ------------------------------------------------------  #  ---------------- #
 

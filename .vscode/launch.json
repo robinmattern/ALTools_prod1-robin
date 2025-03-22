@@ -1,13 +1,13 @@
-
-{ // Use IntelliSense to learn about possible attributes.
+{
+  // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    {
-      "name": "Server debug",
+   {
+      "name": "Collector debug",
       "request": "launch",
-      "cwd": "${workspaceFolder}/server",
+      "cwd": "${workspaceFolder}/collector",
       "env": {
         "NODE_ENV": "development"
       },
@@ -21,10 +21,10 @@
       ],
       "type": "node"
     },
-   {
-      "name": "Collector debug",
+    {
+      "name": "Server debug",
       "request": "launch",
-      "cwd": "${workspaceFolder}/collector",
+      "cwd": "${workspaceFolder}/server",
       "env": {
         "NODE_ENV": "development"
       },
