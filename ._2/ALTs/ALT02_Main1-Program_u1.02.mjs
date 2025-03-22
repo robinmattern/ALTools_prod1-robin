@@ -29,7 +29,7 @@
 #.(50310.03a  3/10/25 RAM  6:30p| Create Save Key command in .mjs program   
 #.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program  
 #.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program  
-#.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program 
+#.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program  
 #.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder        
 
 ##PRGM     +====================+===============================================+
@@ -221,8 +221,8 @@ async  function  tesn( nTest, aCmd ) {
        var  mArgs_ =  args.length ? args : process.argv.slice(2) // .filter( a => a ) // s.b. 2, but I want to start from mArgs[1] below
 
 //     var  mArgs_ =  mArgs;                           // fixArgs( mArgs )                                  // .(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs )
-       var  mArgs  =  mArgs_.map( aArg => QQ( aArg )); // fixArgs( mArgs )                                  // .(50313.05.1)..(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs )
-//     var  mArgs  =  mArgs_;                          // fixArgs( mArgs )                                  // .(50313.05.1)..(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs )
+       var  mArgs  =  mArgs_.map( aArg => QQ( aArg )); // fixArgs( mArgs )                                  // .(50313.05.1)..(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs ) 
+//     var  mArgs  =  mArgs_;                          // fixArgs( mArgs )                                  // .(50313.05.1)..(50302.04.1).(50124.04a.1 RAM Re-Wrote fixArgs ) 
 
 //     sayMsg( '', global.nTest4 )                                                                          // .(50313.03.x RAM ) 
        sayMsg( `ALT02[ 227]  await main( ...args: '${ mArgs.join( "', '" ) }' )`, -1 )
@@ -279,13 +279,13 @@ async  function  tesn( nTest, aCmd ) {
             };  } // process.exit() }                                                                       // .(50313.02.1 End)
 //      --- ---------------  =  ------------------------------------------------------  
 
-        if (aObj == 'mod') {                                                                                // .(50313.05.7 RAM Add workspace commands Beg) 
+        if (aObj == 'mod') {                                                                                // .(50313.05.7 RAM Add workspace commands Beg)  
     switch (aCmd) {
-      case 'lis': await listModels(  [ aItm, ...mArgs ] ); break;                                           // .(50313.05.7 RAM Write listModels)
+      case 'lis': await listModels(  [ aItm, ...mArgs ] ); break;                                           // .(50313.05.7 RAM Write listModels) 
 //    case 'sav': await saveObj( [ aItm, ...mArgs ] ); break;                                               
 //    case 'set': await setObj(  [ aItm, ...mArgs ] ); break;  
 //    case 'lis': await listObjs(  aItm             ); break;
-            };  } // process.exit() }                                                                       // .(50313.05.7 End) 
+            };  } // process.exit() }                                                                       // .(50313.05.7 End)  
 //      --- ---------------  =  ------------------------------------------------------  
 
         if (aObj == 'obj') {                                                                                // .(ymmdd.nn.m XXX Add obj commands Beg) 

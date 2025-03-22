@@ -32,7 +32,7 @@
 #       func saveKeys_inENV     | ALT01  save key  {App}                                                    # .(50310.03.1) 
 #       func listWorkspaces     | ALT01  list workspaces [{aApps}]                                          # .(50313.03.1) 
 #       func saveWorkspaces_inENV|ALT01  save workspace {App} {Workspace} [{Project}]                       # .(50313.04.1) 
-#       func listModels         | ALT01  list models  {Models} [{Project}]                                  # .(50313.05.1)
+#       func listModels         | ALT01  list models  {Models} [{Project}]                                  # .(50313.05.1) 
 #            Next Command       |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
@@ -42,7 +42,7 @@
 #.(50310.03   3/10/25 RAM  6:30p| Create Save Key command in .sh script 
 #.(50313.03   3/13/25 RAM  9:15a| Create List Workspaces command in .sh script 
 #.(50313.04   3/13/25 RAM  9:30a| Create Save Workspace command in .sh script 
-#.(50313.05   3/13/25 RAM  9:30a| Create List Models command in .sh script
+#.(50313.05   3/13/25 RAM  9:30a| Create List Models command in .sh script 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -73,7 +73,7 @@
      echo "    Save Key  {Platform} [{Model}] [{Project}]     Save Key for {Platform}/[{Model}] into {Project} ENV file (1)"      # .(50310.03.2) 
      echo "    List Workspaces {Apps}                         List Workspaces for Apps {Apps}"                                    # .(50313.03.2) 
      echo "    Save Workspace  {App} {Workspace} [{Project}]  Save Workspace {Workspace} for {App} into {Project} ENV file (1)"   # .(50313.04.2) 
-     echo "    List Models [{Models}] [{Project}]             List Models {Models} for [{Project}] (1)(3)"                        # .(50313.05.2)
+     echo "    List Models [{Models}] [{Project}]             List Models {Models} for [{Project}] (1)(3)"                        # .(50313.05.2) 
 
      echo ""
      echo "    (1)                                            The Default Project is 'aidocs'"
@@ -369,14 +369,14 @@
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 LIST MODELS                                                                                   # .(50313.05.5)
+#>      ALT01 LIST MODELS                                                                                   # .(50313.05.5) 
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "ListModels" ]; then                                                                    # .(50313.05.5 RAM Add List Models Command Beg)
+  if [ "${aCmd}" == "ListModels" ]; then                                                                    # .(50313.05.5 RAM Add List Models Command Beg) 
         sayMsg  "ALT01[ 376]  listModels( aObj: \"${aObj}\", aItm: \"${aItm}\" )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "list" "models" "${aObj}" "${aItm}"             #   List Models [{Models}] [{Project}]
         exit_wCR 0
-        fi # eoc listModels                                                                                 # .(50313.05.5 End)
+        fi # eoc listModels                                                                                 # .(50313.05.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
