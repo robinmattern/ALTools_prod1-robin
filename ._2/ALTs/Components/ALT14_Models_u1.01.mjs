@@ -24,13 +24,13 @@
 #            MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+----------------------------------------------+
 #                               |
-# async func getModels          | ALT14  get Models Platform Model                                          // .(50316.03.9)
+# async func getModels          | ALT14  get Models Platform Model                                          // .(50316.03.9) 
 # async func putModel_inENV     | ALT14  put Model_inEnv ProjectApp                                         // .(50316.04.9)
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50316.01   3/16/25 RAM  9:45a| Create ALT14_Models_Component.mjs     
 #.(50316.02   3/16/25 RAM  9:45a| Add get, put and key to list of cmds and obj 
-#.(50316.03   3/16/25 RAM  9:45a| Create getModels method in Models component
+#.(50316.03   3/16/25 RAM  9:45a| Create getModels method in Models component 
 #.(50316.04   3/16/25 RAM  9:45a| Create savModel_inENV method in Models component
 #
 ##PRGM     +====================+===============================================+
@@ -76,7 +76,7 @@
             } 
 //--------  ---------------  =  ------------------------------------------------------  #
   
-     async  function  getModels( aPlatforms, aModel  ) {                                                    // .(50316.03.10) write getModels Beg)
+     async  function  getModels( aPlatforms, aModel  ) {                                                    // .(50316.03.10) write getModels Beg) 
       var  aURL              = 'http://localhost:8113/api/getModels'
 
                                 FRT.sayMsg( `ALT14[  82]  getModels( aPlatforms: '${aPlatforms}', aModel: '${aModel}'`, -1 )
@@ -122,7 +122,7 @@
         if (aModel.match( /^.+/)       ) { return 'Model' }
             }           
 // -------- ---------------  =  ----------------------------------  #
-         }; // eof getModels                                                                                // .(50316.03.10 End)   
+         }; // eof getModels                                                                                // .(50316.03.10 End)    
 //--------  ---------------  =  ------------------------------------------------------  #
 
      async  function  savModel_inENV( aProjectApp, aModel ) {                                               // .(50316.04.10 write putModel_inENV Beg)                                                           
@@ -150,7 +150,7 @@
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
   var  cModels = { 
-            getModels: getModels                                                                            // .(50316.03.11)
+            getModels: getModels                                                                            // .(50316.03.11) 
           , putModel:  putModel                                                                             // .(50316.04.11)
             }
 //   module.exports = { cModels: cModels  } 
