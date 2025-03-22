@@ -15,7 +15,7 @@
 #                               |
 # async func main               | ( aArg1, aArg2, aArg3, mArgs ) {
 # async fync listKeys           | ALT02  list keys {Platforms} [{Models}] [{Project}]                       // .(50310.02a.6)  
-# async func saveKeys_inENV     | ALT02  save key  {Platform} [{Models}] [{Project}]                        // .(50310.03a.6)
+# async func saveKeys_inENV     | ALT02  save key  {Platform} [{Models}] [{Project}]                        // .(50310.03a.6) 
 # async fync listWorkspaces     | ALT02  list workspaces {Workspaces} [{Project}]                           // .(50313.03.6)
 # async func saveWorkspaces_inENV|ALT02  save workspace {App} {Workspace} [{Project}]                       // .(50313.04.6)
 # async fync listModels         | ALT02  list Models {Models} [{Project}]                                   // .(50313.03.6)
@@ -24,9 +24,9 @@
 #.(50309.04   3/09/25 RAM  7:00p| Create ALT02_Main1_Program.mjs
 #.(50309.07   3/09/25 RAM 10:00p| Add get, put and key to list of cmds and objs
 #.(50310.02   3/10/25 RAM  6:15p| Create Get Keys command in .mjs program   
-#.(50310.03   3/10/25 RAM  6:30p| Create Put Key command in .mjs program  
+#.(50310.03   3/10/25 RAM  6:30p| Create Put Key command in .mjs program   
 #.(50310.02a  3/10/25 RAM  6:15p| Rename List Keys command in .mjs program   
-#.(50310.03a  3/10/25 RAM  6:30p| Create Save Key command in .mjs program  
+#.(50310.03a  3/10/25 RAM  6:30p| Create Save Key command in .mjs program   
 #.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program 
 #.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program 
 #.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program 
@@ -263,7 +263,7 @@ async  function  tesn( nTest, aCmd ) {
         if (aObj == 'key') {                                                                                // .(50309.07.3 RAM Add key commands Beg)
     switch (aCmd) {
       case 'lis': await listKeys(       [ aItm, ...mArgs ] ); break;                                        // .(50310.02a.7 RAM Write getKeys)  
-      case 'sav': await saveKey_inENV(  [ aItm, ...mArgs ] ); break;                                        // .(50310.03a.7 RAM Write putKey)  
+      case 'sav': await saveKey_inENV(  [ aItm, ...mArgs ] ); break;                                        // .(50310.03a.7 RAM Write putKey)   
 //    case 'add': await addApp(  [ aItm, ...mArgs ] ); break;  
 //    case 'set': await setApp(  [ aItm, ...mArgs ] ); break;  
 //    case 'lis': await listApps(  aItm             ); break;
@@ -321,7 +321,7 @@ async  function  tesn( nTest, aCmd ) {
 #>      ALT02 putKey
 \*===== =================================================================================================== */
 
-     async  function  saveKey_inENV( mArgs ) {                                                              // .(50310.03.8 Write putKey in .sh Beg)
+     async  function  saveKey_inENV( mArgs ) {                                                              // .(50310.03.8 Write putKey in .sh Beg) 
 /*      
         if (mArgs[0].match( /^[acs][0-9][0-9]_/) ) {  mArgs[2] = mArgs[0]; mArgs[0] = '' }
         if (mArgs[1].match( /^[acs][0-9][0-9]_/) ) {  mArgs[2] = mArgs[1]; mArgs[1] = '' }
@@ -356,7 +356,7 @@ async  function  tesn( nTest, aCmd ) {
                                 sayMsg( `ALT02[ 356]  Error: Saving ${aPlatform} aKey: '${aKey}', for aApp, '${aApp}', in ENV file failed.`, -1 );             
                                 usrMsg(            `  Error: Saving ${aPlatform} Key: ${aKey}, for App, ${aApp}, in ENV file failed.` );             
             }
-            }  // eof putKey                                                                                // .(50310.03.8 End)
+            }  // eof putKey                                                                                // .(50310.03.8 End) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 /*========================================================================================================= #  ===============================  *\
 #>      ALT02 getWorkspaces

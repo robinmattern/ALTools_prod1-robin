@@ -29,7 +29,7 @@
 #                               | AI202_Main-Program_u1.02.mjs
 #                               | ----------------------------
 #       func listKeys           | ALT01  list keys {Platforms} [{Models}] [{Project}]                       # .(50310.02.1) 
-#       func saveKeys_inENV     | ALT01  save key  {App}                                                    # .(50310.03.1)
+#       func saveKeys_inENV     | ALT01  save key  {App}                                                    # .(50310.03.1) 
 #       func listWorkspaces     | ALT01  list workspaces [{aApps}]                                          # .(50313.03.1)
 #       func saveWorkspaces_inENV|ALT01  save workspace {App} {Workspace} [{Project}]                       # .(50313.04.1)
 #       func listModels         | ALT01  list models  {Models} [{Project}]                                  # .(50313.05.1)
@@ -39,7 +39,7 @@
 #.(50309.04   3/09/25 RAM  7:00p| Create ALT01_Main1_Script.sh
 #.(50309.05   3/09/25 RAM  8:00p| Make usefull changes
 #.(50310.02   3/10/25 RAM  6:15p| Create List Keys command in .sh script 
-#.(50310.03   3/10/25 RAM  6:30p| Create Save Key command in .sh script
+#.(50310.03   3/10/25 RAM  6:30p| Create Save Key command in .sh script 
 #.(50313.03   3/13/25 RAM  9:15a| Create List Workspaces command in .sh script
 #.(50313.04   3/13/25 RAM  9:30a| Create Save Workspace command in .sh script
 #.(50313.05   3/13/25 RAM  9:30a| Create List Models command in .sh script
@@ -70,7 +70,7 @@
      echo "  ${aVTitle} (${aVer})                        (${aVDt})"
      echo "  -----------------------------------------------  -----------------------------------------------------------"
      echo "    List Keys {Platforms} [{Models}]               List Keys for AI {Platforms}/[{Models}] Scripts (2)(3)"              # .(50310.02.2) 
-     echo "    Save Key  {Platform} [{Model}] [{Project}]     Save Key for {Platform}/[{Model}] into {Project} ENV file (1)"      # .(50310.03.2)
+     echo "    Save Key  {Platform} [{Model}] [{Project}]     Save Key for {Platform}/[{Model}] into {Project} ENV file (1)"      # .(50310.03.2) 
      echo "    List Workspaces {Apps}                         List Workspaces for Apps {Apps}"                                    # .(50313.03.2)
      echo "    Save Workspace  {App} {Workspace} [{Project}]  Save Workspace {Workspace} for {App} into {Project} ENV file (1)"   # .(50313.04.2)
      echo "    List Models [{Models}] [{Project}]             List Models {Models} for [{Project}] (1)(3)"                        # .(50313.05.2)
@@ -170,8 +170,8 @@
 
     if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "key" ]; then aCmd="listKeys";      fi                    # .(50310.02a.3) 
     if [ "${1:0:3}" == "key" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listKeys";      fi                    # .(50310.02a.3) 
-    if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "key" ]; then aCmd="saveKey_inENV"; fi                    # .(50310.03a.4)
-    if [ "${1:0:3}" == "key" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveKey_inENV";   fi                  # .(50310.03a.4)
+    if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "key" ]; then aCmd="saveKey_inENV"; fi                    # .(50310.03a.4) 
+    if [ "${1:0:3}" == "key" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveKey_inENV";   fi                  # .(50310.03a.4) 
 
     if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listWorkspace";       fi              # .(50313.03.3)
     if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "wor" ]; then aCmd="listWorkspace";       fi              # .(50313.03.3)
@@ -336,14 +336,14 @@
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 SAVE KEY IN ENV                                                                               # .(50310.03a.5)
+#>      ALT01 SAVE KEY IN ENV                                                                               # .(50310.03a.5) 
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "saveKey_inENV" ]; then                                                                 # .(50310.03a.5 RAM Add Save Key Command Beg)
+  if [ "${aCmd}" == "saveKey_inENV" ]; then                                                                 # .(50310.03a.5 RAM Add Save Key Command Beg) 
         sayMsg  "ALT01[ 343]  saveKey_inENV( aObj: \"${aObj}\", aItm: \"${aItm}\", aOth: ${aOth} )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "save" "key" "${aObj}" "${aItm}" "${aOth}"      #   Save Key {Platform} [{Model}] [{Project}]
         exit_wCR 0
-        fi # eoc saveKey_inENV                                                                              # .(50310.03a.5 End)
+        fi # eoc saveKey_inENV                                                                              # .(50310.03a.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========

@@ -14,13 +14,13 @@
 ##FNCS     .--------------------+----------------------------------------------+
 #                               |
 # async func getUsers            | ALT11  get keys {aPlatform}                                              // .(50310.02.9) 
-# async func putKeys            | ALT11  put key  {App}                                                     // .(50310.03.9)
+# async func putKeys            | ALT11  put key  {App}                                                     // .(50310.03.9) 
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50309.04   3/09/25 RAM  7:00p| Create ALT12_Users_Component.mjs
 #.(50309.07   3/09/25 RAM 10:00p| Add get, put and key to list of cmds and objs
 #.(50310.02   3/10/25 RAM  6:15p| Create getKeys method in keys component 
-#.(50310.03   3/10/25 RAM  6:30p| Create putKey method in keys component
+#.(50310.03   3/10/25 RAM  6:30p| Create putKey method in keys component 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -98,7 +98,7 @@ async  function  getKeys(   aPlatforms, aModel  ) {                             
         }; // eof getKeys                                                                                   // .(50310.02.10 End)    
 //-------  ---------------  =  ------------------------------------------------------  #
 
-     async  function  putKey( aApp, aKey ) {                                                                // .(50310.03.10 write putKey Beg)                                                           
+     async  function  putKey( aApp, aKey ) {                                                                // .(50310.03.10 write putKey Beg)                                                            
        try {
 //     var  aPath ='/Users/Shared/Repos/AIDocs_demo1-master/client1/c16_aidocs-review-app/utils/FRTs/_env'
 //     var  aBase_path        =  FRT.path( FRT.__basedir, '../aidocs_demo1-master')
@@ -116,12 +116,12 @@ async  function  getKeys(   aPlatforms, aModel  ) {                             
             FRT.sayMsg( `ALT11[  96]  Error: Putting Key for app: ${aApp}`, -1 )
     return  ''
             }
-            }  // eof putKey                                                                                // .(50310.03.10 End)   
+            }  // eof putKey                                                                                // .(50310.03.10 End)    
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
   var  cKeys = { 
             getKeys: getKeys                                                                                // .(50310.02.11) 
-          , putKey:  putKey                                                                                 // .(50310.03.11)
+          , putKey:  putKey                                                                                 // .(50310.03.11) 
             }
 //   module.exports = { cKeys: cKeys  } 
     export  default  cKeys 

@@ -14,13 +14,13 @@
 ##FNCS     .--------------------+----------------------------------------------+
 #                               |
 # async func getKeys            | ALT11  get keys {Platform} {Model} {Project}                              // .(50310.02.9) 
-# async func putKey_inEnv       | ALT11  put key  {App}                                                     // .(50310.03.9)
+# async func putKey_inEnv       | ALT11  put key  {App}                                                     // .(50310.03.9) 
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
 #.(50309.04   3/09/25 RAM  7:00p| Create ALT11_Keys_Component.mjs
 #.(50309.07   3/09/25 RAM 10:00p| Add get, put and key to list of cmds and objs
 #.(50310.02   3/10/25 RAM  6:15p| Create getKeys method in keys component 
-#.(50310.03a  3/10/25 RAM  6:30p| Create putKey_inENV method in keys component
+#.(50310.03a  3/10/25 RAM  6:30p| Create putKey_inENV method in keys component 
 #.(50313.03   3/13/25 RAM  H:MMa| Create getWorkspaces method in Workspaces component
 #.(50313.04   3/13/25 RAM  H:MMa| Create putWorkspace_inENV method in Workspaces component#
 #.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder    
@@ -106,7 +106,7 @@
         }; // eof getKeys                                                                                   // .(50310.02.10 End)    
 //-------  ---------------  =  ------------------------------------------------------  #
 
-     async  function  putKey_inENV( aApp, aKey ) {                                                          // .(50310.03.10 write putKey Beg)    
+     async  function  putKey_inENV( aApp, aKey ) {                                                          // .(50310.03.10 write putKey Beg)     
       var  aENV_NAME        = 'ANYLLM_API_KEY'   
        try {
 //     var  aPath ='/Users/Shared/Repos/AIDocs_demo1-master/client1/c16_aidocs-review-app/utils/FRTs/_env'
@@ -126,12 +126,12 @@
     return  aKey 
         } catch( pError ) {      FRT.sayMsg( `ALT11[ 127]  Error: Putting Key, '${aKey}', for app: '${aApp}', in ENV file.`, -1 )
     return  '' }
-            }  // eof putKey                                                                                // .(50310.03.10 End)   
+            }  // eof putKey                                                                                // .(50310.03.10 End)    
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
   var  cKeys = { 
             getKeys: getKeys                                                                                // .(50310.02.11) 
-          , putKey_inENV: putKey_inENV                                                                      // .(50310.03a.11)
+          , putKey_inENV: putKey_inENV                                                                      // .(50310.03a.11) 
             }
 //   module.exports = { cKeys: cKeys  } 
     export  default  cKeys 
