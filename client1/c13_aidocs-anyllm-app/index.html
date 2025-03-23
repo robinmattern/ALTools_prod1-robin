@@ -1,11 +1,22 @@
 <html>
+  <head>
+    <style>
+      div { width:"320px"; text-align:"center"; margin-top:"-20px"; margin-bottom:"10px"; }
+      li  { margin-left: "10px"; }
+    </style>
+  </head>
   <body>
     <h3>Hello from the AnyLLM Utility web server</h3>
-    <div style="width:320px; text-align:center; margin-top:-20px;
-              margin-bottom:10px;">c11-client-first-app on port 8011</div>
-    <li  style="margin-left:10px;"><a href="page1">Page1</a></li>
-    <li  style="margin-left:10px;"><a href="http://10.0.0.37:8113/getKeys">getKeys - HTML</a></li>    
-    <li  style="margin-left:10px;"><a href="http://10.0.0.37:8113/api/getKeys">getKeys -JSON</a></li>    
+    <div ">c13-aidocs-anyllm-app on port 8013</div>
+    <li><a href="page1">Page1</a></li>
+    <li><a href="http://10.0.0.37:8113/getKey"               >getKey_asTEXT</a></li>    
+    <li><a href="http://10.0.0.37:8113/getKeys"              >getKeys_asHTML</a></li>    
+    <li><a href="http://10.0.0.37:8113/api/getKeys"          >getKeys_asJSON</a></li>    
+    <li><a href="http://10.0.0.37:8113/api/getKey"           >getKey_asJSON</a></li>    
+    <li><a href="http://10.0.0.37:8113/api/getSettings"      >getSettings_asJSON</a></li>    
+    <li><a href="http://10.0.0.37:8113/api/getModels/ollama" >getModels/ollama_asJSON</a></li>    
+    <li><a href="http://10.0.0.37:8113/api/getWorkspaces"    >getWorkspaces_asJSON</a></li>    
+    <li><a href="http://10.0.0.37:8113/getWorkspaces"        >getWorkspaces_asHTML</a></li>    
   </body>
 </html>
   
