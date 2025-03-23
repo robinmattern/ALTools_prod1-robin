@@ -39,7 +39,7 @@ module.exports = {
       cwd: path.join( aRepoDir, "server1/s13_aidocs-anyllm-api" ),
       log_date_format: aLogFmt,        
       autorestart: true,
-      watch: false
+      watch: true
       },
     {
       name: "AnyLLM_s13-8113",
