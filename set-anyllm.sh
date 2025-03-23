@@ -17,6 +17,7 @@
 ##FD   set-anyllm.sh            |  10420| 12/24/24 11:00|   202| v1.05`41224.1100
 ##FD   set-anyllm.sh            |  10845|  3/07/25 10:05|   207| v1.05`50307.1005
 ##FD   set-anyllm.sh            |  11574|  3/10/25  7:45|   215| v1.05`50310.0745
+##FD   set-anyllm.sh            |  11900|  3/23/25 12:00|   220| v1.05`50323.1200
 #
 ##DESC     .--------------------+-------+---------------+------+-----------------+
 #            This script saves anyllm command to ._0/bin.
@@ -33,23 +34,24 @@
 #            Sudo               |
 #                               |
 ##CHGS     .--------------------+----------------------------------------------+
-# .(41016.01 10/16/24 RAM  9:24a|
-# .(41021.01 10/21/24 RAM 10:06a|
-# .(41022.01 10/22/24 RAM  8:10a|
-# .(41022.01 10/22/24 RAM  9:15a|
-# .(41023.01 10/23/24 RAM  7:25a|
-# .(41109.06 11/09/24 RAM  3:40p| Add this heading and remove some stuff
-# .(41109.13 11/09/24 RAM  8:00p| Remove copy of gitr.sh
-# .(41111.03 11/11/24 RAM 10:22a| Add Show command and fix some stuff
-# .(41111.10 11/11/24 RAM 10:00p| Fx OS == "Windows", not "windows"
-# .(41112.01 11/12/24 RAM  8:00a| Show version and source
-# .(41112.02 11/12/24 RAM  8:30a| Display anyllm version being installed
-# .(41114.01 11/14/24 RAM 10:30a| Add back AnythingLLM's debug commands
-# .(41120.02 11/25/24 RAM  9:00a| Ignore file permissions in this repo
-# .(41224.01 12/24/24 RAM 11:00a| Add -doit and -d
-# .(41224.02 12/24/24 RAM 11:30a| Check for Node and Yarn
-# .(50307.04  3/07/25 RAM 10:05a| Set permission for run-app.sh too
-# .(50310.01  3/10/25 RAM  7:45a| Copy ALT and ALTools scripts
+#.(41016.01  10/16/24 RAM  9:24a|
+#.(41021.01  10/21/24 RAM 10:06a|
+#.(41022.01  10/22/24 RAM  8:10a|
+#.(41022.01  10/22/24 RAM  9:15a|
+#.(41023.01  10/23/24 RAM  7:25a|
+#.(41109.06  11/09/24 RAM  3:40p| Add this heading and remove some stuff
+#.(41109.13  11/09/24 RAM  8:00p| Remove copy of gitr.sh
+#.(41111.03  11/11/24 RAM 10:22a| Add Show command and fix some stuff
+#.(41111.10  11/11/24 RAM 10:00p| Fx OS == "Windows", not "windows"
+#.(41112.01  11/12/24 RAM  8:00a| Show version and source
+#.(41112.02  11/12/24 RAM  8:30a| Display anyllm version being installed
+#.(41114.01  11/14/24 RAM 10:30a| Add back AnythingLLM's debug commands
+#.(41120.02  11/25/24 RAM  9:00a| Ignore file permissions in this repo
+#.(41224.01  12/24/24 RAM 11:00a| Add -doit and -d
+#.(41224.02  12/24/24 RAM 11:30a| Check for Node and Yarn
+#.(50307.04   3/07/25 RAM 10:05a| Set permission for run-app.sh too
+#.(50310.01   3/10/25 RAM  7:45a| Copy ALT and ALTools scripts
+#.(50323.01   3/23/25 RAM 12:00p| RAM Install express in server1
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -66,6 +68,7 @@
   aVer="v0.05.41224.1300"  # set-anyllm.sh
   aVer="v0.05.50307.1005"  # set-anyllm.sh
   aVer="v0.05.50310.0745"  # set-anyllm.sh
+  aVer="v0.05.50323.1200"  # set-anyllm.sh
 
   echo ""
 
@@ -187,6 +190,8 @@ function cpyToBin() {
                                      getBinVersion "anyllm"                             # .(41112.02.1)
 
    cd "${aRepo_Dir}/._2";            npm install                                        # .(50310.01.4 RAM Install dotev. in ._2)
+   cd "${aRepo_Dir}/server1";        npm install                                        # .(50323.01.1 RAM Install express in server1)
+
    cd "${aRepo_Dir}"                                                                    # .(41120.02.3 RAM Need to be in FRTools repo)
 
    git config core.fileMode false                                                       # .(41120.02.2 RAM Ignore file permissions in this repo)
