@@ -50,7 +50,7 @@
 #.(50122.06   1/22/25 RAM 10:23a| Write getFileDate
 #.(50210.02   2/10/25 RAM 10:23a| Write copyFile functions
 #.(50210.02b  3/02/25 RAM 11:45a| Write appendFile functions
-#.(50209.01c  3/22/25 RAM  6:36p| Format code
+#.(50209.01c  3/17/25 RAM  6:36p| Format code 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -113,25 +113,25 @@
   function  sayMsg( aMsg, nSay, bCR ) {                                                 // .(50107.02.3 RAM Add sayMsg Beg)
 //      if (bCR) { console.log("") }                                                                        //#.(50121.03.5).(50121.03b.5)
         if (aMsg == "" || aMsg.slice(0,1) == "\n" ){ say( aMsg ); return }              // .(50218.02.5 RAM Just say it) 
-            nSay    =  nSay > 0 ? nSay : -[0,3,2,1,4][-nSay]                                                // .(50209.01c.1 RAM -e,-c,-b,-g)
-       var  nDebug_ = ((typeof(global.bDebug) != 'undefined') ? global.bDebug : bDebug ) * 1                // .(50209.01.6 RAM Add * 1 here).(50125.01.7 RAM bDebug is local to this script)
-            nDebug_ =  [ 0, 3, 2, 1, 4 ][ nDebug_ ]                                                         // .(50209.01c.2)
+            nSay    =  nSay > 0 ? nSay : -[0,3,2,1,4][-nSay]                                                // .(50209.01c.1 RAM -e,-c,-b,-g) 
+       var  nDebug_ = ((typeof(global.bDebug) != 'undefined') ? global.bDebug : bDebug ) * 1                // .(50209.01.6 RAM Add * 1 here).(50125.01.7 RAM bDebug is local to this script) 
+            nDebug_ =  [ 0, 3, 2, 1, 4 ][ nDebug_ ]                                                         // .(50209.01c.2) 
        //      if (nSay   == "-1" && bDebug == "1") { if (bCR) { console.log("") }; console.log( `  - ${aMsg}` ) }                    //#.(50125.01.8).(50121.03b.5))
-//      if (nSay   == "-1" && (nDebug_ == 1     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  - ${aMsg}` )}       // .(50209.01.7 RAM Was: * 1).(50125.01.8).(50121.03b.5))
-//      if (nSay   == "-2" && (nDebug_ == 2     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  ' ${aMsg}` )}       // .(50209.01.8 RAM Add Comment)
-//      if (nSay   == "-3" && (nDebug_ == 3     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  * ${aMsg}` )}       // .(50209.01.9 RAM Add Error Msg)
-//      if (nSay   == "-4" && (nDebug_ == 4     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  + ${aMsg}` )}       // .(50209.01.10 RAM Add Debugger Msg)
-        if (nSay   == "-1" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "*", aMsg )} // .(50209.01c.3 RAM Was '-').(50209.01b.1).(50209.01.7 RAM Was: * 1).(50125.01.8).(50121.03b.5))
-        if (nSay   == "-2" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "'", aMsg )} //                           .(50209.01b.2).(50209.01.8 RAM Add Comment)
-        if (nSay   == "-3" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "-", aMsg )} // .(50209.01c.4 RAM Was '-').(50209.01b.3).(50209.01.9 RAM Add Error Msg)
-        if (nSay   == "-4" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "+", aMsg )} //                           .(50209.01b.4).(50209.01.10 RAM Add Debugger Msg)
-        if (nSay   ==  "1" ) {                                      if (bCR) { say("") }; say( "-", aMsg )} //                           .(50209.01b.5)
-        if (nSay   ==  "2" ) {                                      if (bCR) { say("") }; say( "-", aMsg ); exit_wCR()} // p.exit() } // .(50209.01b.6).(50201.09.11 RAM Use exit_wCR)
+//      if (nSay   == "-1" && (nDebug_ == 1     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  - ${aMsg}` )}       // .(50209.01.7 RAM Was: * 1).(50125.01.8).(50121.03b.5)) 
+//      if (nSay   == "-2" && (nDebug_ == 2     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  ' ${aMsg}` )}       // .(50209.01.8 RAM Add Comment) 
+//      if (nSay   == "-3" && (nDebug_ == 3     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  * ${aMsg}` )}       // .(50209.01.9 RAM Add Error Msg) 
+//      if (nSay   == "-4" && (nDebug_ == 4     || nDebug_ == 5)) { if (bCR) { console.log("") }; console.log( `  + ${aMsg}` )}       // .(50209.01.10 RAM Add Debugger Msg) 
+        if (nSay   == "-1" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "*", aMsg )} // .(50209.01c.3 RAM Was '-').(50209.01b.1).(50209.01.7 RAM Was: * 1).(50125.01.8).(50121.03b.5)) 
+        if (nSay   == "-2" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "'", aMsg )} //                           .(50209.01b.2).(50209.01.8 RAM Add Comment) 
+        if (nSay   == "-3" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "-", aMsg )} // .(50209.01c.4 RAM Was '-').(50209.01b.3).(50209.01.9 RAM Add Error Msg) 
+        if (nSay   == "-4" && (nSay >= -nDebug_ || nDebug_ == 5)) { if (bCR) { say("") }; say( "+", aMsg )} //                           .(50209.01b.4).(50209.01.10 RAM Add Debugger Msg) 
+        if (nSay   ==  "1" ) {                                      if (bCR) { say("") }; say( "-", aMsg )} //                           .(50209.01b.5) 
+        if (nSay   ==  "2" ) {                                      if (bCR) { say("") }; say( "-", aMsg ); exit_wCR()} // p.exit() } // .(50209.01b.6).(50201.09.11 RAM Use exit_wCR) 
         if (nSay   ==  "3" ) {                                      if (bCR) { say("") }; say( "-", aMsg ); }                         // .(50313.03.x Same as 1 for return vs exit)
     }; // eof sayMsg                                                            // .(50107.02.3 End)
 //     ---  --------  =  --  =  ------------------------------------------------------  #  
 
-  function  say( aChr, aMsg, nLog2 ) {                                                  // .(50209.01b.7)
+  function  say( aChr, aMsg, nLog2 ) {                                                  // .(50209.01b.7) 
             aMsg  =  aMsg ? `  ${aChr} ${aMsg}` : aChr; 
        var  nLog_ = ((typeof(global.nLog) != 'undefined') ? global.nLog : nLog ) * 1    // .(50218.01.6 RAM Add File logging Beg)
             nLog_ =  nLog2 ? nLog2 : nLog_
