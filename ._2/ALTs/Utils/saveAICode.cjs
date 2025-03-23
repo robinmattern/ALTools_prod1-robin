@@ -14,6 +14,47 @@
 #           Copyright (c) 2024 8020-Data_formR * Released under
 #           MIT License: http://www.opensource.org/licenses/mit-license.php
 ##FNCS     .--------------------+----------------------------------------------+
+#  62:       func  setModel( pLLM_Provider ) { 
+#  84:       func  setDocsDir(   pWorkspace, aModel, pThread, aFnc ) {  
+#  93:       func  setThread(    pThread ) {
+# 117:       func  setApp( pWorkspace, pThread ) {
+# 139:       func  setTime( ) { 
+# 143:       func  fmtFile( nMsgs, nCnt, aType ) {
+# 164:       func  saveAICodeR_Files(  pWorkspace,  mSources, mRawHistory, mMessages,   pLLMConnector, aFnc ) {  
+# 208:       func  saveSystMsg(  pMessage, aFnc ) {                                                              
+# 217:       func  savePrompt(   aPrompt, pWorkspace, pThread, aFnc, aFnc2 ) {                                   
+# 238:       func  saveSources(  mSources, mQueryVector, aFnc  ) {                                               
+# 252:       func  saveMessages( mMessages, aFnc ) {                                                             
+# 280:       func  saveRequest(  pRequest, aFnc ) {                                                              
+# 292:       func  saveResponse( aResponse, aFnc ) {                                                             
+# 310:       func  saveProviderReq( aProvider, pWorkspace, mMessages, aFnc ) {                                   
+# 321:       func  saveAnthro_Request(  pWorkspace, mMessages, aFnc ) {                                          
+# 340:       func  saveAnthro_NodeReq(  pRequest, aExt, aFnc ) {                                                 
+# 349:       func  saveAnthro_FetchReq( pRequest, aExt, aFnc ) {                                                 
+# 359:       func  saveAnthro_CurlReq(  pRequest, aFnc ) {                                                       
+# 368:       func  saveOllama_Request(  aFnc ) {                                                                 
+# 386:       func  saveOllama_NodeReq(  pRequest, aExt, aFnc ) {                                                 
+# 397:       func  saveOllama_FetchReq( pRequest, aExt, aFnc ) {                                                 
+# 407:       func  saveOllama_CurlReq(  pRequest, aFnc ) {                                                       
+# 418:       func  saveOpenAI_Request(  aFnc ) {                                                                 
+# 436:       func  saveOpenAI_NodeReq(  pRequest, aExt, aFnc ) {                                                 
+# 444:       func  saveOpenAI_FetchReq( pRequest, aExt, aFnc ) {                                                 
+# 453:       func  saveOpenAI_CurlReq(  pRequest, aFnc ) {                                                       
+# 461:       func  saveReqFile( pRequest, aApp, aModel, aTmpl, aExt, aFnc ) {                                    
+# 496:       func  getReq_File( pRequest, aNodeTmpl ) {
+# 515:       func  fmtCJS_File( pRequest ) {
+# 539: async func  submitNodeReq( pRequest, mMessages ) {
+# 572:       func  fncLn( aFnc, nLine ) {
+# 581:       func  say( aMsg, aFnc, nLine ) {                                                  
+# 597:       func  parseFncLn( aLine, nLine, aFnc ) {                                            
+# 621:       func  setColor( nColor_ ) {
+# 624:       func  take( aStr, nWdt, aFill ) {  
+# 625:       func  cpyFile( aDir1, aFile1, aDir2, aFile2 ) {
+# 634:       func  findRootDir1( aStartDir ) {
+
+
+
+
 
 ##CHGS     .--------------------+----------------------------------------------+
 #.(41012.02  10/12/24 RAM  8:55a| Writee parseFncLn()
@@ -25,6 +66,7 @@
 #.(41119.10  11/20/24 RAM 10:12a| Fix log messages when saving files
 #.(41127.01  11/27/24 RAM 11:18a| Catch undefined on Ollama aAPI.key
 #.(41119.07b  3/08/25 RAM  7:27p| Remove date from say log since PM2 does it
+#.(41119.07c  3/10/25 RAM 10:25a| Fix aDte not defined
                                 |
 ##SRCE     +====================+===============================================+
 \*/
@@ -588,7 +630,7 @@ return  aNodeReq
 //           var mMatch =  aCallerLine.match(            /at\s+(?:((?:\w+\.)*\w+)\s+\()?(?:(.+):(\d+):(\d+))\)?/);
         var aFnc   =  parseFncLn( aCallerLine, nLine, aFnc ) }                          // .(41119.08.4 RAM Add aFnc).(41012.02.3)
             aMsg   = `\x1b[${ aMsg.match( /^\*/ ) ? 31 : 0 }m ${aMsg}`                  // .(41008.06.1 RAM Error color is 37:white or 31:red)
-//          aDte   = '\x1b[36m[' + `${new Date}`.slice( 16, 24 ) + '] '                 //#.(41119.07b.1).(41119.07.1).(41012.02.11 RAM Add Time)
+            aDte   = '' // '\x1b[36m[' + `${new Date}`.slice( 16, 24 ) + '] '           // .(41119.07c.1).(41119.07b.1).(41119.07.1).(41012.02.11 RAM Add Time)
             console.log( `${aDte}\x1b[${nColor}m ${ aFnc.padEnd( 45 ) }${aMsg}` )       // .(41119.07b.2).(41012.02.4 RAM Color was: 30).(40926.01.5 RAM)
             }                                                                           // .(40926.01.4 End)
 // ------   --------- =  ------------------------------------------------------
