@@ -81,6 +81,7 @@
 #.(50309.02   3/09/25 RAM  1:10p| Update update command   
 #.(50309.03   3/09/25 RAM  1:20p| Fix update command spacing 
 #.(50309.05   3/09/25 RAM  2:45p| Add ALT commands  
+#.(50309.03   3/09/25 RAM  1:20p| Fix update command spacing 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -110,6 +111,7 @@
   aVer="v0.05.50305.0700"  # run-anyllm.sh
   aVer="v0.05.50307.1745"  # run-anyllm.sh
   aVer="v0.05.50309.1445"  # run-anyllm.sh
+  aVer="v0.05.50311.1215"  # run-anyllm.sh
 
   # ---------------------------------------------------------------------------
 
@@ -118,22 +120,22 @@
 
 function help() {
      echo ""
-     echo "  Run AnyLLM Commands (${aVer}  OS: ${aOS})"
-     echo "    Setup              Run yarn setup for AnythingLLM"
-     echo "    Start [{App}|all]  Start AnyLLM App: collector, frontend, server or all apps"
-     echo "    Stop  [{App}|all]  Stop  AnyLLM App: collector, frontend, server or all apps"
-     echo "    PM2 {App} {Cmd}    Run any PM2 command with AnyLLM.  See PM2 help"       # .(50225.05.1)
-     echo "    ALT {Cmd}          Run any ALT command with AnyLLM.  See ALT help"       # .(50309.04.1)
-     echo "    Show ports         List Program, PID and Port"
+     echo "  Run AnyLLM Commands  (${aVer}  OS: ${aOS})"
+     echo "    Setup               Run yarn setup for AnythingLLM"
+     echo "    Start [{App}|all]   Start AnyLLM App: collector, frontend, server or all apps"
+     echo "    Stop  [{App}|all]   Stop  AnyLLM App: collector, frontend, server or all apps"
+     echo "    PM2 {App} {Cmd}     Run any PM2 command with AnyLLM.       See PM2 help"  # .(50225.05.1)
+     echo "    ALT {Cmd}           Run any ALTools command with AnyLLM.   See ALT help"  # .(50309.04b.1).(50309.04.1)
+     echo "    Show ports          List Program, PID and Port"
      echo "    Kill port {Ports}   Kill port number(s)"
-#    echo "    Update [{Branch}]  Update branch: Master, ALTools, or both (default)"    # .(41203.03.1)
-     echo "    Copy envs          Copy .env.example files to .env files"
-     echo "    Set IP {IPAddr}    Set IP Address in frontend/.env"                      # .(50307.02.1)
-     echo "    Reset              Reset AnyLLM command script"                          # .(50302.09.1)
-     echo "    Version            Show Version and Location"                            # .(41112.03.1)
-     echo "    Update             Update Anything-LLM and/or ALTools"                   # .(41115.02b.10)
+#    echo "    Update [{Branch}]  Update branch: Master, ALTools, or both (default)"     # .(41203.03.1)
+     echo "    Copy envs           Copy .env.example files to .env files"
+     echo "    Set IP {IPAddr}     Set IP Address in frontend/.env"                      # .(50307.02.1)
+     echo "    Reset               Reset AnyLLM command script"                          # .(50302.09.1)
+     echo "    Version             Show Version and Location"                            # .(41112.03.1)
+     echo "    Update              Update Anything-LLM and/or ALTools"                   # .(41115.02b.10)
      echo ""
-     echo "    {App}              fro, ser, col -- for Frontend, Server, Collector"     # .(50305.01.1)
+     echo "    {App}               fro, ser, col -- for Frontend, Server, Collector"     # .(50305.01.1)
 #    echo ""
      exit_wCR
      }
@@ -602,9 +604,9 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
 # ---------------------------------------------------------------------------
 
-  if [ "${aCmd}" == "alt" ]; then                                                                          # .(50905.05.x RAM Add alt command)
-     bash ${aRepoDir}/._2/ALTs/run-app.sh ${aArg2} ${aArg3} ${aArg4} ${aArg5Follow}; exit;                 # .(50905.05.x     
-     fi # eif "${aCmd}" == "alt"
+  if [ "${aCmd}" == "alt" ]; then                                                                          # .(50905.05.1 RAM Add alt command)
+     bash ${aRepoDir}/._2/ALTs/ALT00_Main1.sh ${aArg2} ${aArg3} ${aArg4} ${aArg5Follow}; exit;             # .(50905.05.2)     
+     fi # eif "${aCmd}" == "alt"                                                                           # .(50905.05.3)
 # ---------------------------------------------------------------------------
 
   if [ "${aCmd}" == "startApp" ]; then
