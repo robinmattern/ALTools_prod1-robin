@@ -81,7 +81,9 @@
 #.(50309.02   3/09/25 RAM  1:10p| Update update command   
 #.(50309.03   3/09/25 RAM  1:20p| Fix update command spacing 
 #.(50309.05   3/09/25 RAM  2:45p| Add ALT commands  
-#.(50309.03   3/09/25 RAM  1:20p| Fix update command spacing 
+#.(50309.02   3/09/25 RAM  1:20p| Fix update command spacing 
+#.(50311.02   3/11/25 RAM  4:00a| Modify menu spacing ?? 
+#.(50323.05   3/23/25 RAM  1:20p| Allow comma delimited list
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -593,13 +595,13 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
 
 # if [ "${aCmd}" == "pm2"      ]; then bash ${aRepoDir}/run-app.sh ${aArg1} ${aArg2} ${aArg3};  fi          # .(50225.05.3 Beg)
   if [ "${aCmd}" == "pm2_help" ]; then bash ${aRepoDir}/run-app.sh help;     exit;              fi
-  if [ "${aCmd}" == "status"   ]; then bash ${aRepoDir}/run-app.sh status   ${aArg2};           fi
-  if [ "${aCmd}" == "start"    ]; then bash ${aRepoDir}/run-app.sh start    ${aArg2};           fi
-  if [ "${aCmd}" == "restart"  ]; then bash ${aRepoDir}/run-app.sh restart  ${aArg2};           fi
-  if [ "${aCmd}" == "delete"   ]; then bash ${aRepoDir}/run-app.sh kill     ${aArg2};           fi
-  if [ "${aCmd}" == "stop"     ]; then bash ${aRepoDir}/run-app.sh stop     ${aArg2};           fi
-  if [ "${aCmd}" == "info"     ]; then bash ${aRepoDir}/run-app.sh info     ${aArg2};           fi
-  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3} ${aArg4} ${aFollow};  fi  # .(50306.03.4).(50225.05.3 End)
+  if [ "${aCmd}" == "status"   ]; then bash ${aRepoDir}/run-app.sh status   ${aArg2}; exit;     fi          # .(50323.05.2 RAM exit) 
+  if [ "${aCmd}" == "start"    ]; then bash ${aRepoDir}/run-app.sh start    ${aArg2}; exit;     fi          # .(50323.05.3) 
+  if [ "${aCmd}" == "restart"  ]; then bash ${aRepoDir}/run-app.sh restart  ${aArg2}; exit;     fi          # .(50323.05.4) 
+  if [ "${aCmd}" == "delete"   ]; then bash ${aRepoDir}/run-app.sh kill     ${aArg2}; exit;     fi          # .(50323.05.5) 
+  if [ "${aCmd}" == "stop"     ]; then bash ${aRepoDir}/run-app.sh stop     ${aArg2}; exit;     fi          # .(50323.05.6) 
+  if [ "${aCmd}" == "info"     ]; then bash ${aRepoDir}/run-app.sh info     ${aArg2}; exit;     fi          # .(50323.05.7) 
+  if [ "${aCmd}" == "logs"     ]; then bash ${aRepoDir}/run-app.sh logs     ${aArg2} ${aArg3} ${aArg4} ${aFollow}; exit; fi  # .(50323.05.8).(50306.03.4).(50225.05.3 End)
 # if [ "${aCmd}" == "logs"     ]; then echo          "./run-app.sh logs     ${aArg2} ${aArg3} ${aArg4} ${aFollow}"; fi
 
 # ---------------------------------------------------------------------------
@@ -609,14 +611,14 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      fi # eif "${aCmd}" == "alt"                                                                           # .(50905.05.3)
 # ---------------------------------------------------------------------------
 
-  if [ "${aCmd}" == "startApp" ]; then
-          aApp="";
+  if [ "${aCmd}" == "startApp" ]; then                             aApp="";
   if [ "${aArg3:0:1}" == "c" ] || [ "${aArg3:0:2}" == "-c" ]; then aApp="collector"; fi
   if [ "${aArg3:0:1}" == "f" ] || [ "${aArg3:0:2}" == "-f" ]; then aApp="frontend";  fi
   if [ "${aArg3:0:1}" == "s" ] || [ "${aArg3:0:2}" == "-s" ]; then aApp="server";    fi
   if [ "${aArg3:0:1}" == "a" ] || [ "${aArg3:0:2}" == "-a" ]; then aApp="all";       fi # .(41030.02.1)
+  if [ "${aArg3/,/}"  != "${aArg3}" ]; then aApp="${aArg3}";  fi                        # .(50323.05.1 RAM Allow comma delimited list)
 
-  if [ "${aApp}" == "" ]; then echo -e "\n * Please provide an {App}: c, f or s"; exit_wCR; fi
+  if [ "${aApp}" == "" ]; then echo -e "\n * Please provide an {App}: col, fro or ser"; exit_wCR; fi
 
   if [ "${aApp}" == "all" ]; then                                                       # .(41030.02.2 RAM Move em to here)
      cd "${aRepoDir}/collector" && npm start &
@@ -624,8 +626,17 @@ while [[ $# -gt 0 ]]; do  # Loop through all arguments                          
      cd "${aRepoDir}/server"    && npm start
      exit_wCR
    else                                                                                 # .(41030.02.3)
-     cd "${aRepoDir}/${aApp}"
-     npm start
+     aApps="${aApp//,/ }"                                                               # .(50323.05.2 Beg) 
+     for aArg3 in ${aApps}; do          aApp=""    
+     if [ "${aArg3:0:1}" == "c" ]; then aApp="collector"; fi
+     if [ "${aArg3:0:1}" == "f" ]; then aApp="frontend";  fi
+     if [ "${aArg3:0:1}" == "s" ]; then aApp="server";    fi
+     if [ "${aApp}" == "" ]; then 
+         echo -e "\n * Invalid App. Please use: col, fro or ser"; # exit_wCR; 
+         fi                                                                             # .(50323.05.2 End) 
+         cd "${aRepoDir}/${aApp}"
+         npm start
+       done                                                                             # .(50323.05.3) 
      fi                                                                                 # .(41030.02.4)
      fi # eif "${aCmd}" == "startApp"
 # ---------------------------------------------------------------------------
