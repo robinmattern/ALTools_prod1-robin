@@ -30,9 +30,9 @@
 #.(50313.03   3/13/25 RAM  H:MMa| Create List Workspaces Command in .mjs program  
 #.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program  
 #.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program  
-#.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder         
+#.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder          
 #.(50309.05b  3/23/25 RAM  9:30a| Change bQuiet >= 0 to bQuiet == 0 
-#.(50316.01b  3/23/25 RAM 10:00a| Import components and AIC90_FileFns
+#.(50316.01b  3/23/25 RAM 10:00a| Import components and AIC90_FileFns 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -46,11 +46,11 @@
 // import { promisify }         from 'util';
 
     import   FRT                 from '../AICs/AIC90_FileFns_u1.03.mjs';
-//  import   Keys                from '../ALTs/ALT11_Keys-Component_u1.01.cjs';                             //#.(50316.01.1)    
-    import   Keys                from '../ALTs/Components/ALT11_Keys_u1.01.mjs';                            // .(50316.01.1 RAM Moved into Components)         
-//  import   Users               from '../ALTs/Components/ALT12_Userss_u1.01.mjs';                          // .(50316.01b.1 RAM Moved into Components)         
-    import   Models              from '../ALTs/Components/ALT13_Models_u1.01.mjs';                          // .(50316.01b.2 RAM Moved into Components)         
-    import   Workspaces          from '../ALTs/Components/ALT14_Workspaces_u1.01.mjs';                      // .(50316.01b.3 RAM Moved into Components)         
+//  import   Keys                from '../ALTs/ALT11_Keys-Component_u1.01.cjs';                             //#.(50316.01.1)     
+    import   Keys                from '../ALTs/Components/ALT11_Keys_u1.01.mjs';                            // .(50316.01.1 RAM Moved into Components)          
+//  import   Users               from '../ALTs/Components/ALT12_Userss_u1.01.mjs';                          // .(50316.01b.1 RAM Moved into Components)          
+    import   Models              from '../ALTs/Components/ALT13_Models_u1.01.mjs';                          // .(50316.01b.2 RAM Moved into Components)          
+    import   Workspaces          from '../ALTs/Components/ALT14_Workspaces_u1.01.mjs';                      // .(50316.01b.3 RAM Moved into Components)          
     import { appendFileSync }   from 'fs';
 
       var { sayMsg, usrMsg, bDebug, bQuiet, bDoit } = FRT.setVars()                                         // .(50125.01.15 RAM Vars are local to this scripts)
@@ -263,8 +263,8 @@ async  function  tesn( nTest, aCmd ) {
         if (aCmd.match( /new|add|lis|run|get|set|put|sav|sho|vue/ ) == null) {                              // .(50309.07.1 RAM Add get and put cmd)
             usrMsg( "* Please enter one of these commands: new, add, list, run, get, set, save, show or view.", global.bTest ? 1 : 2 );   // .(50202.01.2)
             }
-        if (aObj.match( /key|app|mod|wor|pro|ses|scr|var|sys/     ) == null) {                              // .(50309.07.2 RAM Add key obj ).(50316.01b.8 RAM ADd workspace)
-            usrMsg( "* Please enter one of these objects: app, model, workspace, prompt, session, script or vars.", global.bTest ? 1 : 2) // .(50316.01b.9) .(50202.01.4)
+        if (aObj.match( /key|app|mod|wor|pro|ses|scr|var|sys/     ) == null) {                              // .(50309.07.2 RAM Add key obj ).(50316.01b.8 RAM ADd workspace) 
+            usrMsg( "* Please enter one of these objects: app, model, workspace, prompt, session, script or vars.", global.bTest ? 1 : 2) // .(50316.01b.9) .(50202.01.4) 
             }
 //      ---------------------------------------------------------------
 
