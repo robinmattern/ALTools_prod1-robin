@@ -20,6 +20,7 @@
 #.(YMMDD.02   M/DD/YY RAM  H:MMa| Add get, put and key to list of cmds and obj
 #.(YMMDD.03   M/DD/YY RAM  H:MMa| Create get{Object}s method in {Object}s component
 #.(YMMDD.04   M/DD/YY RAM  H:MMa| Create sav{Object}_inENV method in {Object}s component
+#.(50309.05b  3/23/25 RAM  9:45a| sayMsg bInVSCode 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -36,7 +37,7 @@
             var  bInVSCode   =   process.env.VSCODE_INSPECTOR_OPTIONS != undefined 
             var  bInspect    =`${process.execArgv}`.match( /--inspect/ ) != null  
             var  bCalled     =   process.argv.length > 2 
-                 console.log( ` -- bInVSCode: '${bInVSCode}', bInspect: '${bInspect}', bCalled: '${bCalled}'`, )  
+            FRT.sayMsg( `ALT11[ 52]  bInVSCode: '${bInVSCode}', bInspect: '${bInspect}', bCalled: '${bCalled}'`, -1 );          // .(50309.05b.5) 
      
 //         debugger; process.exit() 
 

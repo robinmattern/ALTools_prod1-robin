@@ -21,6 +21,7 @@
 #.(50309.07   3/09/25 RAM 10:00p| Add get, put and key to list of cmds and objs
 #.(50310.02   3/10/25 RAM  6:15p| Create getKeys method in keys component 
 #.(50310.03   3/10/25 RAM  6:30p| Create putKey method in keys component 
+#.(50309.05b  3/23/25 RAM  9:45a| Use sayMsg bInVSCode 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -28,7 +29,7 @@
 \*/
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-   import   FRT                 from '../AICs/AIC90_FileFns_u1.03.mjs';
+   import   FRT                 from '../../AICs/AIC90_FileFns_u1.03.mjs';                                     
 
        var  AppEnvs          =  getAppEnvs() 
 
@@ -44,7 +45,7 @@
             var  bInVSCode   =   process.env.VSCODE_INSPECTOR_OPTIONS != undefined 
             var  bInspect    =`${process.execArgv}`.match( /--inspect/ ) != null  
             var  bCalled     =   process.argv.length > 2 
-                 console.log( ` -- bInVSCode: '${bInVSCode}', bInspect: '${bInspect}', bCalled: '${bCalled}'`, )  
+            FRT.sayMsg( `ALT11[ 52]  bInVSCode: '${bInVSCode}', bInspect: '${bInspect}', bCalled: '${bCalled}'`, -1 );          // .(50309.05b.3) 
      
 //         debugger; process.exit() 
 
@@ -85,7 +86,7 @@ async  function  getKeys(   aPlatforms, aModel  ) {                             
             mKeys            =  mKeys.filter( pKey => { return aModel.includes( `,${pKey.model},` ) } )
               }
             mKeys            =  mKeys.map(    pKey => { return pKey.key } )
-    return  [ mKeys, aPlatforms.slice(1,-1) ]  // [0].key                                     // .(50312.02.1 )
+    return  [ mKeys, aPlatforms.slice(1,-1) ]  // [0].key                                                   // .(50312.02.2 )
         } catch (pError) {
 //          console.error( '    Error fetching keys:', pError.message );
             aPlaforms        =  aPlarforms.match( /,'/) ? `platforms: ${aPlatforms}` : `platform: ${aPlatforms}`

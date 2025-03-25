@@ -23,15 +23,18 @@
 #.(50310.03a  3/10/25 RAM  6:30p| Create putKey_inENV method in keys component 
 #.(50313.03   3/13/25 RAM  H:MMa| Create getWorkspaces method in Workspaces component 
 #.(50313.04   3/13/25 RAM  H:MMa| Create putWorkspace_inENV method in Workspaces component# 
-#.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder     
-
+#.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder   
+#.(50312.02b  3/23/25 RAM  6:55p| Spelling error   
+#.(50309.05b  3/23/25 RAM  9:45a| Use sayMsg bInVSCode 
+#.(50316.01b  3/23/25 RAM 10:00a| Import components and AIC90_FileFns
+#
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
 \*/
 //--------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-   import   FRT                 from '../../AICs/AIC90_FileFns_u1.03.mjs';                                  // .(50316.01.2)      
+   import   FRT                 from '../../AICs/AIC90_FileFns_u1.03.mjs';                                  // .(50316.01b.4)      
 
        var  AppEnvs          =  getAppEnvs() 
 
@@ -43,11 +46,11 @@
 //          }
 //          console.log( `-- TERM_PROGRAM: '${process.env.TERM_PROGRAM}` )  // undefined if called or running in vscode 
 //          console.log( `-- VSCODE_INSPECTOR_OPTIONS: '${process.env.VSCODE_INSPECTOR_OPTIONS}` )  // undefined if called or running in vscode 
-
+  
             var  bInVSCode   =   process.env.VSCODE_INSPECTOR_OPTIONS != undefined 
             var  bInspect    =`${process.execArgv}`.match( /--inspect/ ) != null  
             var  bCalled     =   process.argv.length > 2 
-                 console.log( ` -- bInVSCode: '${bInVSCode}', bInspect: '${bInspect}', bCalled: '${bCalled}'`, )  
+                 FRT.sayMsg( `ALT11[ 52]  bInVSCode: '${bInVSCode}', bInspect: '${bInspect}', bCalled: '${bCalled}'`, -1 );     // .(50309.05b.2) 
      
 //         debugger; process.exit() 
 
@@ -77,7 +80,7 @@
                                 FRT.sayMsg( `ALT11[  77]  getKeys( aPlatforms: '${aPlatforms}', aModels: '${aModels}'`, -1 )
                                 FRT.sayMsg( `ALT11[  78]  getKeys: fetch( '${aURL } )`, -1 )
        try {                         
-        var  pResponse       =  await fetch( aURL );
+       var  pResponse        =  await fetch( aURL );
        if (!pResponse.ok) {
 //          throw new Error( `  HTTP error! Status: ${pResponse.status}` );
                                 FRT.sayMsg( `ALT11[  83]  Error: Getting Key for ${aPlatforms}, aModel: '${aModel}'`, -1 )
@@ -93,11 +96,12 @@
             mKeys            =  mKeys.filter( pKey => { return aModels.includes( `,${pKey.model},` ) } )
               }
             mKeys            =  mKeys.map(    pKey => { return pKey.key } )
-    return  [ mKeys, aPlatforms.slice(1,-1) ]  // [0].key                                     // .(50312.02.1 )
+    return  [ mKeys, aPlatforms.slice(1,-1) ]  // [0].key                                                   // .(50312.02.1 )
         } catch (pError) {
 //          console.error( '    Error fetching keys:', pError.message );
-            aPlaforms        =  aPlarforms.match( /,'/) ? `platforms: ${aPlatforms}` : `platform: ${aPlatforms}`
-                                FRT.sayMsg( `ALT11[ 100]  Error: Getting Key for ${aPlatforms}, aModel: '${aModel}'`, -1 )
+       var  aPlatforms1      =  aPlatforms.match( /,'/) ? `platforms: '${aPlatforms}'` : `platform: '${aPlatforms}'`            // .(50312.02b.1 5/23/25 RAM Spelling)  
+                                FRT.sayMsg( `ALT11[ 101]  Error: Getting Key for ${aPlatforms1}, aModels: '${aModels}'`, -1 )   // .(50312.02b.2)  
+    return  [ [], aPlatforms ]                                                                                                  // .(50312.02b.3)     
             }
    function fixPlatform( aPlatform ) {
         if (aPlatform.match( /^any/)) { return 'anythingllm' }

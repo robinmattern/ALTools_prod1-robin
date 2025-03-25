@@ -31,7 +31,9 @@
 #.(50313.04   3/13/25 RAM  H:MMa| Create Save Workspace Command .mjs program  
 #.(50313.05   3/13/25 RAM  H:MMa| Create List Models Command .mjs program  
 #.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder         
-
+#.(50309.05b  3/23/25 RAM  9:30a| Change bQuiet >= 0 to bQuiet == 0 
+#.(50316.01b  3/23/25 RAM 10:00a| Import components and AIC90_FileFns
+#
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
 ##SRCE     +====================+===============================================+
@@ -46,11 +48,14 @@
     import   FRT                 from '../AICs/AIC90_FileFns_u1.03.mjs';
 //  import   Keys                from '../ALTs/ALT11_Keys-Component_u1.01.cjs';                             //#.(50316.01.1)    
     import   Keys                from '../ALTs/Components/ALT11_Keys_u1.01.mjs';                            // .(50316.01.1 RAM Moved into Components)         
+//  import   Users               from '../ALTs/Components/ALT12_Userss_u1.01.mjs';                          // .(50316.01b.1 RAM Moved into Components)         
+    import   Models              from '../ALTs/Components/ALT13_Models_u1.01.mjs';                          // .(50316.01b.2 RAM Moved into Components)         
+    import   Workspaces          from '../ALTs/Components/ALT14_Workspaces_u1.01.mjs';                      // .(50316.01b.3 RAM Moved into Components)         
     import { appendFileSync }   from 'fs';
 
       var { sayMsg, usrMsg, bDebug, bQuiet, bDoit } = FRT.setVars()                                         // .(50125.01.15 RAM Vars are local to this scripts)
                      
-        if (bQuiet >= 0) {                                                                                  // .(50309.05.8 RAM ???).(50301.01.4)
+        if (bQuiet == 0) {                                                              // .(50309.05b.1 RAM bQuiet == 2??).(50309.05.8 RAM ???).(50301.01.4) 
             console.log( `\n -- ALT02[  39]  bDebug: ${global.bDebug}, bQuiet: ${global.bQuiet}, bDoit: ${FRT.bDoit}, bForce: ${FRT.bForce}, bIsCalled: ${FRT.isCalled(import.meta.url)}` )      // .(50202.03.1)
             }
 //    var   execAsync        =  promisify( exec );
@@ -64,19 +69,21 @@
        var       bIsInVSCode =  FRT.isNotCalled( import.meta.url )                      // .(50313.03.x RAM Is this good in all cases).(50201.04.2 RAM if this really in VSCode ??) 
             global.bInVSCode =  process._debugProcess ? 1 : 0                           // .(50313.03.x RAM Used in ALT).(50208.08.2 RAM Thanks Grok) 
             global.bIsCalled = !bIsInVSCode || process.argv.length > 2                  // .(50313.03.x RAM Use bInVSCode instead? It's running in VSCode debugger) 
-            global.nTest4    =  1                                                       // .(50313.03.x RAM Display ALT03[138]).(50127.02.1) 
-            global.nTest3    =  3                                                       // .(50313.03.x RAM Display arg names, and quit if 2  
+            global.nTest4    =  0                                                       // .(50313.03.x RAM Display ALT03[ 242]).(50127.02.1) 
+            global.nTest3    =  3                                                       // .(50313.03.x RAM Display ALT03[ 353] arg names, and quit if 2  
 //          global.nTest4    =  2                                                       // .(50313.03.x RAM Exit after main()).(50301.01.5).(50213.01.1 RAM sayMsg('ALT02[ 174]', nTest4): 1, -1 or 2) 
 
 //          ---------------  =  ------------------------------------------------------  #  
         if (bIsCalled == false) {                                                       // It's running in VSCode debugger
 
-            global.bDebug    =  0
+       var  aTests           = '1a'
+
+            FRT.bDoit        =  0;    global.bTest = 0                                  // .(50313.03.x RAM Don't exit from main() and JPT12_Main2Fns holdovers)  
+            global.bDebug    =  1
+
             global.bInVSCode =  process._debugProcess ? 1 : 0                           // .(50313.03.x RAM Used in ALT).(50208.08.2 RAM Thanks Grok) 
             global.nTest3    =  global.nTest3 ? global.nTest3 : 1                       // .(50313.03.x RAM Display or exit after main( cmd, args set ))   
-            FRT.bDoit  =  1;    global.bTest = 0                                        // .(50313.03.x RAM Don't exit from main() and JPT12_Main2Fns holdovers)  
 
-       var  aTests     = '1s'
 //                              await main( 'list', 'models', 'gp4oopm' )
 //                              await main( 'new', 'app', 's94', "Another-Server-App" ) // Invalid App, spaces in name, no bFix
 //                              await main( 'sho', 'vars' )
@@ -85,10 +92,15 @@
 //                              await main( 'get', 'keys', 'anythingllm,xai' )
 //                              await main( 'get', 'keys', 'anythingllm,xai', 'grok3' )
                     if ( /,1a,/.test(`,${aTests},`)) { 
-                                await main( 'list', 'keys', '',         '',      ''    )
-                                await main( 'list', 'keys', 'app',      '',      ''    )
-                                await main( 'list', 'keys', 'platform', 'app',   ''    )
-                                await main( 'list', 'keys', 'platform', 'model', 'app' )
+//                              await main( 'list', 'keys', '',         '',      ''    )
+//                              await main( 'list', 'keys', 'app',      '',      ''    )
+//                              await main( 'list', 'keys', 'platform', 'app',   ''    )
+//                              await main( 'list', 'keys', 'platform', 'model', 'app' )
+                                      usrMsg( "" )
+                                await tesn(   1,  'list    keys'    )
+                                await tesn(   2,  'list    keys    app                    ' )
+                                await tesn(   3,  'list    keys    platform    app        ' )
+                                await tesn(   4,  'list    keys    platform    model   app' )
                                 }
                     if ( /,1s,/.test(`,${aTests},`)) { 
                                       usrMsg( "" )
@@ -140,9 +152,7 @@
 
         } // // eif bIsCalled == true
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
-        
-//                             await main( ...args )                                    ##.(50309.05.x RAM ??? )
-
+//                             await main( ...args )                                    // .(50309.05b.9 RAM ??? ) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
   function  fmtFlags( ) {
@@ -251,10 +261,10 @@ async  function  tesn( nTest, aCmd ) {
             } 
                                                                                                           
         if (aCmd.match( /new|add|lis|run|get|set|put|sav|sho|vue/ ) == null) {                              // .(50309.07.1 RAM Add get and put cmd)
-            usrMsg( "\n* Please enter one of these commands: new, add, list, run, get, set, save, show or view.", global.bTest ? 1 : 2 ); // .(50202.01.2)
+            usrMsg( "* Please enter one of these commands: new, add, list, run, get, set, save, show or view.", global.bTest ? 1 : 2 );   // .(50202.01.2)
             }
-        if (aObj.match( /key|app|mod|sys|pro|ses|scr|var/         ) == null) {                              // .(50309.07.2 RAM Add key obj)
-            usrMsg( "\n* Please enter one of these objects: app, model, prompt, session, script or vars.",        global.bTest ? 1 : 2 ); // .(50202.01.4)
+        if (aObj.match( /key|app|mod|wor|pro|ses|scr|var|sys/     ) == null) {                              // .(50309.07.2 RAM Add key obj ).(50316.01b.8 RAM ADd workspace)
+            usrMsg( "* Please enter one of these objects: app, model, workspace, prompt, session, script or vars.", global.bTest ? 1 : 2) // .(50316.01b.9) .(50202.01.4)
             }
 //      ---------------------------------------------------------------
 
@@ -301,27 +311,27 @@ async  function  tesn( nTest, aCmd ) {
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 /*========================================================================================================= #  ===============================  *\
-#>      ALT02 getKeys
+#>      ALT02 listKeys
 \*===== =================================================================================================== */
 
-     async  function  listKeys(  mArgs ) {                                                                  // .(50310.02a.7 Write getKeys in .sh Beg)  
+     async  function  listKeys(  mArgs ) {                                                                  // .(50310.02a.7 Write listKeys in .mjs Beg)  
       var [ aPlatforms, aModel ] =  mArgs ? [ ...mArgs,'','','' ] : [ '','','','' ]   
       
 //    var [ aPlatforms, aModel ] =  mArgs 
             aPlatforms       =  aPlatforms.match( /''/) ? '' : aPlatforms
             aModel           =  aModel.match( /''/) ? '' : aModel
                                 sayMsg( `ALT02[ 313]  await Keys.getKeys('${aPlatforms}', '${aModel}')`, -1 );             
-      var [ mKeys  ]         =  await Keys.getKeys(   aPlatforms, aModel  )  
+      var [ mKeys  ]         =  await  Keys.getKeys(   aPlatforms, aModel  )  
                                 sayMsg( `ALT02[ 315]  Received aKeys: [ '${ mKeys.join("', '") }' ]`, -1 );             
           usrMsg(            `  Received Keys: '${ mKeys.join("', '") }'` );             
-            }  // eof getKeys                                                                               // .(50310.02.8 End)  
+            }  // eof getKeys                                                                               // .(50310.02.7 End)  
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 /*========================================================================================================= #  ===============================  *\
 #>      ALT02 putKey
 \*===== =================================================================================================== */
 
-     async  function  saveKey_inENV( mArgs ) {                                                              // .(50310.03.8 Write putKey in .sh Beg) 
+     async  function  saveKey_inENV( mArgs ) {                                                              // .(50310.03.8 Write saveKey_inENV in .mjs Beg) 
 /*      
         if (mArgs[0].match( /^[acs][0-9][0-9]_/) ) {  mArgs[2] = mArgs[0]; mArgs[0] = '' }
         if (mArgs[1].match( /^[acs][0-9][0-9]_/) ) {  mArgs[2] = mArgs[1]; mArgs[1] = '' }
@@ -342,13 +352,13 @@ async  function  tesn( nTest, aCmd ) {
 //     if ( ! aApp    ) {     [ aPlatform, aModel, aApp ] = [ aPlatform, '', aModel    ] }
 //     if ( ! aModel  ) {     [ aPlatform, aModel, aApp ] = [ '',        '', aPlatform ] }           
 
-          sayMsg( `ALT02[ 248]  await Keys.saveKey_inENV( aPlatform: '${aPlatform}', aModel: '${aModel}', aApp: '${aApp}' )`, global.nTest3 );  // .(50313.03.x) 
+          sayMsg( `ALT02[ 353]  await Keys.saveKey_inENV( aPlatform: '${aPlatform}', aModel: '${aModel}', aApp: '${aApp}' )`, global.nTest3 );  // .(50313.03.x) 
         if (global.nTest3 == 3) { return }                                                                 // .(50313.03.x RAM Return after cmd vars) 
 
-      var [ mKeys, aPlatform ] =  await Keys.getKeys( aPlatform, aModel )
+      var [ mKeys, aPlatform ] = await Keys.getKeys( aPlatform, aModel )
       var   aKey             =  mKeys[0]
-                                sayMsg( `ALT02[ 242]  await Keys.putKey_inENV( '${aApp}', '${aKey}', bDoit: ${FRT.bDoit})`, -1 );             
-            aKey             =  await Keys.putKey_inENV(    aApp, aKey )  
+                                sayMsg( `ALT02[358]  await Keys.putKey_inENV( '${aApp}', '${aKey}', bDoit: ${FRT.bDoit})`, -1 );             
+            aKey             =  await  Keys.putKey_inENV(    aApp, aKey )  
         if (aKey) {     
                                 sayMsg( `ALT02[ 353]  Saved ${aPlatform} aKey: '${aKey}', for aApp, '${aApp}', in ENV file.`, -1 );             
                                 usrMsg(            `  Saved ${aPlatform} Key: ${aKey}, for App, ${aApp}, in ENV file.` );             
@@ -356,30 +366,31 @@ async  function  tesn( nTest, aCmd ) {
                                 sayMsg( `ALT02[ 356]  Error: Saving ${aPlatform} aKey: '${aKey}', for aApp, '${aApp}', in ENV file failed.`, -1 );             
                                 usrMsg(            `  Error: Saving ${aPlatform} Key: ${aKey}, for App, ${aApp}, in ENV file failed.` );             
             }
-            }  // eof putKey                                                                                // .(50310.03.8 End) 
+            }  // eof putKey                                                                                // .(50310.03.7 End) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
 /*========================================================================================================= #  ===============================  *\
-#>      ALT02 getWorkspaces
+#>      ALT02 listWorkspaces
 \*===== =================================================================================================== */
 
-     async  function  listWorkspaces(  mArgs ) {                                                            // .(50313.03.7 Write getKeys in .sh Beg) 
+     async  function  listWorkspaces(  mArgs ) {                                                            // .(50313.03.7 Write listWorkspaces in .mjs Beg) 
       var [ aApps ] =  mArgs ? [ ...mArgs,'','','' ] : [ '','','','' ]   
                                 sayMsg( `ALT02[ 367]  await Workspaces.getWorkspaces('${aApps}')`, -1 );             
-      var [ mWorkspaces ]    =  await Workspaces.getWorkspaces(   aApps  )  
+      var [ mWorkspaces ]    =  await  Workspaces.getWorkspaces(   aApps  )  
                                 sayMsg( `ALT02[ 369]  Received aWorkspaces: [ '${ mWorkspaces.join("', '") }' ]`, -1 );             
                                 usrMsg(            `  Received Workspaces: ${ mWorkspaces.join("', '") }` );             
-            };  // eof getWorkspaces                                                                        // .(50313.03.8 End) 
+            };  // eof getWorkspaces                                                                        // .(50313.03.7 End) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 /*========================================================================================================= #  ===============================  *\
 #>      ALT02 putWorkspace_inENV
 \*===== =================================================================================================== */
 
-     async  function  saveWorkspace_inENV( mArgs ) {                                                        // .(50313.04.8 Write putKey in .sh Beg) 
+     async  function  saveWorkspace_inENV( mArgs ) {                                                        // .(50313.04.7 Write saveWorkspace_inENV in .mjs Beg) 
       var [ aApp ] =  mArgs ? [ ...mArgs,'','','' ] : [ '','','','' ]    
-      var [ mWorkspaces ]    =  await Workspaces.getWorkspaces(  aApp ), aWorkspace = mWorkspaces[0]
+      var [ mWorkspaces ]    =  await  Workspaces.getWorkspaces(  aApp ), aWorkspace = mWorkspaces[0]
                                 sayMsg( `ALT02[ 381]  await Workspaces.savWorkspace_inKey(  '${aWorkspace}', '${aWorkspace}', bDoit: ${FRT.bDoit})`, -1 );             
-            aKey             =  await Workspaces.putWorkspace_inENV( aApp, aWorkspace )  
+            aKey             =  await  Workspaces.putWorkspace_inENV( aApp, aWorkspace )  
         if (aKey) {     
                                 sayMsg( `ALT02[ 384]  Saved aWorkspace, '${aWorkspace}', for aApp, '${aApp}' in ENV file.`, -1 );             
                                 usrMsg(            `  Saved Workspace, ${aWorkspace}, for App, ${aApp} in ENV file.` );             
@@ -387,8 +398,22 @@ async  function  tesn( nTest, aCmd ) {
                                 sayMsg( `ALT02[ 388]  Error: Saving aWorkspace, '${aWorkspace}', for aApp, '${aApp}', in ENV file failed.`, -1 );             
                                 usrMsg(            `  Error: Saving Workspace, ${aWorkspace}, for App, ${aApp}, in ENV file failed.` );             
             }
-            }  // eof putWorkspace_inENV                                                                    // .(50313.04.8 End) 
+            }  // eof putWorkspace_inENV                                                                    // .(50313.04.7 End) 
 //   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+/*========================================================================================================= #  ===============================  *\
+#>      ALT02 listModels
+\*===== =================================================================================================== */
+
+     async  function  listModels(  mArgs ) {                                                                    // .(50313.06.7 Write listModels in .mjs Beg) 
+      var [ aApps ]          =  mArgs ? [ ...mArgs,'','','' ] : [ '','','','' ]   
+                                sayMsg( `ALT02[ 406]  await Models.getModels('${aApps}')`, -1 );             
+      var [ mModels ]        =  await  Models.getModels(   aApps  )  
+                                sayMsg( `ALT02[ 408]  Received aModels: [ '${ mModels.join("', '") }' ]`, -1 );             
+                                usrMsg(            `  Received Models: ${ mModels.join("', '") }` );             
+            };  // eof getWorkspaces                                                                            // .(50313.06.7 End) 
+//   -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
 
 /*========================================================================================================= #  ===============================  *\
 #>      ALT02 END
