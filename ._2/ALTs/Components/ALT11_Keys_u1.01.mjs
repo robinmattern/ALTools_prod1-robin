@@ -24,7 +24,7 @@
 #.(50313.03   3/13/25 RAM  H:MMa| Create getWorkspaces method in Workspaces component 
 #.(50313.04   3/13/25 RAM  H:MMa| Create putWorkspace_inENV method in Workspaces component# 
 #.(50316.01   3/16/25 RAM  9:09a| Move programs into Components folder   
-#.(50312.02b  3/23/25 RAM  6:55p| Spelling error   
+#.(50312.02b  3/23/25 RAM  6:55p| Spelling error    
 #.(50309.05b  3/23/25 RAM  9:45a| Use sayMsg bInVSCode 
 #.(50316.01b  3/23/25 RAM 10:00a| Import components and AIC90_FileFns
 #
@@ -96,12 +96,12 @@
             mKeys            =  mKeys.filter( pKey => { return aModels.includes( `,${pKey.model},` ) } )
               }
             mKeys            =  mKeys.map(    pKey => { return pKey.key } )
-    return  [ mKeys, aPlatforms.slice(1,-1) ]  // [0].key                                                   // .(50312.02.1 )
+    return  [ mKeys, aPlatforms.slice(1,-1) ]  // [0].key                                                   // .(50312.02.1 ) 
         } catch (pError) {
 //          console.error( '    Error fetching keys:', pError.message );
-       var  aPlatforms1      =  aPlatforms.match( /,'/) ? `platforms: '${aPlatforms}'` : `platform: '${aPlatforms}'`            // .(50312.02b.1 5/23/25 RAM Spelling)  
-                                FRT.sayMsg( `ALT11[ 101]  Error: Getting Key for ${aPlatforms1}, aModels: '${aModels}'`, -1 )   // .(50312.02b.2)  
-    return  [ [], aPlatforms ]                                                                                                  // .(50312.02b.3)     
+       var  aPlatforms1      =  aPlatforms.match( /,'/) ? `platforms: '${aPlatforms}'` : `platform: '${aPlatforms}'`            // .(50312.02b.1 5/23/25 RAM Spelling)   
+                                FRT.sayMsg( `ALT11[ 101]  Error: Getting Key for ${aPlatforms1}, aModels: '${aModels}'`, -1 )   // .(50312.02b.2)   
+    return  [ [], aPlatforms ]                                                                                                  // .(50312.02b.3)      
             }
    function fixPlatform( aPlatform ) {
         if (aPlatform.match( /^any/)) { return 'anythingllm' }
