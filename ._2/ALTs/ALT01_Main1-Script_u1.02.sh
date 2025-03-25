@@ -31,7 +31,7 @@
 #       func listKeys           | ALT01  list keys {Platforms} [{Models}] [{Project}]                       # .(50310.02.1) 
 #       func saveKeys_inENV     | ALT01  save key  {App}                                                    # .(50310.03.1) 
 #       func listWorkspaces     | ALT01  list workspaces [{aApps}]                                          # .(50313.03.1) 
-#       func saveWorkspaces_inENV|ALT01  save workspace {App} {Workspace} [{Project}]                       # .(50313.04.1) 
+#       func saveWorkspaces_inENV|ALT01  save workspace {App} {Workspace} [{Project}]                       # .(50313.04.1)  
 #       func listModels         | ALT01  list models  {Models} [{Project}]                                  # .(50313.05.1) 
 #            Next Command       |
 #                               |
@@ -40,9 +40,10 @@
 #.(50309.05   3/09/25 RAM  8:00p| Make usefull changes
 #.(50310.02   3/10/25 RAM  6:15p| Create List Keys command in .sh script 
 #.(50310.03   3/10/25 RAM  6:30p| Create Save Key command in .sh script 
-#.(50313.03   3/13/25 RAM  9:15a| Create List Workspaces command in .sh script 
-#.(50313.04   3/13/25 RAM  9:30a| Create Save Workspace command in .sh script 
-#.(50313.05   3/13/25 RAM  9:30a| Create List Models command in .sh script 
+#.(50313.04   3/13/25 RAM  9:15a| Create List Workspaces command in .sh script  
+#.(50313.05   3/13/25 RAM  9:30a| Create Save Workspace command in .sh script 
+#.(50313.06   3/13/25 RAM  9:30a| Create List Models command in .sh script 
+#.(50313.04b  3/23/25 RAM 10:06a| Change listWorkspace to listWorkspaces 
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -69,11 +70,13 @@
      echo ""
      echo "  ${aVTitle} (${aVer})                        (${aVDt})"
      echo "  -----------------------------------------------  -----------------------------------------------------------"
-     echo "    List Keys {Platforms} [{Models}]               List Keys for AI {Platforms}/[{Models}] Scripts (2)(3)"              # .(50310.02.2) 
-     echo "    Save Key  {Platform} [{Model}] [{Project}]     Save Key for {Platform}/[{Model}] into {Project} ENV file (1)"      # .(50310.03.2) 
-     echo "    List Workspaces {Apps}                         List Workspaces for Apps {Apps}"                                    # .(50313.03.2) 
-     echo "    Save Workspace  {App} {Workspace} [{Project}]  Save Workspace {Workspace} for {App} into {Project} ENV file (1)"   # .(50313.04.2) 
-     echo "    List Models [{Models}] [{Project}]             List Models {Models} for [{Project}] (1)(3)"                        # .(50313.05.2) 
+     echo "    Start|Stop {Apps}                              Start or Stop ALTools Apps: c13, s13"                             # .(50323.06.1) 
+     echo "    List Keys {Platforms} [{Models}]               List Keys for AI {Platforms}/[{Models}] Scripts (2)(3)"           # .(50310.02.2) 
+     echo "    Save Key  {Platform} [{Model}] [{Project}]     Save Key for {Platform}/[{Model}] into {Project} ENV file (1)"    # .(50310.03.2) 
+     echo "    List Workspaces {Apps}                         List Workspaces for Apps {Apps}"                                  # .(50313.04.2)  
+     echo "    Save Workspace  {App} {Workspace} [{Project}]  Save Workspace {Workspace} for {App} into {Project} ENV file (1)" # .(50313.05.2) 
+     echo "    List Models [{Models}] [{Project}]             List Models {Models} for [{Project}] (1)(3)"                      # .(50313.06.2) 
+     echo "    PM2                                            Run PM2 commands for ALTools Apps: c13, s13"                      # .(50323.06.2) 
 
      echo ""
      echo "    (1)                                            The Default Project is 'aidocs'"
@@ -171,21 +174,29 @@
     if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "key" ]; then aCmd="listKeys";      fi                    # .(50310.02a.3) 
     if [ "${1:0:3}" == "key" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listKeys";      fi                    # .(50310.02a.3) 
     if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "key" ]; then aCmd="saveKey_inENV"; fi                    # .(50310.03a.4) 
-    if [ "${1:0:3}" == "key" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveKey_inENV";   fi                  # .(50310.03a.4) 
+    if [ "${1:0:3}" == "key" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveKey_inENV"; fi                    # .(50310.03a.4) 
 
-    if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listWorkspace";       fi              # .(50313.03.3) 
-    if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "wor" ]; then aCmd="listWorkspace";       fi              # .(50313.03.3) 
-    if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.04.4) 
-    if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "wor" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.04.4) 
+    if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listWorkspaces";      fi              # .(50313.04b.1 RAM Add s).(50313.04.3)  
+    if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "wor" ]; then aCmd="listWorkspaces";      fi              # .(50313.04b.2).(50313.04.3)  
+    if [ "${1:0:3}" == "wor" ] && [ "${2:0:3}" == "sav" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.05.3) 
+    if [ "${1:0:3}" == "sav" ] && [ "${2:0:3}" == "wor" ]; then aCmd="saveWorkspace_inENV"; fi              # .(50313.05.3) 
+
+    if [ "${1:0:3}" == "lis" ] && [ "${2:0:3}" == "mod" ]; then aCmd="listModels";   fi                     # .(50313.06.3) 
+    if [ "${1:0:3}" == "mod" ] && [ "${2:0:3}" == "lis" ]; then aCmd="listModels";   fi                     # .(50313.06.3) 
+
+    if [ "${1:0:3}" == "sta" ]; then aCmd="pm2"; aSub="start";       aApps="${mARGs[2]},${mARGs[3]},${mARGs[4]},${mARGs[5]}";fi # .(50323.06.3) 
+    if [ "${1:0:3}" == "sto" ]; then aCmd="pm2"; aSub="stop";        aApps="${mARGs[2]},${mARGs[3]},${mARGs[4]},${mARGs[5]}";fi # .(50323.06.4) 
+    if [ "${1:0:3}" == "pm2" ]; then aCmd="pm2"; aSub="${mARGs[2]}"; aApps="${mARGs[3]},${mARGs[4]},${mARGs[5]},${mARGs[6]}";fi # .(50323.06.5) 
 
        sayMsg  "" -1
-       sayMsg  "ALT01[ 158]  aCmd: '${aCmd}', aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce', bQuiet: '$bQuiet'" -1 # .(50309.04.5 )
+       sayMsg  "ALT01[ 191]  aCmd: '${aCmd}', aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce', bQuiet: '$bQuiet'" -1 # .(50309.04.5 )
 #      sayMsg  "ALT01[ 159]  aCmd: '${aCmd}', aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce'" ${bDebug_ALT01}       ##.(50213.03.16 ).(50309.04.5 )
     if [ "${aCmd}" == "" ]; then
-#      aArgs="${aArg1} ${aArg2} ${aArg3} ${aArg4}"; aArgs="${aArgs// / }"                                   ##.(50309.05.1)
-#      aArgs="$( echo "${aArg1} ${aArg2} ${aArg3} ${aArg4}" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//; s/[[:space:]]\+/ /g' )"  ##.(50309.05.1)
-       aArgs="$( echo "${aArg1} ${aArg2} ${aArg3} ${aArg4}" | sed 's/^ *//; s/ *$//; s/ \+/ /g' )"                                # .(50309.05.1)
+#      aArgs="${aArg1} ${aArg2} ${aArg3} ${aArg4}"; aArgs="${aArgs// / }"                                                       ##.(50309.05.1)
+#      aArgs="$( echo "${aArg1} ${aArg2} ${aArg3} ${aArg4}" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//; s/[[:space:]]\+/ /g')" ##.(50309.05.1)
+       aArgs="$( echo "${aArg1} ${aArg2} ${aArg3} ${aArg4}" | sed 's/^ *//; s/ *$//; s/ \+/ /g' )"                              # .(50309.05.1)
        echo -e "\n* Invalid command: '${aArgs}'. Use any of these listed below."                            # .(50309.05.2 RAM Add trimmed aArgs)
+       sayMsg  "ALT01[ 198]  aCmd: '${aCmd}', aArg1: '$aArg1', aArg2: '$aArg2', aArg3: '$aArg3', aArg4: '$aArg4', bDoit: '$bDoit', bForce: '$bForce', bQuiet: '$bQuiet'" -1 # .(50309.04.5 )
        aCmd="help"
        fi
 
@@ -209,7 +220,7 @@
 
   function  chkRepo() {                                                                 # .(41103.03.3 RAM Write chkRepo Beg)
     if [ "${aRepoDir}" == "" ]; then
-            echo "* You are not in a ${aProject}_/{StgDir} Git Repository"
+            echo "* You are not in a ${aProject}_/${StgDir} Git Repository"
             exit_wCR
       else
             echo "  RepoDir is: ${aRepoDir}, branch: ${aBranch}";   # exit_wCR
@@ -234,7 +245,7 @@
             }
 # --------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
-  function  getRepoDir() {
+  function  getRepoDir() {                                                                                  # .(50323.07.1 RAM Write getReposDir for ALT Commands)
             aRepos="$( echo "$(pwd)"       | awk '{ match( $0, /.*[Rr][Ee][Pp][Oo][Ss]/); print substr($0,1,RLENGTH) }' )"
     if [ "${aRepos}" == "" ];        then aRepos="$( dirname $(pwd) )"; fi; # echo "  aRepos: '${aRepos}'"   # .(41129.05.1 RAM What if no Repos dir)
             aRepo="$( git remote -v        | awk '/origin.+push/ { sub( /.+\//, ""); sub( /\.git.+/, "" ); print }' )"
@@ -245,7 +256,7 @@
             aRepoDir="${aRepos}/${aProject}${aStgDir}"
     if [ "${aRepo}" == "" ]; then aRepo="${aProject}${aStgDir}"; fi
 
-            getBranch                                                                                       # .(41104.04.2)
+            getBranch                                                                                       # .(41104.04.2).(50323.07.2 RAM Not for ALT)
 #           bDebug=1
     if [ "${bDebug}" == "1" ]; then
             echo "  - aRepos:   '${aRepos}'"
@@ -289,25 +300,34 @@
          else
 #           if [ "${aSDirs}" != "" ] || [ "$1" == "no-check" ]; then return; fi
             if [ "${aSDirs}" != "" ]; then return; fi
-            sayMsg  "ALT01[ 263]  The Repos root folder does not contain a subfolder: ._/!1_Support Files for ..." -1
+            sayMsg  "ALT01[ 298]  The Repos root folder does not contain a subfolder: ._/!1_Support Files for ..." -1
             fi
 
-            sayMsg  "ALT01[ 266]  aRepos: '${aREpos}', aRDirs: '${aRDirs}'" -1
+            sayMsg  "ALT01[ 301]  aRepos: '${aREpos}', aRDirs: '${aRDirs}'" -1
 #           echo "${aREpos}"
             } # // eof getReposDir                                                      # .(41103.03b.1 End)
 # --------  ---------------  =  ------------------------------------------------------  #  ---------------- #
 
+  function  getBranch( ) {                                                                                  # .(41104.04.1 RAM Create getBranch function Beg)
+      if [ -d .git ]; then                                                                                  # .(41104.05.1)
+            aBranch="$( git symbolic-ref --short HEAD )"                                                    # .(41114.03.1 RAM More reliable).(41102.02.1)
+            fi                                                                                              # .(41104.05.2)
+            }   
+# --------  ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+        echo ""                                                                                             # .(50323.08.1)
 #       getAI2codeDir                                                                                       ##.(50309.05.8)
 #       getLIB_Dir "alt" "ALTs"; exit_wCR 
         getLIB_Dir "alt" "ALTs"; # Assigns ${aLIB_Dir}=                                                     # .(50309.05.8 RAM Use it with args)
-        sayMsg "ALT01[ 274]  aLIB_Dir: '${aLIB_Dir}'" -1  
+        sayMsg "ALT01[ 317]  aLIB_Dir: '${aLIB_Dir}'" -1  
+        getRepoDir; chkRepo                                                                                 # .(50323.08.2)
   
 #====== =================================================================================================== #  ===========
 #>      ALT01 HELP                                                                                          # .(41228.01.3 RAM Add AI2code Init command Beg)
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "help" ]; then                                                                          #
-        sayMsg  "ALT01[ 310]  Help" -1
+        sayMsg  "ALT01[ 325]  Help" -1
         help
         exit_wCR
         fi # eoc Help                                                                                       # .(41228.01.3 End)   
@@ -318,10 +338,22 @@
 #====== =================================================================================================== #
 
   if [ "${aCmd}" == "init" ]; then                                                                          #
-        sayMsg  "ALT01[ 321]  Init" -1
+        sayMsg  "ALT01[ 327]  Init" -1
 
         exit_wCR
         fi # eoc Init                                                                                       # .(41228.01.3 End)                                                                                        # .(41228.01.3 Beg RAM Add AI2code Init Beg)
+#    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
+
+#====== =================================================================================================== #  ===========
+#>      ALT01 PM2 Commands                                                                                  # .(50323.06.1) 
+#====== =================================================================================================== #
+
+  if [ "${aCmd:0:3}" == "pm2" ]; then                                                                       # .(50323.06.1 Beg) 
+        aApps="$( echo "$aApps" | awk '{ sub( /,+$/, ""); print }' )" 
+        sayMsg    "ALT01[ 338]  PM2 ${aSub} '${aApps}'" -1 
+        bash ${aRepoDir}/run-app.sh ${aSub} "${aApps}"
+        exit 0
+        fi # eoc listKeys                                                                                   # .(50310.02a.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
@@ -347,36 +379,36 @@
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 LIST WORKSPACES                                                                               # .(50313.04.5) 
+#>      ALT01 LIST WORKSPACES                                                                               # .(50313.04.5)  
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "ListWorkspaces" ]; then                                                                # .(50313.04.5 RAM Add Get Keys Command Beg) 
+  if [ "${aCmd}" == "listWorkspaces" ]; then                                                                # .(50313.04.5 RAM Add Get Keys Command Beg)  
         sayMsg  "ALT01[ 354]  listWorkspaces( aObj: \"${aObj}\" )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "list" "workspaces" "${aObj}"                   #   List Workspaces {Apps} 
         exit_wCR 0
-        fi # eoc listWorkspaces                                                                             # .(50313.04.5 End) 
+        fi # eoc listWorkspaces                                                                             # .(50313.04.5 End)  
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 SAVE WORKSPACE IN ENV                                                                         # .(50313.04.5) 
+#>      ALT01 SAVE WORKSPACE IN ENV                                                                         # .(50313.05.5) 
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "saveWorkspace_inENV" ]; then                                                           # .(50313.04.5 RAM Add Save Workspace Command Beg) 
+  if [ "${aCmd}" == "saveWorkspace_inENV" ]; then                                                           # .(50313.05.5 RAM Add Save Workspace Command Beg) 
         sayMsg  "ALT01[ 365]  saveWorkspace_inENV( aObj: \"${aObj}\", aItm: \"${aItm}\", aOth: ${aOth} )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "save" "worksp" "${aObj}" "${aItm}" "${aOth}"   #   Save Workspace  {App} {Workspace} [{Project}] 
         exit_wCR 0
-        fi # eoc saveWorkspace_inENV                                                                        # .(50313.04.5 End) 
+        fi # eoc saveWorkspace_inENV                                                                        # .(50313.05.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
-#>      ALT01 LIST MODELS                                                                                   # .(50313.05.5) 
+#>      ALT01 LIST MODELS                                                                                   # .(50313.06.5) 
 #====== =================================================================================================== #
 
-  if [ "${aCmd}" == "ListModels" ]; then                                                                    # .(50313.05.5 RAM Add List Models Command Beg) 
+  if [ "${aCmd}" == "listModels" ]; then                                                                    # .(50313.06.5 RAM Add List Models Command Beg) 
         sayMsg  "ALT01[ 376]  listModels( aObj: \"${aObj}\", aItm: \"${aItm}\" )" -1
         node ${aDebug} "${aLIB_Dir}/${ALT02_Main1_Program}" "list" "models" "${aObj}" "${aItm}"             #   List Models [{Models}] [{Project}]
         exit_wCR 0
-        fi # eoc listModels                                                                                 # .(50313.05.5 End) 
+        fi # eoc listModels                                                                                 # .(50313.06.5 End) 
 #    -- --- ---------------  =  ------------------------------------------------------  #  ---------------- #
 
 #====== =================================================================================================== #  ===========
