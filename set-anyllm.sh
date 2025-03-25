@@ -50,8 +50,8 @@
 #.(41224.01  12/24/24 RAM 11:00a| Add -doit and -d
 #.(41224.02  12/24/24 RAM 11:30a| Check for Node and Yarn
 #.(50307.04   3/07/25 RAM 10:05a| Set permission for run-app.sh too
-#.(50310.01   3/10/25 RAM  7:45a| Copy ALT and ALTools scripts
-#.(50323.01   3/23/25 RAM 12:00p| RAM Install express in server1
+#.(50310.01   3/10/25 RAM  7:45a| Copy ALT and ALTools scripts 
+#.(50310.01b  3/23/25 RAM  6:10p| Install express in server1, chmod ALT 
 #
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -171,7 +171,7 @@ function cpyToBin() {
 # aJPTs_GitR="${aRepo_Dir}/._2/JPTs/gitr.sh"                                            # .(41109.13.1 RAM Not needed )
   aAnyLLMscr="${aRepo_Dir}/run-anyllm.sh"
   aAnyAppScr="${aRepo_Dir}/run-app.sh"                                                  # .(50307.04.1)
-  aALToolscr="${aRepo_Dir}/._2/ALTs/ALT00_Main1.sh"                                     # .(50310.01.1 RAM  Path to ALT Main Script)
+  aALToolscr="${aRepo_Dir}/._2/ALTs/ALT00_Main1.sh"                                     # .(50310.01.1 RAM  Path to ALT Main Script) 
 
 # echo ""
 # echo " aJPTs_JDir: ${aJPTs_JDir}";
@@ -183,14 +183,15 @@ function cpyToBin() {
                                      Sudo chmod 755 "${aJPTs_JDir}"; fi                 # .(41111.03.5 RAM was sudo)
 
   if [   -f  "${aAnyLLMscr}" ]; then mkScript "${aAnyLLMscr}" "${aJPTs_JDir}" "anyllm";  echo "  Copied:  ${aJPTs_JDir}/anyllm";
-                                     mkScript "${aALToolscr}" "${aJPTs_JDir}" "altools"; echo "  Copied:  ${aJPTs_JDir}/altools";  #  .(50310.01.2)
-                                     mkScript "${aALToolscr}" "${aJPTs_JDir}" "alt"     # .(50310.01.3 RAM Copy altools and alt)
+                                     mkScript "${aALToolscr}" "${aJPTs_JDir}" "altools"; echo "  Copied:  ${aJPTs_JDir}/altools";  #  .(50310.01.2) 
+                                     mkScript "${aALToolscr}" "${aJPTs_JDir}" "alt"     # .(50310.01.3 RAM Copy altools and alt) 
                                      Sudo chmod 755 "${aAnyAppScr}";                    # .(50307.04.2 RAM Set run-app.sh too)
                                      Sudo chmod 755 "${aAnyLLMscr}"; fi
+                                     Sudo chmod 755 "${aRepo_Dir}/._2/ALTs/*.sh";       # .(50310.01b.1)                                      
                                      getBinVersion "anyllm"                             # .(41112.02.1)
 
-   cd "${aRepo_Dir}/._2";            npm install                                        # .(50310.01.4 RAM Install dotev. in ._2)
-   cd "${aRepo_Dir}/server1";        npm install                                        # .(50323.01.1 RAM Install express in server1)
+   cd "${aRepo_Dir}/._2";            npm install                                        # .(50310.01.4 RAM Install dotev. in ._2) 
+   cd "${aRepo_Dir}/server1";        npm install                                        # .(50310.01b.2 RAM Install express in server1) 
 
    cd "${aRepo_Dir}"                                                                    # .(41120.02.3 RAM Need to be in FRTools repo)
 
