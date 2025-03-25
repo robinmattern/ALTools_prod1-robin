@@ -31,10 +31,11 @@
 #.(50304.06   3/04/25 RAM  9:45a| Display invalid command & other Opps
 #.(50304.05   3/04/25 RAM  5:45p| Improve logs commands
 #.(50305.01   3/05/25 RAM  7:00a| Add pm2 app commands
-#.(50306.01   3/06/25 RAM  6:00a| Test pm2 all commands
+#.(50306.01   3/06/25 RAM  6:00a| Test pm2 all commands 
 #.(50306.02   3/06/25 RAM  6:30a| Add pm2 arg to be called from anyllm
 #.(50308.02   3/08/25 RAM  7:45p| Fix path the ecosystem.config.cjs file
 #.(50309.01   3/09/25 RAM 12:45p| Add chkPM2 and install PM2
+#.(50306.01c  3/23/25 RAM  9:25p| Add c13,s13 to App list  
 
 ##PRGM     +====================+===============================================+
 ##ID 69.600. Main0              |
@@ -47,6 +48,7 @@
   aVer="v0.01.50306.0630"  # run-app.sh
   aVer="v0.01.50308.1945"  # run-app.sh
   aVer="v0.01.50309.1245"  # run-app.sh
+  aVer="v0.01.50323.0925"  # run-app.sh
 
 function exit_wCR() {
       if [ "${OS:0:7}" != "Windows" ]; then echo ""; fi
@@ -98,8 +100,8 @@ function help() {
     a1="$1"; a2="$2"
 #   echo "p4 aCmd: '${aCmd}', aApp: '${aApp}', a1: '${a1}', a2: '${a2}'"
     if [ "${a1}" == "3" ] && [ "${a2}" == ""     ]; then   a1=""; a2=""; fi             # .(50305.01.6)
-    if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=2; fi         ##.(50305.01.7).(50306.01.1)
-#   if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=; fi          ##.(50306.01.1 RAM Was: a1=2)
+    if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=2; fi         ##.(50305.01.7).(50306.01.1) 
+#   if [ "${a1}" == "3" ] && [ "${a2}" != "help" ]; then aApp="${a2}"; a1=; fi          ##.(50306.01.1 RAM Was: a1=2) 
 #   echo "p5 aCmd: '${aCmd}', aApp: '${aApp}', aArg1: '${aArg1}', a1: '${a1}', a2: '${a2}'"
     if [ "${a1}" != "2" ] && [ "${a1}" != "3"    ]; then                                # .(50305.01.7 RAM Add "$1" != 3)
 
@@ -124,12 +126,12 @@ function help() {
     echo "    install             Install PM2"                                          # .(50309.01.2)
     echo "    save                Save PM2 configuration for startup"
 
-#   if [ "${a1}"  != "2"  ];                         then exit_wCR; fi                  ##.(50306.01.1).(50306.01.2)
-#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.1 RAM Add a1 != 3 ).(50306.01.2)
-#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.1 RAM Add a1 != 3 ).(50306.01.2)
-    if [ "${a1}"  == ""   ];                         then exit_wCR; fi                  # .(50306.01.2 RAM Now a1 == '' )
-#   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi ##.(50305.01.8).(50306.01.2)
-#   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  ##.(50305.01.9).(50306.01.2)
+#   if [ "${a1}"  != "2"  ];                         then exit_wCR; fi                  ##.(50306.01.1).(50306.01.2) 
+#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.1 RAM Add a1 != 3 ).(50306.01.2) 
+#   if [ "${a1}"  != "2"  ] && [ "${a1}"  != "3"  ]; then exit_wCR; fi                  ##.(50306.01.1 RAM Add a1 != 3 ).(50306.01.2) 
+    if [ "${a1}"  == ""   ];                         then exit_wCR; fi                  # .(50306.01.2 RAM Now a1 == '' ) 
+#   if                         [ "${aIt}" != "it" ]; then bCmd="1"; aName="?"; exit; fi ##.(50305.01.8).(50306.01.2) 
+#   if [ "$1"     != "2"  ] && [ "${aIt}" == "it" ]; then exit_wCR; fi                  ##.(50305.01.9).(50306.01.2) 
     }
 # -----------------------------------------------------
 
@@ -160,8 +162,8 @@ function doAll() {
     local aApps=$1                              # Comma-separated list of apps (e.g., "app1,app2,app3")
     local aCmd=$2                               # Command to execute (e.g., "run")
     local script_path="$(realpath "$0")"
-#   if [ "${aCmd}" == "" ]; then echo ""; help 2; exit; fi                              ##.(50306.01.3)
-    if [ "${aCmd}" == "" ]; then echo ""; help;   exit; fi                              # .(50306.01.3 RAM Was help 2)
+#   if [ "${aCmd}" == "" ]; then echo ""; help 2; exit; fi                              ##.(50306.01.3) 
+    if [ "${aCmd}" == "" ]; then echo ""; help;   exit; fi                              # .(50306.01.3 RAM Was help 2) 
 
     IFS=',' read -r -a apps_array <<< "$aApps"  # Split the comma-separated list into an array
 
@@ -215,6 +217,8 @@ function  setDir() {
     if [ "${1:0:3}"      == "c13"  ]; then aApp="c13"; aName="AnyLLM_c13-8013";       aPort="8013"; aAppDir="server1/s13_aidocs-anyllm-api";  fi  # .(50308.04.1 RAM Add new apps)
     if [ "${1:0:3}"      == "s13"  ]; then aApp="s13"; aName="AnyLLM_s13-8113";       aPort="8113"; aAppDir="server1/s13_aidocs-anyllm-api";  fi  # .(50308.04.2)
 
+#      echo "  - R-App[ 220]  \$1: '$1', aName: '${aName}', aAppDir: '${aAppDir}', aPort '${aPort}'"
+
 #   echo "p2 aApp:  '${aApp}', aName: '${aName}', aAppDir='${aAppDir}', aArg2: '${aArg2}'" ; # exit
 #   echo "  aDir: '${__basedir}/${aAppDir}'" ; # exit
 
@@ -225,7 +229,6 @@ function  setDir() {
 #   echo "    cd: '${__basedir}/${aAppDir}'"
 
     cd "${__basedir}/${aAppDir}" || exit_wCR
-
 
 #   echo "  The current App  folder is: ./${aAppDir}"
     }
@@ -252,37 +255,37 @@ function  setDir() {
          if [ "${aApp}"  == "s13"  ]; then setDir s13; doPM2 start "${aName}"; fi       # .(50308.04.4) 
     fi
 #   echo ""
-    if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";  help ${aArg1} ${aArg3};   fi      # .(50305.01.11)
-    if [ "${aArg2:0:4}"  == "save" ]; then bCmd="1";  doPM2 save;    fi
-    if [ "${aArg2:0:4}"  == "stat" ]; then bCmd="1";  doPM2 status;  fi
-#   if [ "${aArg2:0:4}"  == "inst" ]; then            installPM2; fi                    ##.(50309.01.5)
+    if [ "${aArg2:0:4}"  == "help" ]; then bCmd="1";   help ${aArg1} ${aArg3};   fi     # .(50305.01.11)
+    if [ "${aArg2:0:4}"  == "save" ]; then bCmd="1";   doPM2 save;    fi
+    if [ "${aArg2:0:4}"  == "stat" ]; then bCmd="1";   doPM2 status;  fi
+#   if [ "${aArg2:0:4}"  == "inst" ]; then             installPM2; fi                   ##.(50309.01.5)
 
-    if [ "${aArg2:0:4}"  == "stop" ]; then bCmd="1";  doPM2 stop    "${aName}"; fi
-    if [ "${aArg2:0:4}"  == "rest" ]; then bCmd="1";  doPM2 restart "${aName}"; fi
-    if [ "${aArg2:0:4}"  == "info" ]; then bCmd="1";  doPM2 info    "${aName}"; fi
-    if [ "${aArg2:0:4}"  == "kill" ]; then bCmd="1";  doPM2 delete  "${aName}"; fi
-    if [ "${aArg2:0:4}"  == "dele" ]; then bCmd="1";  doPM2 delete  "${aName}"; fi
-    if [ "${aArg2:0:4}"  == "logs" ]; then bCmd="1";  doPM2 logs    "${aName}" --lines ${aArg3}; fi         # .(50304.05.2 RAM Was: $$)
+    if [ "${aArg2:0:4}"  == "stop" ]; then bCmd="1";   doPM2 stop    "${aName}"; fi
+    if [ "${aArg2:0:4}"  == "rest" ]; then bCmd="1";   doPM2 restart "${aName}"; fi
+    if [ "${aArg2:0:4}"  == "info" ]; then bCmd="1";   doPM2 info    "${aName}"; fi
+    if [ "${aArg2:0:4}"  == "kill" ]; then bCmd="1";   doPM2 delete  "${aName}"; fi
+    if [ "${aArg2:0:4}"  == "dele" ]; then bCmd="1";   doPM2 delete  "${aName}"; fi
+    if [ "${aArg2:0:4}"  == "logs" ]; then bCmd="1";   doPM2 logs    "${aName}" --lines ${aArg3}; fi         # .(50304.05.2 RAM Was: $$)
 
 #     echo "p3 bCmd: '${bCmd}', aName: '${aName}', aCmd: '${aArg2}', aApp: '${aArg1}', bCmd: '${bCmd}'"
 
-    if [ "${aArg2}" == "help" ]; then exit_wCR; fi                                      # .(50306.01.4 RAM Not here)
+    if [ "${aArg2}" == "help" ]; then exit_wCR; fi                                      # .(50306.01.4 RAM Not here) 
 
        chkPM2                                                                           # .(50309.01.6 RAM Use it) 
-
+#      echo "  - R-App[ 275]  aArg2: '${aArg2}', aName: '${aName}'"
    if [ "${bCmd}" == "1" ] && [ "${aName}"  == "" ]; then a="*"
-       if [ "${aArg1}" != ""  ]; then echo -e "\n* You entered an invalid App: ${aArg1}."; a=" "; fi
-                                      echo -e "${a} Please use one of the folling Apps: server, collector, frontend.";
+       if [ "${aArg1}" != ""  ]; then echo -e "* You entered an invalid App: ${aArg1}."; a=" "; fi
+                                      echo -e "${a} Please use one of the following Apps: server, collector, frontend, c13, s13.";        # .(50306.01c.1) 
                                       exit_wCR;
        fi
     if [ "${bCmd}" != "1" ]; then
-       if [ "${aName}" == ""  ]; then help 4; else help 2; exit_wCR; fi                 # .(50306.01.4 RAM Was Help 2)
-       if [ "${aArg1}" != ""  ]; then echo -e "\n* You entered an invalid App: ${aArg1}.";
-                                      echo -e "  Please use one of the folling Apps: server, collector, frontend.";
+       if [ "${aName}" == ""  ]; then help 4; else help 2; exit_wCR; fi                 # .(50306.01.4 RAM Was Help 2) 
+       if [ "${aArg1}" != ""  ]; then echo -e "* You entered an invalid App: ${aArg1}." # .(50306.01b.2 RAM Remove \n) 
+                                      echo -e "  Please use one of the following Apps: server, collector, frontend, c13, s13.";           # .(50306.01c.1) 
        else
-                                      echo -e "\n* You entered an invalid command: $1."  # .(50304.06.5 RAM Display invalid command)
+                                      echo -e "* You entered an invalid command: $1."   # .(50306.01b.3).(50304.06.5 RAM Display invalid command) 
        fi;
-       exit_wCR
+       exit_wCR;   
        fi                                                                               # .(50304.06.6)
 #      if [ "${b2}" == "0" ]; then exit_wCR; fi                                         ##.(50306.02.2)
        exit_wCR;                                                                        # .(50306.02.2)
